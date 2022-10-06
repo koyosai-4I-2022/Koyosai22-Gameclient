@@ -17,6 +17,10 @@ public class ConnectionController : MonoBehaviour
     [SerializeField]
     string RoomID;
     [SerializeField]
+    string appID;
+    [SerializeField]
+    string masterID;
+    [SerializeField]
     static UnityEngine.UI.Text text;
 
     void Start()
@@ -50,9 +54,9 @@ public class ConnectionController : MonoBehaviour
     public static void Connect(string num)
 	{
         StrixNetwork strixNetwork = StrixNetwork.instance;
-        strixNetwork.applicationId = "c2733c28-3bc3-44a5-bdcd-dea8da81f075";
+        strixNetwork.applicationId = appID;
         strixNetwork.playerName = num;
-        string master = "18b43b8a75612c7572a9fd1f.game.strixcloud.net";
+        string master = masterID;
 
         strixNetwork.ConnectMasterServer(
             host: master,
@@ -129,7 +133,7 @@ public class ConnectionController : MonoBehaviour
 
 
                 strixNetwork.JoinRoom(
-                     host: "18b43b8a75612c7572a9fd1f.game.strixcloud.net",
+                     host: masterID,
                      port: 9122,
                      protocol: roomInfo.protocol,
                      roomId: roomInfo.roomId,
@@ -140,7 +144,6 @@ public class ConnectionController : MonoBehaviour
             },
                 failureHandler: searchError => Log("Search failed.Reason: " + searchError.cause)
         );
-        string master = "18b43b8a75612c7572a9fd1f.game.strixcloud.net";
 
 	}
 	void OnApplicationQuit()

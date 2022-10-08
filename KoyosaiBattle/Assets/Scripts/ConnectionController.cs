@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using SoftGear.Strix.Client;
 using SoftGear.Strix.Net;
 using SoftGear.Strix;
@@ -20,12 +21,17 @@ public class ConnectionController : MonoBehaviour
     string appID;
     [SerializeField]
     string masterID;
+
     [SerializeField]
-    static UnityEngine.UI.Text text;
+    Text text;
+
+    [SerializeField]
+    InputField ConnectionID;
+    [SerializeField]
+    InputField PCID;
 
     void Start()
     {
-        text = GameObject.Find("Text").GetComponent<UnityEngine.UI.Text>();
         Connect(PCNumber);
     }
 
@@ -33,25 +39,22 @@ public class ConnectionController : MonoBehaviour
     {
         if(Input.GetKeyUp(KeyCode.A))
         {
-            SetUp(RoomID, PCNumber);
-        }
-        if(Input.GetKeyUp(KeyCode.B))
-        {
-            JoinRoom(RoomID, PCNumber);
-        }
-        if(Input.GetKeyUp(KeyCode.C))
-        {
-            StrixNetwork strixNetwork = StrixNetwork.instance;
-
-            var mem = strixNetwork.roomMembers;
-            foreach(var member in mem)
-            {
-                Log(member.Value.GetName());
-            }
+            Log("A");
         }
     }
+    public void ConnectClick()
+	{
+        string conID = ConnectionID.text;
+        string pcID = PCID.text;
 
-    public static void Connect(string num)
+        if(pcID != null && conID != null)
+		{
+            Log("Clock");
+            SetUp(conID, pcID);
+		}
+	}
+
+    public void Connect(string num)
     {
         StrixNetwork strixNetwork = StrixNetwork.instance;
         strixNetwork.applicationId = appID;
@@ -71,7 +74,7 @@ public class ConnectionController : MonoBehaviour
             });
 
     }
-    public static void SetUp(string roomID, string num)
+    public void SetUp(string roomID, string num)
     {
         StrixNetwork strixNetwork = StrixNetwork.instance;
 
@@ -84,83 +87,139 @@ public class ConnectionController : MonoBehaviour
             { "description", "Room" + roomID }
         };
 
-        strixNetwork.CreateRoom(roomProperties, new RoomMemberProperties()
-        {
-            name = num
-        },
-        _ => //Sucess
-        {
-            var room = strixNetwork.room;
-            var roomMember = strixNetwork.selfRoomMember;
-
-            Log("Sucess Create Room"
-                + "\nRoom name:" + room.GetName()
-                + "\nRoom capacity:" + room.GetCapacity()
-                + "\nRoom password:" + room.GetPassword()
-                + "\nRoom String Key:" + room.GetStringKey()
-                + "\nRoom Menber Count:" + room.GetMemberCount()
-                + "\nRoom member name:" + roomMember.GetName());
-        },
-        _ => //Faild
-        {
-            Log("Faild Create Room");
-            JoinRoom(roomID, num);
-        });
-    }
-    public static void JoinRoom(string roomID, string num)
-    {
-        StrixNetwork strixNetwork = StrixNetwork.instance;
-
         strixNetwork.SearchJoinableRoom(
-            condition: ConditionBuilder.Builder().Field("stringKey").EqualTo(roomID + roomID).Build(),
-            order: new Order("memberCount", OrderType.Ascending),
-            limit: 10,
-            offset: 0,
-            handler: searchResults =>
-            {
-                var foundRooms = searchResults.roomInfoCollection;
-                Log(foundRooms.Count + " rooms found.");
+          condition: ConditionBuilder.Builder().Field("stringKey").EqualTo(roomID + roomID).Build(),
+          order: new Order("memberCount", OrderType.Ascending),
+          limit: 10,
+          offset: 0,
+          handler: searchResults =>
+          {
+              var foundRooms = searchResults.roomInfoCollection;
+              Log(foundRooms.Count + " rooms found.");
 
-                if(foundRooms.Count == 0)
-                {
-                    Log("No joinable rooms found.");
-                    return;
-                }
+              if(foundRooms.Count == 0)
+              {
+                  Log("No joinable rooms found.");
+                  strixNetwork.CreateRoom(roomProperties, new RoomMemberProperties()
+                  {
+                      name = num
+                  },
+                  _ => //Sucess
+                  {
+                      var room = strixNetwork.room;
+                      var roomMember = strixNetwork.selfRoomMember;
 
-                var roomInfo = foundRooms.GetEnumerator().Current;
+                      Log("Success Create Room");
+                      //Log("Sucess Create Room"
+                      //    + "\nRoom name:" + room.GetName()
+                      //    + "\nRoom capacity:" + room.GetCapacity()
+                      //    + "\nRoom password:" + room.GetPassword()
+                      //    + "\nRoom String Key:" + room.GetStringKey()
+                      //    + "\nRoom Menber Count:" + room.GetMemberCount()
+                      //    + "\nRoom member name:" + roomMember.GetName());
+                  },
+                  _ => //Faild
+                  {
+                      Log("Faild Create Room");
+                  });
+                  return;
+              }
 
-                RoomJoinArgs roomJoinArgs = new RoomJoinArgs();
+              var roomInfo = foundRooms.GetEnumerator().Current;
+
+              RoomJoinArgs roomJoinArgs = new RoomJoinArgs();
 
 
-                strixNetwork.JoinRoom(
-                     host: masterID,
-                     port: 9122,
-                     protocol: roomInfo.protocol,
-                     roomId: roomInfo.roomId,
-                     playerName: num,
-                     handler: __ => Log("Room joined."),
-                     failureHandler: joinError => Log("Join failed.Reason: " + joinError.cause)
-                );
-            },
-                failureHandler: searchError => Log("Search failed.Reason: " + searchError.cause)
-        );
+              strixNetwork.JoinRoom(
+                   host: masterID,
+                   port: 9122,
+                   protocol: roomInfo.protocol,
+                   roomId: roomInfo.roomId,
+                   playerName: num,
+                   handler: __ => Log("Room joined."),
+                   failureHandler: joinError => Log("Join failed.Reason: " + joinError.cause)
+              );
+          },
+          failureHandler: searchError =>
+          {
+                  Log("Search failed.Reason: " + searchError.cause);
+              }
+      );
 
+        
     }
+    //public void JoinRoom(string roomID, string num)
+    //{
+    //    StrixNetwork strixNetwork = StrixNetwork.instance;
+
+    //    strixNetwork.SearchJoinableRoom(
+    //        condition: ConditionBuilder.Builder().Field("stringKey").EqualTo(roomID + roomID).Build(),
+    //        order: new Order("memberCount", OrderType.Ascending),
+    //        limit: 10,
+    //        offset: 0,
+    //        handler: searchResults =>
+    //        {
+    //            var foundRooms = searchResults.roomInfoCollection;
+    //            Log(foundRooms.Count + " rooms found.");
+
+    //            if(foundRooms.Count == 0)
+    //            {
+    //                Log("No joinable rooms found.");
+    //                return;
+    //            }
+
+    //            var roomInfo = foundRooms.GetEnumerator().Current;
+
+    //            RoomJoinArgs roomJoinArgs = new RoomJoinArgs();
+
+
+    //            strixNetwork.JoinRoom(
+    //                 host: masterID,
+    //                 port: 9122,
+    //                 protocol: roomInfo.protocol,
+    //                 roomId: roomInfo.roomId,
+    //                 playerName: num,
+    //                 handler: __ => Log("Room joined."),
+    //                 failureHandler: joinError => Log("Join failed.Reason: " + joinError.cause)
+    //            );
+    //        },
+    //            failureHandler: searchError => Log("Search failed.Reason: " + searchError.cause)
+    //    );
+
+    //}
     void OnApplicationQuit()
     {
         StrixNetwork strixNetwork = StrixNetwork.instance;
         var room = strixNetwork.room;
+        if(room == null)
+		{
+            strixNetwork.DisconnectMasterServer();
+            strixNetwork.Destroy();
+            return;
+		}
         if(room.GetMemberCount() == 1)
         {
-            strixNetwork.DeleteRoom(room.GetPrimaryKey(), _ => { Log("Sucess Delete Room"); }, _ => { });
+            strixNetwork.DeleteRoom(room.GetPrimaryKey(), _ => { Log("Sucess Delete Room"); strixNetwork.DisconnectMasterServer(); strixNetwork.Destroy(); }, _ => { });
         }
         else
         {
-            strixNetwork.LeaveRoom(_ => { Log("Sucess Leave Room"); }, _ => { });
+            strixNetwork.LeaveRoom(_ => { Log("Sucess Leave Room"); strixNetwork.DisconnectMasterServer(); strixNetwork.Destroy(); }, _ => { });
         }
     }
-    static void Log(string msg)
+    void Log(string msg)
     {
         text.text += msg + "\n";
+
+        var array = text.text.Split('\n');
+
+        if(array.Length > 8)
+        {
+            string s = "";
+            for(int i = 1;i < array.Length;i++)
+			{
+                s += array[i] + "\n";
+            }
+            text.text = s;
+        }
     }
 }

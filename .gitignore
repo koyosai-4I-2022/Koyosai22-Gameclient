@@ -16,8 +16,8 @@ KoyosaiBattle/Builds/
 KoyosaiBattle/Logs/
 /[Mm]emoryCaptures/
 KoyosaiBattle/MemoryCaptures/
-/[Uu]serSetting/
-KoyosaiBattle/UserSetting/
+/[Uu]serSettings/
+KoyosaiBattle/UserSettings/
 
 # Asset meta data should only be ignored when the corresponding asset is also ignored
 !/[Aa]ssets/**/*.meta

@@ -36,6 +36,9 @@ public class ConnectionController : MonoBehaviour
     [SerializeField]
     InputField PCID;
 
+    [SerializeField]
+    GameObject panel;
+
     bool isConnectMaster = false;
 
     void Start()
@@ -45,22 +48,7 @@ public class ConnectionController : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetKeyUp(KeyCode.A))
-        {
-            Log("A");
-        }
-        if(Input.GetKeyUp(KeyCode.B))
-		{
-            var strixNetwork = StrixNetwork.instance;
-            var roomMenbers = strixNetwork.roomMembers;
-            if(roomMenbers != null)
-			{
-                foreach(var member in roomMenbers)
-				{
-                    Log(member.Value.GetName());
-				}
-			}
-		}
+
     }
     public void ConnectClick()
 	{
@@ -152,6 +140,7 @@ public class ConnectionController : MonoBehaviour
                 //    + "\nRoom String Key:" + room.GetStringKey()
                 //    + "\nRoom Menber Count:" + room.GetMemberCount()
                 //    + "\nRoom member name:" + roomMember.GetName());
+                panel.SetActive(false);
             },
             e => //Faild
             {
@@ -199,7 +188,7 @@ public class ConnectionController : MonoBehaviour
                          protocol: room.protocol,
                          roomId: room.roomId,
                          playerName: num,
-                         handler: __ => Log("Room joined."),
+                         handler: __ => { Log("Room joined."); panel.SetActive(false);  },
                          failureHandler: joinError => Log("Join failed.Reason: " + joinError.cause)
                     );
                 }

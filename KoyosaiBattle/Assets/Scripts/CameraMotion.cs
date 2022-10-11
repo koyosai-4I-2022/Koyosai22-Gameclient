@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//subarus
 public class CameraMotion : MonoBehaviour
 {
     //JoyconLib‚Ì•Ï”

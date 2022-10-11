@@ -17,7 +17,7 @@ public class PlayerMotion : MonoBehaviour
     public Animator Animator;
     public bool shoot;
 
-    //スティックの
+    //スティックのsetting
     private float degree;
     CameraMotion camdeg = new CameraMotion();
     //CameraMotion camdeg;

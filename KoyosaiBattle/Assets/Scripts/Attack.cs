@@ -16,8 +16,13 @@ public class Attack : MonoBehaviour
     //Animatorの変数
     public Animator animator;
     public int para = 0;
-    private Vector3 v1 = new Vector3(1.0f, 1.0f, 1.0f);
-    private Vector3 accel;
+    private Vector3 v1 = new Vector3(0.9f, 0.9f, 0.9f);
+    private Vector3 accel, accelBefore;
+    bool slashBool = false;
+
+    //コルーチンで時間制御する
+    private float interval = 1.5f;
+    private float tmpTime = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -37,22 +42,47 @@ public class Attack : MonoBehaviour
     {
         if (m_joycons == null || m_joycons.Count <= 0) return;
 
-        foreach (var joycon in m_joycons)
-        {
-            accel = joycon.GetAccel();
-        }
+        
 
-        if (accel.x >= v1.x && accel.y >= v1.y && accel.z >= v1.z)
+        //コルーチンで受付時間を制限する
+        tmpTime += Time.deltaTime;
+
+        if (tmpTime >= interval)
         {
-            if (para <= 5)
+
+            foreach (var joycon in m_joycons)
             {
-                para++;
-                animator.SetInteger("slash1", para);
+                accel = joycon.GetAccel();
             }
+
+            accelBefore = accel;
+
+            if (accel.x >= v1.x || accel.y >= v1.y)// || accel.z >= v1.z)
+            {
+                /*if (para <= 5)
+                {
+                    para++;
+                    animator.SetInteger("slash1", para);
+                }*/
+                if (slashBool == false)
+                {
+                    slashBool = true;
+                }
+                else
+                {
+                    slashBool = false;
+                }
+                animator.SetBool("slash2", slashBool);
+
+                slashBool = false;
+            }
+            if (para > 4)
+            {
+                para = 0;
+            }
+            
         }
-        if (para > 5)
-        {
-            para = 0;
-        }
+        
+        
     }
 }

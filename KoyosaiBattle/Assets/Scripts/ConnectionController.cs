@@ -14,35 +14,48 @@ using SoftGear.Strix.Client.Core.Request;
 
 public class ConnectionController : MonoBehaviour
 {
+    /// 各PCの識別用(対戦するPCで同じ名前は避ける)
     [SerializeField]
     string PCNumber;
+    /// ルームID
+    /// 同じルームIDのPCを接続する
     [SerializeField]
     string RoomID;
+    /// strix cloud用
     [SerializeField]
     string appID;
+    // strix cloud用
     [SerializeField]
     string masterID;
 
+    // message表示用
     [SerializeField]
     Text text;
 
+    // connection/createのボタンテキスト
     [SerializeField]
     Text buttom1;
+    // joinのボタンテキスト
     [SerializeField]
     Text buttom2;
 
+    // ルームIDを入力するフィールド
     [SerializeField]
     InputField ConnectionID;
+    // PCIDを入力するフィールド
     [SerializeField]
     InputField PCID;
 
+    // 接続成功したら接続用のUIを消すためのパネル
     [SerializeField]
     GameObject panel;
 
+    // マスターサーバに接続出来ているかを入れる
     bool isConnectMaster = false;
 
     void Start()
     {
+        // 最初はjoinは表示しない
         buttom2.gameObject.SetActive(false);
     }
 
@@ -50,19 +63,22 @@ public class ConnectionController : MonoBehaviour
     {
 
     }
+    // Connectionボタンのクリックイベント
     public void ConnectClick()
 	{
         string conID = ConnectionID.text;
         string pcID = PCID.text;
 
+        // マスターサーバに接続できている時はルームをつくる
         if(isConnectMaster)
         {
             if(pcID != null && conID != null)
             {
-                SetUp(conID, pcID);
+                CreateRoom(conID, pcID);
                 buttom1.text = "Connect";
             }
         }
+        // マスターサーバに接続していないときはマスターサーバに接続をしてテキストをCreateにし、Joinボタンを表示
         else
         {
             if(pcID != null)
@@ -74,6 +90,7 @@ public class ConnectionController : MonoBehaviour
             }
         }
 	}
+    // Joinボタンのクリックイベント
     public void JoinClick()
 	{
         string conID = ConnectionID.text;
@@ -107,12 +124,14 @@ public class ConnectionController : MonoBehaviour
             });
 
     }
-    public void SetUp(string roomID, string num)
+    // ルームの作成
+    public void CreateRoom(string roomID, string num)
     {
         StrixNetwork strixNetwork = StrixNetwork.instance;
 
 		RoomProperties roomProperties = new RoomProperties
 		{
+            // ルームの情報
 			name = "Room" + roomID,
 			capacity = 3,
 			stringKey = roomID + roomID,
@@ -149,10 +168,12 @@ public class ConnectionController : MonoBehaviour
             }
         );
     }
+    // ルームに参加
 	public void JoinRoom(string roomID, string num)
 	{
 		StrixNetwork strixNetwork = StrixNetwork.instance;
 
+        // ルームを検索して見つかったらそのルームに入る
 		strixNetwork.SearchJoinableRoom(
 			condition: ConditionBuilder.Builder().Field("stringKey").EqualTo(roomID + roomID).Build(),
 			order: new Order("memberCount", OrderType.Ascending),
@@ -163,6 +184,7 @@ public class ConnectionController : MonoBehaviour
 				var foundRooms = searchResults.roomInfoCollection;
 				Log(foundRooms.Count + " rooms found.");
 
+                // 見つかったルームの数が０なら終了
 				if(foundRooms.Count == 0)
 				{
 					Log("No joinable rooms found.");
@@ -172,6 +194,7 @@ public class ConnectionController : MonoBehaviour
                 var roomInfo = foundRooms.GetEnumerator();
                 foreach(var room in foundRooms)
 				{
+                    // 見つけたルームに参加
                     RoomJoinArgs roomJoinArgs = new RoomJoinArgs();
 
                     if(strixNetwork.room != null)
@@ -197,25 +220,30 @@ public class ConnectionController : MonoBehaviour
 		);
 
 	}
+    // 終了の接続の解除
 	void OnApplicationQuit()
     {
         StrixNetwork strixNetwork = StrixNetwork.instance;
         var room = strixNetwork.room;
+        // ルームに入っていない
         if(room == null)
 		{
             strixNetwork.DisconnectMasterServer();
             strixNetwork.Destroy();
             return;
 		}
+        // 退出する時にメンバーが自分のみ→ルームを削除
         if(room.GetMemberCount() == 1)
         {
             strixNetwork.DeleteRoom(room.GetPrimaryKey(), _ => { Debug.Log("Sucess Delete Room"); strixNetwork.DisconnectMasterServer(); strixNetwork.Destroy(); }, _ => { });
         }
+        // 退出する時にメンバーが自分自分以外にもいる→ルームから退出
         else
         {
             strixNetwork.LeaveRoom(_ => { Debug.Log("Sucess Leave Room"); strixNetwork.DisconnectMasterServer(); strixNetwork.Destroy(); }, _ => { });
         }
     }
+    // テキストに表示するためのメソッド
     void Log(string msg)
     {
         text.text += msg + "\n";

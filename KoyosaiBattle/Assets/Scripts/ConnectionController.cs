@@ -53,6 +53,9 @@ public class ConnectionController : MonoBehaviour
     // マスターサーバに接続出来ているかを入れる
     bool isConnectMaster = false;
 
+    // あたり判定に使用するタグ用
+    static string PlayerTag;
+
     void Start()
     {
         // 最初はjoinは表示しない

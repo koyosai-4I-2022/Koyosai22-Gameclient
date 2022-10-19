@@ -1,0 +1,314 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>strix-client-csharp-match</name>
+    </assembly>
+    <members>
+        <member name="T:SoftGear.Strix.Client.Match.MatchService">
+            <summary>
+            Class used for initialization of the matching service.
+            </summary>
+        </member>
+        <member name="M:SoftGear.Strix.Client.Match.MatchService.Init">
+            <summary>
+            Registers message and error classes needed for the proper functioning of the matching service.
+            </summary>
+        </member>
+        <member name="T:SoftGear.Strix.Client.Match.Room.Model.CustomizableMatchRoom">
+            <summary>
+            Model class representing a match room with custom search keys.
+            </summary>
+        </member>
+        <member name="M:SoftGear.Strix.Client.Match.Room.Model.CustomizableMatchRoom.GetKey1">
+            <summary>
+            Gets the first search key.
+            </summary>
+            <returns>First search key.</returns>
+        </member>
+        <member name="M:SoftGear.Strix.Client.Match.Room.Model.CustomizableMatchRoom.SetKey1(System.Double)">
+            <summary>
+            Sets the first search key.
+            </summary>
+            <param name="key1">First search key.</param>
+        </member>
+        <member name="M:SoftGear.Strix.Client.Match.Room.Model.CustomizableMatchRoom.GetKey2">
+            <summary>
+            Gets the second search key.
+            </summary>
+            <returns>Second search key.</returns>
+        </member>
+        <member name="M:SoftGear.Strix.Client.Match.Room.Model.CustomizableMatchRoom.SetKey2(System.Double)">
+            <summary>
+            Sets the second search key.
+            </summary>
+            <param name="key2">Second search key.</param>
+        </member>
+        <member name="M:SoftGear.Strix.Client.Match.Room.Model.CustomizableMatchRoom.GetKey3">
+            <summary>
+            Gets the third search key.
+            </summary>
+            <returns>Third search key.</returns>
+        </member>
+        <member name="M:SoftGear.Strix.Client.Match.Room.Model.CustomizableMatchRoom.SetKey3(System.Double)">
+            <summary>
+            Sets the third search key.
+            </summary>
+            <param name="key3">Third search key.</param>
+        </member>
+        <member name="M:SoftGear.Strix.Client.Match.Room.Model.CustomizableMatchRoom.GetKey4">
+            <summary>
+            Gets the fourth search key.
+            </summary>
+            <returns>Fourth search key.</returns>
+        </member>
+        <member name="M:SoftGear.Strix.Client.Match.Room.Model.CustomizableMatchRoom.SetKey4(System.Double)">
+            <summary>
+            Sets the fourth search key.
+            </summary>
+            <param name="key4">Fourth search key.</param>
+        </member>
+        <member name="M:SoftGear.Strix.Client.Match.Room.Model.CustomizableMatchRoom.GetKey5">
+            <summary>
+            Gets the fifth search key.
+            </summary>
+            <returns>Fifth search key.</returns>
+        </member>
+        <member name="M:SoftGear.Strix.Client.Match.Room.Model.CustomizableMatchRoom.SetKey5(System.Double)">
+            <summary>
+            Sets the fifth search key.
+            </summary>
+            <param name="key5">Fifth search key.</param>
+        </member>
+        <member name="M:SoftGear.Strix.Client.Match.Room.Model.CustomizableMatchRoom.GetKey6">
+            <summary>
+            Gets the sixth search key.
+            </summary>
+            <returns>Sixth search key.</returns>
+        </member>
+        <member name="M:SoftGear.Strix.Client.Match.Room.Model.CustomizableMatchRoom.SetKey6(System.Double)">
+            <summary>
+            Sets the sixth search key.
+            </summary>
+            <param name="key6">Sixth search key.</param>
+        </member>
+        <member name="M:SoftGear.Strix.Client.Match.Room.Model.CustomizableMatchRoom.GetKey7">
+            <summary>
+            Gets the seventh search key.
+            </summary>
+            <returns>Seventh search key.</returns>
+        </member>
+        <member name="M:SoftGear.Strix.Client.Match.Room.Model.CustomizableMatchRoom.SetKey7(System.Double)">
+            <summary>
+            Sets the seventh search key.
+            </summary>
+            <param name="key7">Seventh search key.</param>
+        </member>
+        <member name="M:SoftGear.Strix.Client.Match.Room.Model.CustomizableMatchRoom.GetKey8">
+            <summary>
+            Gets the eighth search key.
+            </summary>
+            <returns>Eighth search key.</returns>
+        </member>
+        <member name="M:SoftGear.Strix.Client.Match.Room.Model.CustomizableMatchRoom.SetKey8(System.Double)">
+            <summary>
+            Sets the eighth search key.
+            </summary>
+            <param name="key8">Eighth search key.</param>
+        </member>
+        <member name="M:SoftGear.Strix.Client.Match.Room.Model.CustomizableMatchRoom.GetStringKey">
+            <summary>
+            Gets the string search key.
+            </summary>
+            <returns>String search key.</returns>
+        </member>
+        <member name="M:SoftGear.Strix.Client.Match.Room.Model.CustomizableMatchRoom.SetStringKey(System.String)">
+            <summary>
+            Sets the string search key.
+            </summary>
+            <param name="stringKey">String search key.</param>
+        </member>
+        <member name="M:SoftGear.Strix.Client.Match.Room.Model.CustomizableMatchRoom.GetProperties">
+            <summary>
+            Gets the dictionary of custom properties.
+            </summary>
+            <returns>Dictionary of custom properties.</returns>
+        </member>
+        <member name="M:SoftGear.Strix.Client.Match.Room.Model.CustomizableMatchRoom.SetProperties(System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+            Sets the dictionary of custom properties.
+            </summary>
+            <param name="properties">Dictionary of custom properties.</param>
+        </member>
+        <member name="T:SoftGear.Strix.Client.Match.Room.Model.CustomizableMatchRoomMember">
+            <summary>
+            Data class holding the information about the match room member with additional custom properties.
+            </summary>
+        </member>
+        <member name="M:SoftGear.Strix.Client.Match.Room.Model.CustomizableMatchRoomMember.GetProperties">
+            <summary>
+            Gets the custom properties of the match room member.
+            </summary>
+            <returns>Property dictionary.</returns>
+        </member>
+        <member name="M:SoftGear.Strix.Client.Match.Room.Model.CustomizableMatchRoomMember.SetProperties(System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+            Sets the custom properties of the match room member.
+            </summary>
+            <param name="properties">Property dictionary.</param>
+        </member>
+        <member name="T:SoftGear.Strix.Client.Match.Room.Model.MatchRoom">
+            <summary>
+            Model class representing a match room.
+            </summary>
+        </member>
+        <member name="M:SoftGear.Strix.Client.Match.Room.Model.MatchRoom.GetPrimaryKey">
+            <summary>
+            Gets the room ID (primary key).
+            </summary>
+            <returns>Room ID.</returns>
+        </member>
+        <member name="M:SoftGear.Strix.Client.Match.Room.Model.MatchRoom.SetPrimaryKey(System.Int64)">
+            <summary>
+            Sets the room ID (primary key).
+            </summary>
+            <param name="primaryKey">Room ID.</param>
+        </member>
+        <member name="M:SoftGear.Strix.Client.Match.Room.Model.MatchRoom.GetOwnerUid">
+            <summary>
+            Gets the UID of the room owner.
+            </summary>
+            <returns>UID of the room owner.</returns>
+        </member>
+        <member name="M:SoftGear.Strix.Client.Match.Room.Model.MatchRoom.SetOwnerUid(SoftGear.Strix.Client.Core.UID)">
+            <summary>
+            Sets the UID of the room owner.
+            </summary>
+            <param name="ownerUid">UID of the room owner.</param>
+        </member>
+        <member name="M:SoftGear.Strix.Client.Match.Room.Model.MatchRoom.GetName">
+            <summary>
+            Gets the room name.
+            </summary>
+            <returns>Room name.</returns>
+        </member>
+        <member name="M:SoftGear.Strix.Client.Match.Room.Model.MatchRoom.SetName(System.String)">
+            <summary>
+            Sets the room name.
+            </summary>
+            <param name="name">Room name.</param>
+        </member>
+        <member name="M:SoftGear.Strix.Client.Match.Room.Model.MatchRoom.GetCapacity">
+            <summary>
+            Gets the maximum allowed number of members in the room.
+            </summary>
+            <returns>The maximum allowed number of members in the room.</returns>
+        </member>
+        <member name="M:SoftGear.Strix.Client.Match.Room.Model.MatchRoom.SetCapacity(System.Int32)">
+            <summary>
+            Sets the maximum allowed number of members in the room.
+            </summary>
+            <param name="capacity">The maximum allowed number of members in the room.</param>
+        </member>
+        <member name="M:SoftGear.Strix.Client.Match.Room.Model.MatchRoom.GetMemberCount">
+            <summary>
+            Gets the current number of members in the room.
+            </summary>
+            <return>The current number of members in the room.</return>
+        </member>
+        <member name="M:SoftGear.Strix.Client.Match.Room.Model.MatchRoom.SetMemberCount(System.Int32)">
+            <summary>
+            Sets the current number of members in the room.
+            </summary>
+            <param name="memberCount">The current number of members in the room.</param>
+        </member>
+        <member name="M:SoftGear.Strix.Client.Match.Room.Model.MatchRoom.GetPassword">
+            <summary>
+            Gets the room password.
+            </summary>
+            <returns>Room password.</returns>
+        </member>
+        <member name="M:SoftGear.Strix.Client.Match.Room.Model.MatchRoom.SetPassword(System.String)">
+            <summary>
+            Sets the room password.
+            </summary>
+            <param name="password">Room password.</param>
+        </member>
+        <member name="M:SoftGear.Strix.Client.Match.Room.Model.MatchRoom.GetState">
+            <summary>
+            Gets the room state.
+            </summary>
+            <returns>Room state.</returns>
+        </member>
+        <member name="M:SoftGear.Strix.Client.Match.Room.Model.MatchRoom.SetState(System.Int32)">
+            <summary>
+            Sets the room state.
+            </summary>
+            <param name="state">Room state.</param>
+        </member>
+        <member name="M:SoftGear.Strix.Client.Match.Room.Model.MatchRoom.GetIsJoinable">
+            <summary>
+            Gets the flag determining if it's allowed to join the room.
+            </summary>
+            <returns>The flag determining if it's allowed to join the room.</returns>
+        </member>
+        <member name="M:SoftGear.Strix.Client.Match.Room.Model.MatchRoom.SetIsJoinable(System.Boolean)">
+            <summary>
+            Sets the flag determining if it's allowed to join the room.
+            </summary>
+            <param name="isJoinable">The flag determining if it's allowed to join the room.</param>
+        </member>
+        <member name="T:SoftGear.Strix.Client.Match.Room.Model.MatchRoomMember">
+            <summary>
+            Data class holding the information about the match room member.
+            </summary>
+        </member>
+        <member name="M:SoftGear.Strix.Client.Match.Room.Model.MatchRoomMember.GetUid">
+            <summary>
+            Gets the UID of the match room member.
+            </summary>
+            <returns>Room member's UID.</returns>
+        </member>
+        <member name="M:SoftGear.Strix.Client.Match.Room.Model.MatchRoomMember.SetUid(SoftGear.Strix.Client.Core.UID)">
+            <summary>
+            Sets the UID of the match room member.
+            </summary>
+            <param name="uid">Room member's UID.</param>
+        </member>
+        <member name="M:SoftGear.Strix.Client.Match.Room.Model.MatchRoomMember.GetPrimaryKey">
+            <summary>
+            Gets the primary key of the match room member.
+            </summary>
+            <returns>Room member's primary key.</returns>
+        </member>
+        <member name="M:SoftGear.Strix.Client.Match.Room.Model.MatchRoomMember.SetPrimaryKey(System.Int64)">
+            <summary>
+            Sets the primary key of the match room member.
+            </summary>
+            <param name="primaryKey">Room member's primary key.</param>
+        </member>
+        <member name="M:SoftGear.Strix.Client.Match.Room.Model.MatchRoomMember.GetRoomId">
+            <summary>
+            Gets the ID of the room this member is currently joined to.
+            </summary>
+            <returns>Room ID.</returns>
+        </member>
+        <member name="M:SoftGear.Strix.Client.Match.Room.Model.MatchRoomMember.SetRoomId(System.Int64)">
+            <summary>
+            Sets the ID of the room this member is currently joined to.
+            </summary>
+            <param name="roomId">Room ID.</param>
+        </member>
+        <member name="M:SoftGear.Strix.Client.Match.Room.Model.MatchRoomMember.GetName">
+            <summary>
+            Gets the name of the match room member.
+            </summary>
+            <returns>Room member's name.</returns>
+        </member>
+        <member name="M:SoftGear.Strix.Client.Match.Room.Model.MatchRoomMember.SetName(System.String)">
+            <summary>
+            Sets the name of the match room member.
+            </summary>
+            <param name="name">Room member's name.</param>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,92 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>strix-client-csharp-room</name>
+    </assembly>
+    <members>
+        <member name="T:SoftGear.Strix.Client.Room.Model.IRoom">
+            <summary>
+            Room model interface.
+            </summary>
+        </member>
+        <member name="E:SoftGear.Strix.Client.Room.RoomClient`2.RoomJoinNotified">
+            <summary>
+            Event fired when a new member joins a room you're currently a member of.
+            This event is not invoked for the newly joined member.
+            </summary>
+        </member>
+        <member name="E:SoftGear.Strix.Client.Room.RoomClient`2.RoomLeaveNotified">
+            <summary>
+            Event fired when another room member leaves a room you're currently a member of.
+            This event is not invoked if you are the one leaving.
+            </summary>
+        </member>
+        <member name="E:SoftGear.Strix.Client.Room.RoomClient`2.RoomDeleteNotified">
+            <summary>
+            Event fired when the room you're currently a member of gets deleted.
+            You will receive this event even if you are the one deleting the room, just before <see cref="E:SoftGear.Strix.Client.Room.RoomClient`2.RoomDeleted"/> event.
+            </summary>
+        </member>
+        <member name="E:SoftGear.Strix.Client.Room.RoomClient`2.RoomSetNotified">
+            <summary>
+            Event fired when the room's owner changes its properties.
+            </summary>
+        </member>
+        <member name="E:SoftGear.Strix.Client.Room.RoomClient`2.RoomSetMemberNotified">
+            <summary>
+            Event fired when another room member changes their properties in a room you're currently a member of.
+            You will not receive this event if you are the one changing the properties.
+            </summary>
+        </member>
+        <member name="E:SoftGear.Strix.Client.Room.RoomClient`2.RoomDirectRelayNotified">
+            <summary>
+            Event fired when you or another members sends you a direct relay message.
+            Unlike RPCs, you will not receive this event if you are not the target of the message.
+            </summary>
+            <example><code>
+            StrixNetwork.instance.roomSession.roomClient.RoomDirectRelayNotified += notification =&gt; {
+                var sender = (MatchRoomMember)StrixNetwork.instance.roomMembers[notification.Data.GetFromUid()];
+                Debug.Log(&quot;Player &quot; + sender.GetName() + &quot; sent you a direct message: &quot; + ((RoomDirectRelayMessage)notification.Data.GetMessageToRelay()).GetMessageToRelay());
+            };
+            </code></example>
+        </member>
+        <member name="E:SoftGear.Strix.Client.Room.RoomClient`2.RoomRelayNotified">
+            <summary>
+            Event fired when another room member sends a relay message to a room you're currently a member of.
+            You will not receive this event if you are the one sending the message.
+            </summary>
+            <example><code>
+            StrixNetwork.instance.roomSession.roomClient.RoomRelayNotified += notification =&gt; {
+                var sender = (MatchRoomMember)StrixNetwork.instance.roomMembers[notification.Data.GetFromUid()];
+                Debug.Log(&quot;Player &quot; + sender.GetName() + &quot; sent a message: &quot; + ((RoomRelayMessage)notification.Data.GetMessageToRelay()).GetMessageToRelay());
+            };
+            </code></example>
+        </member>
+        <member name="E:SoftGear.Strix.Client.Room.RoomClient`2.RoomCreated">
+            <summary>
+            Event fired when you create a room.
+            </summary>
+        </member>
+        <member name="E:SoftGear.Strix.Client.Room.RoomClient`2.RoomSet">
+            <summary>
+            Event fired when you change a room's properties.
+            </summary>
+        </member>
+        <member name="E:SoftGear.Strix.Client.Room.RoomClient`2.RoomDeleted">
+            <summary>
+            Event fired when you delete a room.
+            This event is invoked after <see cref="E:SoftGear.Strix.Client.Room.RoomClient`2.RoomDeleteNotified"/>.
+            </summary>
+        </member>
+        <member name="E:SoftGear.Strix.Client.Room.RoomClient`2.RoomJoined">
+            <summary>
+            Event fired when you join a room.
+            </summary>
+        </member>
+        <member name="E:SoftGear.Strix.Client.Room.RoomClient`2.RoomLeft">
+            <summary>
+            Event fired when you leave a room.
+            </summary>
+        </member>
+    </members>
+</doc>

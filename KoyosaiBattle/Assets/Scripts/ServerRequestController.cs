@@ -140,17 +140,16 @@ public class ServerRequestController : MonoBehaviour
         var json = await result.Content.ReadAsStringAsync();
 
         json = "{ \"Users\" : " + json + "}";
-        Debug.Log(json);
         return JsonUtility.FromJson<RankingJson>(json);
     }
     // userのランキングを取得
-    public static async Task<string> UserRanking(int id)
+    public static async Task<RankingAroundJson> GetUserRanking(int id)
     {
         var client = new HttpClient();
         var result = await client.GetAsync($"{GetBASEURL()}users/{id}/ranking");
         var json = await result.Content.ReadAsStringAsync();
 
-        return json;
+        return JsonUtility.FromJson<RankingAroundJson>(json);
     }
 
     // テキストに表示するためのメソッド

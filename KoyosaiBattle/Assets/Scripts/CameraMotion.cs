@@ -28,7 +28,7 @@ public class CameraMotion : MonoBehaviour
     void Update()
     {
         //右スティックで向きを変える
-        float[] Rstick = m_joyconR.GetStick();
+        //float[] Rstick = m_joyconR.GetStick();
         //確認用を外したときに実行させる
         //transform.Rotate(0, Rstick[0] * 3, 0);
     }

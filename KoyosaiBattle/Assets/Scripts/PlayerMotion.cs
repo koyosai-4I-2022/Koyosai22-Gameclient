@@ -77,29 +77,29 @@ public class PlayerMotion : MonoBehaviour
                     {
                         Vector3 vector = new Vector3(0, 0, 1);
                         transform.Translate(vector * Time.deltaTime * 3);
-                        Animator.Play("Run_gunMiddle_AR");
+                        Animator.Play("run1");
                     }
                     //前に歩く
-                    else Animator.Play("WalkFront_Shoot_AR");
+                    else Animator.Play("walk1");
                 }
 
             }
-            //Walk Shoot Back
+            //Walk Back
             if (degree * 180 / Mathf.PI < -140 || degree * 180 / Mathf.PI > 140)
             {
-                Animator.Play("WalkBack_Shoot_AR");
+                Animator.Play("walk2");
             }
 
-            //Walk Shoot Left
+            //Walk Left
             if (degree * 180 / Mathf.PI >= -140 && degree * 180 / Mathf.PI <= -40)
             {
-                Animator.Play("WalkLeft_Shoot_AR");
+                Animator.Play("strafe2");
             }
 
-            //Walk Shoot Right
+            //Walk Right
             if (degree * 180 / Mathf.PI >= 40 && degree * 180 / Mathf.PI <= 140)
             {
-                Animator.Play("WalkRight_Shoot_AR");
+                Animator.Play("strafe1");
             }
 
             //左スティックを倒しているとき

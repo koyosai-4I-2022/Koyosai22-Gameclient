@@ -12,8 +12,9 @@ public class HPGauge : MonoBehaviour
     //SliderのMaxValueと同じにする
      public int maxHp = 100;
 
-    float time = 0;
-
+    //時間経過を表す変数
+    private float timer;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -31,6 +32,13 @@ public class HPGauge : MonoBehaviour
             Damage(10);
         }
 
+        //1秒で1ずつHPが減る
+        timer += Time.deltaTime;
+        if (timer >= 1)
+        {
+            Damage(1);
+            timer = 0;
+        }
     }
 
     //被ダメージ関数

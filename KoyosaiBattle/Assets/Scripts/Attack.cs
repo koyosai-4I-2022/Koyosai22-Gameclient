@@ -16,7 +16,7 @@ public class Attack : MonoBehaviour
     //Animator‚Ì•Ï”
     public Animator animator;
     public int para = 0;
-    private Vector3 v1 = new Vector3(0.9f, 0.9f, 0.9f);
+    private Vector3 v1 = new Vector3(0.9f, 0.5f, 0.9f);
     private Vector3 accel, accelBefore;
     bool slashBool = false;
 
@@ -49,15 +49,18 @@ public class Attack : MonoBehaviour
 
         if (tmpTime >= interval)
         {
+            tmpTime = 0f;
 
             foreach (var joycon in m_joycons)
             {
                 accel = joycon.GetAccel();
             }
 
+            var m = accel.sqrMagnitude;
+            if(m > 2f) Debug.Log($"{accel}:{m}");
             accelBefore = accel;
 
-            if (accel.x >= v1.x || accel.y >= v1.y)// || accel.z >= v1.z)
+            if (m > 2f)// || accel.z >= v1.z)
             {
                 /*if (para <= 5)
                 {
@@ -66,15 +69,16 @@ public class Attack : MonoBehaviour
                 }*/
                 if (slashBool == false)
                 {
-                    slashBool = true;
+                    slashBool = !slashBool;
                 }
                 else
                 {
-                    slashBool = false;
+                    slashBool = !slashBool;
                 }
+                m_joyconR.SetRumble(160, 320, 0.6f, 200);
                 animator.SetBool("slash2", slashBool);
 
-                slashBool = false;
+                
             }
             if (para > 4)
             {

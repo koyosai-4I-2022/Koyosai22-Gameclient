@@ -32,9 +32,15 @@ public class UIController : MonoBehaviour
 
     // 待機選択画面で使用するテキストと画像
     [SerializeField]
-    Text[] InputSelectingText;
+    Text[] InputSelectingReady;
+    [SerializeField]
+    Text[] InputSelectRankingName;
+    [SerializeField]
+    Text[] InputSelectRankingScore;
     [SerializeField]
     Image[] InputSelectingImage;
+    [SerializeField]
+    InputField[] InputSelectingInputName;
 
     // ロード画面で使用するテキストと画像
     [SerializeField]
@@ -67,9 +73,11 @@ public class UIController : MonoBehaviour
     bool[] stateInit;
     bool finishFrag = false;
 
+    bool[] selectIsReady;
+
     void Start()
     {
-        state = PlayState.Resulting;
+        state = PlayState.InputSelecting;
         InitUI();
     }
 
@@ -147,7 +155,11 @@ public class UIController : MonoBehaviour
     {
         // 初期設定したのでtrue
         stateInit[0] = true;
-	}
+
+        // リザルトパネルを表示それ以外を非表示
+        SetPanelActives();
+
+    }
 
     // 待機画面の描画更新
     void UpdateInputSelectingUI()
@@ -155,11 +167,24 @@ public class UIController : MonoBehaviour
 
 	}
     // 待機画面の初期設定
-    void InitInputSelectingUI()
+    async void InitInputSelectingUI()
     {
         // 初期設定したのでtrue
         stateInit[1] = true;
-	}
+        selectIsReady = new bool[2];
+
+        // リザルトパネルを表示それ以外を非表示
+        SetPanelActives();
+
+        // ランキングを取得
+        var result = await ServerRequestController.GetRanking();
+
+        for(int i = 0; i < 3;i++)
+		{
+            InputSelectRankingName[i].text = $"{result.Users[i].name}";
+            InputSelectRankingScore[i].text = $"{result.Users[i].rate}";
+		}
+    }
 
     // ロード画面の描画更新
     void UpdateRoadingUI()
@@ -172,7 +197,9 @@ public class UIController : MonoBehaviour
         // 初期設定したのでtrue
         stateInit[2] = true;
 
-	}
+        // リザルトパネルを表示それ以外を非表示
+        SetPanelActives();
+    }
 
     // リザルトの描画更新
     void UpdateResultingUI()
@@ -186,7 +213,7 @@ public class UIController : MonoBehaviour
         stateInit[3] = true;
 
         // リザルトパネルを表示それ以外を非表示
-        SetPanelActives(PlayState.Ranking);
+        SetPanelActives();
 
         // 
         foreach(var dic in PlayerData.DictionaryID)
@@ -210,7 +237,7 @@ public class UIController : MonoBehaviour
         stateInit[4] = true;
 
         // ランキングパネルを表示それ以外を非表示
-        SetPanelActives(PlayState.Ranking);
+        SetPanelActives();
         
         // ランキング上位から取得
         var result = await ServerRequestController.GetRanking();
@@ -222,7 +249,7 @@ public class UIController : MonoBehaviour
             RankingScore[i].text = result.Users[i].rate.ToString();
 		}
         // ユーザ周辺のランキングを表示
-        var result2 = await ServerRequestController.GetUserRanking(PlayerData.UserId);
+        var result2 = await ServerRequestController.GetUserRanking(PlayerData.PlayerId);
 
         // 自分より上の順位の人の数
         int higherCount = result2.higher_around_rank_users.Length;
@@ -251,13 +278,13 @@ public class UIController : MonoBehaviour
         RankingAroundScore[2].text = result2.self.rate.ToString();
     }
 
-    void SetPanelActives(PlayState playState)
+    void SetPanelActives()
 	{
-        playingPanel.SetActive(state == playState);
-        inputSelectingPanel.SetActive(state == playState);
-        RoadingPanel.SetActive(state == playState);
-        rankingPanel.SetActive(state == playState);
-        resultingPanel.SetActive(state == playState);
+        playingPanel.SetActive(state == PlayState.Playing);
+        inputSelectingPanel.SetActive(state == PlayState.InputSelecting);
+        RoadingPanel.SetActive(state == PlayState.Roading);
+        rankingPanel.SetActive(state == PlayState.Ranking);
+        resultingPanel.SetActive(state == PlayState.Resulting);
     }
 
     // 現在の状態を表す列挙型

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerData : MonoBehaviour
 {
-    public static int UserId { get; private set; }
+    public static int PlayerId { get; private set; }
 
     public static Dictionary<string, int> DictionaryID { get; private set; }
 
@@ -31,5 +31,5 @@ public class PlayerData : MonoBehaviour
 	{
         DictionaryID.Add(name, id);
 	}
-    protected static void SetUserId(int id) => UserId = id;
+    protected static void SetUserId(int id) => PlayerId = id;
 }

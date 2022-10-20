@@ -1,12 +1,22 @@
+using SoftGear.Strix.Unity.Runtime;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class PlayerData : MonoBehaviour
+public class PlayerData : StrixBehaviour
 {
-    public static int PlayerId { get; private set; }
+    [StrixSyncField]
+    public static int PlayerId;
 
-    public static Dictionary<string, int> DictionaryID { get; private set; }
+    [StrixSyncField]
+    public static Dictionary<string, int> DictionaryID;
+
+    [StrixSyncField]
+    public static string[] Names;
+
+    [StrixSyncField]
+    public int N = 1;
 
     void Start()
     {
@@ -25,6 +35,7 @@ public class PlayerData : MonoBehaviour
 			{ "001", 1 },
 			{ "002", 3 }
 		};
+        Names = new string[2];
 	}
 
     protected static void SetDictionaryID(string name, int id)

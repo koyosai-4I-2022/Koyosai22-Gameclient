@@ -6,8 +6,18 @@ using UnityEngine.UI;
 public class UIController : MonoBehaviour
 {
     // 現在の状態
+    // 0 ゲーム中
+    // 1 中断中
+    // 2 ロード中
+    // 3 待機画面
+    // 4 リザルト
+    // 5 ランキング
+    // 6 接続
     PlayState state;
 
+    // 接続確認用パネル
+    [SerializeField]
+    GameObject connectionPanel;
     // ゲーム中のパネル
     [SerializeField]
     GameObject playingPanel;
@@ -77,7 +87,7 @@ public class UIController : MonoBehaviour
 
     void Start()
     {
-        state = PlayState.InputSelecting;
+        state = PlayState.Connection;
         InitUI();
     }
 
@@ -135,6 +145,9 @@ public class UIController : MonoBehaviour
                 UpdateRankingUI();
                 
                 break;
+            // 接続処理
+            case PlayState.Connection:
+                break;
             default:
                 break;
         }
@@ -164,7 +177,17 @@ public class UIController : MonoBehaviour
     // 待機画面の描画更新
     void UpdateInputSelectingUI()
 	{
+        string playerName1 = InputSelectingInputName[0].text;
+        string playerName2 = InputSelectingInputName[1].text;
 
+        if(!selectIsReady[0] && playerName1 != string.Empty)
+		{
+            selectIsReady[0] = true;
+		}
+        if(!selectIsReady[1] && playerName2 != string.Empty)
+		{
+            selectIsReady[1] = true;
+		}
 	}
     // 待機画面の初期設定
     async void InitInputSelectingUI()
@@ -294,6 +317,7 @@ public class UIController : MonoBehaviour
     // 3 待機画面
     // 4 リザルト
     // 5 ランキング
+    // 6 接続
     public enum PlayState
 	{
         Playing = 0,
@@ -301,6 +325,7 @@ public class UIController : MonoBehaviour
         Roading = 2,
         InputSelecting = 3,
         Resulting = 4,
-        Ranking = 5
+        Ranking = 5,
+        Connection = 6
 	}
 }

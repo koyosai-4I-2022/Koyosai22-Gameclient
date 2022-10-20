@@ -70,36 +70,61 @@ public class PlayerMotion : MonoBehaviour
             if (Lstick[0] != 0 || Lstick[1] != 0)//スティックを倒しているとき
             {
                 //前方への移動
-                if (degree * 180 / Mathf.PI > -40 && degree * 180 / Mathf.PI < 40)
+                if (degree * 180 / Mathf.PI > -15 && degree * 180 / Mathf.PI < 15)
                 {
                     //前に走る(ZRボタンを押している場合)
                     if (m_joyconL.GetButton(m_buttons[12]))
                     {
                         Vector3 vector = new Vector3(0, 0, 1);
                         transform.Translate(vector * Time.deltaTime * 3);
-                        Animator.Play("Run_gunMiddle_AR");
+                        Animator.Play("run1");
                     }
                     //前に歩く
-                    else Animator.Play("WalkFront_Shoot_AR");
+                    else Animator.Play("walk1");
                 }
 
             }
-            //Walk Shoot Back
-            if (degree * 180 / Mathf.PI < -140 || degree * 180 / Mathf.PI > 140)
+            
+            //斜め左前
+            if (degree * 180 / Mathf.PI <= -15 && degree * 180 / Mathf.PI >= -75)
             {
-                Animator.Play("WalkBack_Shoot_AR");
+                Animator.Play("Jog Forward Diagonal");
             }
 
-            //Walk Shoot Left
-            if (degree * 180 / Mathf.PI >= -140 && degree * 180 / Mathf.PI <= -40)
+            //Walk Left
+            if (degree * 180 / Mathf.PI < -75 && degree * 180 / Mathf.PI > -105)
             {
-                Animator.Play("WalkLeft_Shoot_AR");
+                Animator.Play("strafe2");
             }
 
-            //Walk Shoot Right
-            if (degree * 180 / Mathf.PI >= 40 && degree * 180 / Mathf.PI <= 140)
+            //斜め左後
+            if (degree * 180 / Mathf.PI <= -105 && degree * 180 / Mathf.PI >= -165)
             {
-                Animator.Play("WalkRight_Shoot_AR");
+                Animator.Play("Jog Backward Diagonal");
+            }
+            
+            //Walk Back
+            if (degree * 180 / Mathf.PI < -165 || degree * 180 / Mathf.PI > 165)
+            {
+                Animator.Play("walk2");
+            }
+
+            //斜め右後
+            if (degree * 180 / Mathf.PI >= 105 && degree * 180 / Mathf.PI <= 165)
+            {
+                Animator.Play("Jog Backward Diagonal (1)");
+            }
+
+            //Walk Right
+            if (degree * 180 / Mathf.PI > 75 && degree * 180 / Mathf.PI < 105)
+            {
+                Animator.Play("strafe1");
+            }
+
+            //斜め右前
+            if (degree * 180 / Mathf.PI >= 15 && degree * 180 / Mathf.PI <= 75)
+            {
+                Animator.Play("Jog Forward Diagonal (1)");
             }
 
             //左スティックを倒しているとき

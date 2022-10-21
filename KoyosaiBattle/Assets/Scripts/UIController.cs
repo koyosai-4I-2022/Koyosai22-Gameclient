@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class UIController : MonoBehaviour
 {
@@ -13,7 +14,8 @@ public class UIController : MonoBehaviour
     // 4 リザルト
     // 5 ランキング
     // 6 接続
-    PlayState state;
+    [NonSerialized]
+    public PlayState state;
 
     // 接続確認用パネル
     [SerializeField]
@@ -33,6 +35,9 @@ public class UIController : MonoBehaviour
     // ランキング表示用のパネル
     [SerializeField]
     GameObject rankingPanel;
+
+    [SerializeField]
+    PlayerData playerData;
 
     // ゲーム画面で使用するテキストと画像
     [SerializeField]
@@ -84,6 +89,7 @@ public class UIController : MonoBehaviour
     bool finishFrag = false;
 
     bool[] selectIsReady;
+    bool[] selectIsSendName;
 
     void Start()
     {
@@ -147,6 +153,9 @@ public class UIController : MonoBehaviour
                 break;
             // 接続処理
             case PlayState.Connection:
+                if(!stateInit[5])
+                    InitConnectionUI();
+                UpdateConnectionUI();
                 break;
             default:
                 break;
@@ -155,7 +164,7 @@ public class UIController : MonoBehaviour
     // UIの初期設定
     void InitUI()
 	{
-        stateInit = new bool[5];
+        stateInit = new bool[6];
 	}
 
     // ゲーム中の描画更新
@@ -175,7 +184,7 @@ public class UIController : MonoBehaviour
     }
 
     // 待機画面の描画更新
-    void UpdateInputSelectingUI()
+    async void UpdateInputSelectingUI()
 	{
         string playerName1 = InputSelectingInputName[0].text;
         string playerName2 = InputSelectingInputName[1].text;
@@ -188,6 +197,24 @@ public class UIController : MonoBehaviour
 		{
             selectIsReady[1] = true;
 		}
+
+        if(selectIsReady[0])
+        {
+            InputSelectingReady[0].color = new Color(1f,  0.9f, 0);
+        }
+        if(selectIsReady[1])
+        {
+            InputSelectingReady[1].color = new Color(1f, 0.9f, 0);
+        }
+
+        if(selectIsReady[0] && selectIsReady[1])
+        {
+            state = PlayState.Resulting;
+
+            var result = await ServerRequestController.PostUser(playerName1);
+            Debug.Log(result);
+            //playerData.SetDictionaryID()
+		}
 	}
     // 待機画面の初期設定
     async void InitInputSelectingUI()
@@ -195,6 +222,7 @@ public class UIController : MonoBehaviour
         // 初期設定したのでtrue
         stateInit[1] = true;
         selectIsReady = new bool[2];
+        selectIsSendName = new bool[2];
 
         // リザルトパネルを表示それ以外を非表示
         SetPanelActives();
@@ -244,7 +272,6 @@ public class UIController : MonoBehaviour
             var result = await ServerRequestController.GetScore(dic.Value);
         }
     }
-
     // ランキング画面の描画更新
     void UpdateRankingUI()
 	{
@@ -300,6 +327,17 @@ public class UIController : MonoBehaviour
         RankingAroundName[2].text = result2.self.name;
         RankingAroundScore[2].text = result2.self.rate.ToString();
     }
+    void UpdateConnectionUI()
+	{
+
+	}
+    void InitConnectionUI()
+    {
+        stateInit[5] = true;
+
+        SetPanelActives();
+    }
+
 
     void SetPanelActives()
 	{
@@ -308,6 +346,7 @@ public class UIController : MonoBehaviour
         RoadingPanel.SetActive(state == PlayState.Roading);
         rankingPanel.SetActive(state == PlayState.Ranking);
         resultingPanel.SetActive(state == PlayState.Resulting);
+        connectionPanel.SetActive(state == PlayState.Connection);
     }
 
     // 現在の状態を表す列挙型

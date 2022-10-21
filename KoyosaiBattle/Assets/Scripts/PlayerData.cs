@@ -22,6 +22,7 @@ public class PlayerData : StrixBehaviour
     {
         SetUserId(10);
         Init();
+        Debug.Log($"{name}:{isLocal}");
     }
 
     void Update()
@@ -30,17 +31,12 @@ public class PlayerData : StrixBehaviour
     }
     void Init()
 	{
-		DictionaryID = new Dictionary<string, int>
-		{
-			{ "001", 1 },
-			{ "002", 3 }
-		};
-        Names = new string[2];
+        DictionaryID = new Dictionary<string, int>();
 	}
 
-    protected static void SetDictionaryID(string name, int id)
+    public static void SetDictionaryID(string name, int id)
 	{
         DictionaryID.Add(name, id);
 	}
-    protected static void SetUserId(int id) => PlayerId = id;
+    public static void SetUserId(int id) => PlayerId = id;
 }

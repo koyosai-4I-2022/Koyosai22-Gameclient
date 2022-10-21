@@ -56,7 +56,7 @@ public class ServerRequestController : MonoBehaviour
         return json;
     }
     // 引数の名前のユーザを登録する
-    public static async Task<string> PostUser(string name)
+    public static async Task<PostUserJson> PostUser(string name)
 	{
         string jsonStr = $"{{ \"name\" : \"{name}\" }}";
 
@@ -67,10 +67,9 @@ public class ServerRequestController : MonoBehaviour
         var result = await client.PostAsync($"{GetBASEURL()}users", content);
         var json = await result.Content.ReadAsStringAsync();
 
-        var j = JsonUtility.FromJson<PostUserJson>(json);
-		SetID(j.id);
+        var postJson = JsonUtility.FromJson<PostUserJson>(json);
         
-        return json;
+        return postJson;
     }
     // 引数で指定したIDのユーザの名前を書き換える
     // IDを省略で現在のIDを使う

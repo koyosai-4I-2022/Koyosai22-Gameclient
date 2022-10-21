@@ -50,6 +50,9 @@ public class ConnectionController : MonoBehaviour
     [SerializeField]
     GameObject panel;
 
+    [SerializeField]
+    PlayerData playerData;
+
     // 
     [SerializeField]
     UIController uiController;
@@ -70,7 +73,11 @@ public class ConnectionController : MonoBehaviour
 
     void Update()
     {
+        if(Input.GetKeyDown(KeyCode.K))
+        {
+            playerData.gameObject.name = "PC" + PCID.text;
 
+        }
     }
     // Connectionボタンのクリックイベント
     public void ConnectClick()
@@ -168,7 +175,7 @@ public class ConnectionController : MonoBehaviour
                 //    + "\nRoom String Key:" + room.GetStringKey()
                 //    + "\nRoom Menber Count:" + room.GetMemberCount()
                 //    + "\nRoom member name:" + roomMember.GetName());
-                /*panel.SetActive(false);*/
+                SceneChange();
             },
             e => //Faild
             {
@@ -215,7 +222,7 @@ public class ConnectionController : MonoBehaviour
                          protocol: room.protocol,
                          roomId: room.roomId,
                          playerName: num,
-                         handler: __ => { Log("Room joined."); /*panel.SetActive(false);*/   },
+                         handler: __ => { Log("Room joined."); SceneChange();  },
                          failureHandler: joinError => Log("Join failed.Reason: " + joinError.cause)
                     );
                 }
@@ -246,6 +253,11 @@ public class ConnectionController : MonoBehaviour
         {
             strixNetwork.LeaveRoom(_ => { Debug.Log("Sucess Leave Room"); strixNetwork.DisconnectMasterServer(); strixNetwork.Destroy(); }, _ => { });
         }
+    }
+    // 接続画面から入力画面への遷移
+    void SceneChange()
+	{
+        uiController.state = UIController.PlayState.InputSelecting;
     }
 	// テキストに表示するためのメソッド
 	void Log(string msg)

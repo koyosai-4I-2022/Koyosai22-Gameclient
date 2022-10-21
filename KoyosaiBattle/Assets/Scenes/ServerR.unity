@@ -2754,7 +2754,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &867611890
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3924,7 +3924,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   N: 1
-  t: {fileID: 0}
 --- !u!114 &1246475910
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5293,7 +5292,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1540218511
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5378,6 +5377,7 @@ MonoBehaviour:
   ConnectionID: {fileID: 1294924466}
   PCID: {fileID: 347474331}
   panel: {fileID: 1540218510}
+  playerData: {fileID: 1246475909}
   uiController: {fileID: 1875782753}
 --- !u!1 &1573566348
 GameObject:
@@ -6216,12 +6216,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57fe6a0d9dbe62b43be476f19c8e03dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  connectionPanel: {fileID: 0}
+  connectionPanel: {fileID: 1540218510}
   playingPanel: {fileID: 511574980}
   inputSelectingPanel: {fileID: 867611889}
   RoadingPanel: {fileID: 1479046794}
   resultingPanel: {fileID: 984684721}
   rankingPanel: {fileID: 2093528901}
+  playerData: {fileID: 1246475909}
   PlayingText: []
   PlayingImage: []
   InputSelectingReady:

@@ -47,7 +47,7 @@ public class UIController : MonoBehaviour
 
     // 待機選択画面で使用するテキストと画像
     [SerializeField]
-    Text[] InputSelectingReady;
+    Image[] InputSelectingReady;
     [SerializeField]
     Text[] InputSelectRankingName;
     [SerializeField]
@@ -92,6 +92,8 @@ public class UIController : MonoBehaviour
     bool selectIsSendName;
     bool selectIsReceive;
 
+    bool isJoyconButtom;
+    
     int ConflictId;
     string ConflictName;
 
@@ -99,6 +101,14 @@ public class UIController : MonoBehaviour
     PlayerData playerData;
     [NonSerialized]
     public PlayerData playerDataClone;
+
+    //JoyconLibの変数
+    private static readonly Joycon.Button[] m_buttons =
+       Enum.GetValues(typeof(Joycon.Button)) as Joycon.Button[];
+
+    private List<Joycon> m_joycons;
+    private Joycon m_joyconL;
+    private Joycon m_joyconR;
 
     void Start()
     {
@@ -166,7 +176,15 @@ public class UIController : MonoBehaviour
         stateInit = new bool[6];
 
         instance = this;
-	}
+
+        m_joycons = JoyconManager.Instance.j;
+        if(m_joycons == null || m_joycons.Count <= 0)
+            return;
+        m_joyconL = m_joycons.Find(c => c.isLeft);
+        m_joyconR = m_joycons.Find(c => !c.isLeft);
+
+        isJoyconButtom = true;
+    }
 
     // ゲーム中の描画更新
     void UpdatePlayingUI()
@@ -179,9 +197,8 @@ public class UIController : MonoBehaviour
         // 初期設定したのでtrue
         stateInit[0] = true;
 
-        // リザルトパネルを表示それ以外を非表示
+        // プレイパネルを表示それ以外を非表示
         SetPanelActives();
-
     }
 
     // 待機画面の描画更新
@@ -281,11 +298,18 @@ public class UIController : MonoBehaviour
     // リザルトの描画更新
     void UpdateResultingUI()
     {
-
+        // Aボタンを押したときにRankingに遷移
+        if(isJoyconButtom && m_joyconR.GetButtonDown(m_buttons[1]))
+		{
+            state = PlayState.Ranking;
+            isJoyconButtom = false;
+            Invoke(nameof(InvokeTransOffset), 4f);
+		}
     }
     // リザルト画面の初期設定
     async void InitResultingUI()
     {
+        // デバッグ用データ
         playerData.SetUser("TestHida09", 29);
         playerData.Score = 200;
         playerDataClone = new PlayerData()
@@ -294,6 +318,7 @@ public class UIController : MonoBehaviour
             PlayerId = 30,
             Score = 300,
         };
+
         // 初期設定したのでtrue
         stateInit[3] = true;
 
@@ -306,18 +331,46 @@ public class UIController : MonoBehaviour
 
         ResultingName[1].text = playerDataClone.Name;
         ResultingScore[1].text = playerDataClone.Score.ToString();
-
+        
         // スコアをサーバへ送信
         var result = await ServerRequestController.PostScore(playerData.Score, playerData.PlayerId);
-
     }
     // ランキング画面の描画更新
     void UpdateRankingUI()
 	{
-        if(finishFrag)
+        // Aボタンでセレクト画面に遷移,リザルト画面を表示している時はランキングに戻す
+        // isJoyconButtomで連続で遷移するのを防ぐ
+        if(isJoyconButtom && m_joyconR.GetButtonDown(m_buttons[1]))
+        {
+            // stateInit[3]を使ってリザルト表示中はセレクトに遷移しないようにする
+            if(stateInit[3])
+            {
+                state = PlayState.InputSelecting;
+            }
+            else
+            {
+                // ランキングを表示、リザルトを非表示
+                resultingPanel.SetActive(false);
+                rankingPanel.SetActive(true);
+
+                stateInit[3] = true;
+                isJoyconButtom = false;
+                // 4秒後にisJoyconButtomをtrueにしてボタンが反応するようにする
+                Invoke(nameof(InvokeTransOffset), 4f);
+            }
+        }
+        // Bボタンでリザルト画面に逆遷移
+        if(isJoyconButtom && m_joyconR.GetButtonDown(m_buttons[0]))
 		{
-            state = PlayState.Roading;
-		}
+            //
+            resultingPanel.SetActive(true);
+            rankingPanel.SetActive(false);
+
+            // 4秒後にisJoyconButtomをtrueにしてボタンが反応するようにする
+            stateInit[3] = false;
+            isJoyconButtom = false;
+            Invoke(nameof(InvokeTransOffset), 4f);
+        }
 	}
     // ランキング画面の初期設定
     async void InitRankingUI()
@@ -376,7 +429,7 @@ public class UIController : MonoBehaviour
 
         SetPanelActives();
     }
-
+    void InvokeTransOffset() => isJoyconButtom = true;
 
     void SetPanelActives()
 	{

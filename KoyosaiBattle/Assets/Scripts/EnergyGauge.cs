@@ -3,20 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HPGauge : MonoBehaviour
+public class EnergyGauge : MonoBehaviour
 {
     //SerializeFieldでInspectorからSliderを操作
     [SerializeField]
-    Slider slider;
+    Slider energy;
 
     //SliderのMaxValueと同じにする
-     public int maxHp = 100;
+    public int maxEnergy = 200;
 
     //時間経過を表す変数
     private float timer;
 
+    //1秒間のエネルギー損失度
+    public int LossPerSec;
+
     //関数の参照
-    public static HPGauge instance;
+    public static EnergyGauge instance;
     public void Awake()
     {
         if (instance == null)
@@ -29,26 +32,29 @@ public class HPGauge : MonoBehaviour
     void Start()
     {
         //SliderのValueを初期化
-        slider.value = maxHp;
-        
+        energy.value = maxEnergy;
+
+        LossPerSec = 1;
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        //1秒で1ずつHPが減る
+        //Energyが減る部分
         timer += Time.deltaTime;
-        if (timer >= 1)
+        if (timer * LossPerSec >= 1)
         {
-            Damage(1);
+            energy.value -= 1;
             timer = 0;
         }
     }
 
-    //被ダメージ関数
-    public void Damage(int damage)
+    public void EnergyLossPerSec (int i)
     {
-        if(slider.value > 0)
-            slider.value -= damage;
+        if (energy.value > 0)
+        {
+            LossPerSec = i;
+        }
     }
 }

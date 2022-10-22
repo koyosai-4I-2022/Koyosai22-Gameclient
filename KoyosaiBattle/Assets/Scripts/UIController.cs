@@ -213,7 +213,7 @@ public class UIController : MonoBehaviour
 
             var result = await ServerRequestController.PostUser(playerName1);
             Debug.Log(result);
-            //playerData.SetDictionaryID()
+            playerData.SetDictionaryID(result.name, result.id);
 		}
 	}
     // ‘Ò‹@‰æ–Ê‚Ì‰Šúİ’è

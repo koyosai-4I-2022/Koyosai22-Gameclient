@@ -112,7 +112,7 @@ public class UIController : MonoBehaviour
 
     void Start()
     {
-        state = PlayState.Resulting;
+        state = PlayState.Connection;
         InitUI();
     }
 
@@ -173,10 +173,12 @@ public class UIController : MonoBehaviour
     // UIの初期設定
     void InitUI()
 	{
+        // 各処理の初期設定用の真偽型
         stateInit = new bool[6];
-
+        // データを共有するためにインスタンスを生成
         instance = this;
 
+        // joyconの設定
         m_joycons = JoyconManager.Instance.j;
         if(m_joycons == null || m_joycons.Count <= 0)
             return;
@@ -223,15 +225,20 @@ public class UIController : MonoBehaviour
             // POSTを複数回連続で行わないようにtrue
             selectIsSendName = true;
 
+            // Readyを黄色にする
             InputSelectingReady[0].color = new Color(1f,  0.9f, 0);
 
+            // POST
             var result = await ServerRequestController.PostUser(playerName1);
 
+            // すでに登録されている名前だった場合に再度入力をしてもらう
             if(result.id == -1)
             {
                 // すでに登録された名前だった場合にもう一度入力する
                 selectIsSendName = false;
                 InputSelectingInputName[0].text = string.Empty;
+                selectIsReady[0] = false;
+                selectIsReady[1] = false;
                 return;
             }
 
@@ -241,15 +248,19 @@ public class UIController : MonoBehaviour
             selectIsReceive = true;
         }
         // 相手の名前を取得を確認
-        if(selectIsReceive)
+        if(selectIsReceive) // 自分のデータをPOST済み
 		{
-            if(playerDataClone != null)
+            if(playerDataClone != null) // 接続が完了して同期出来ている
             {
-                if(playerData.PlayerId != -1 && playerData.Name != string.Empty)
-                {
-                    if(playerDataClone.PlayerId != -1 && playerDataClone.Name != string.Empty)
-                    {
+                if(playerData.PlayerId != -1 && playerData.Name != string.Empty) // NameとIDが登録されている
+                { // 
+                    if(playerDataClone.PlayerId != -1 && playerDataClone.Name != string.Empty) 
+                    { // 同期されたNameとIDが登録されている
+
+                        // ゲーム画面への遷移
+                        // 本来はInputSelecting->Roading->Playingの順に遷移
                         state = PlayState.Resulting;
+                        //state = PlayState.Roading;
                     }
                 }
             }
@@ -303,22 +314,12 @@ public class UIController : MonoBehaviour
 		{
             state = PlayState.Ranking;
             isJoyconButtom = false;
-            Invoke(nameof(InvokeTransOffset), 4f);
+            Invoke(nameof(InvokeTransOffset), 4f); // 4秒後にisJoyconButtonをtrueにしてボタンに反応するように
 		}
     }
     // リザルト画面の初期設定
     async void InitResultingUI()
     {
-        // デバッグ用データ
-        playerData.SetUser("TestHida09", 29);
-        playerData.Score = 200;
-        playerDataClone = new PlayerData()
-        {
-            Name = "TestHida10",
-            PlayerId = 30,
-            Score = 300,
-        };
-
         // 初期設定したのでtrue
         stateInit[3] = true;
 
@@ -345,6 +346,8 @@ public class UIController : MonoBehaviour
             // stateInit[3]を使ってリザルト表示中はセレクトに遷移しないようにする
             if(stateInit[3])
             {
+                // セレクト画面に遷移
+                // ローディング画面挟む？
                 state = PlayState.InputSelecting;
             }
             else
@@ -427,8 +430,10 @@ public class UIController : MonoBehaviour
     {
         stateInit[5] = true;
 
+        // 接続画面以外を非表示
         SetPanelActives();
     }
+    // 時間差の実行用
     void InvokeTransOffset() => isJoyconButtom = true;
 
     void SetPanelActives()

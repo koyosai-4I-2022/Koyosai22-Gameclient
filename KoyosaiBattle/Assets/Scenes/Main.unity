@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.12731703, g: 0.13414727, b: 0.121078506, a: 1}
+  m_IndirectSpecularColor: {r: 0.12731704, g: 0.13414727, b: 0.121078536, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -621,6 +621,7 @@ GameObject:
   - component: {fileID: 592770670}
   - component: {fileID: 592770669}
   - component: {fileID: 592770674}
+  - component: {fileID: 592770673}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -636,7 +637,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 592770668}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
@@ -705,6 +706,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &592770673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 592770668}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5429d289e449e1142a43a5c07b7b4b87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  particle: {fileID: 5258520932066381814, guid: fb1bfe99cb1e10a4b8a44b7ae996dccc, type: 3}
 --- !u!54 &592770674
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1256,7 +1270,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c06b85bf646c91428448ccf26da0af3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvas: {fileID: 0}
   player: {fileID: 0}
 --- !u!1 &1345539642
 GameObject:
@@ -2087,7 +2100,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3205445161699692125}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1.2, y: 0.868702, z: 8.537753}
@@ -2205,6 +2218,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5429d289e449e1142a43a5c07b7b4b87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  particle: {fileID: 0}
 --- !u!1 &2238136694532445197
 GameObject:
   m_ObjectHideFlags: 0
@@ -2264,6 +2278,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5429d289e449e1142a43a5c07b7b4b87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  particle: {fileID: 0}
 --- !u!1 &2556227126810573667
 GameObject:
   m_ObjectHideFlags: 0
@@ -2386,7 +2401,7 @@ GameObject:
   - component: {fileID: 6117264153486476986}
   m_Layer: 0
   m_Name: swordcolor002
-  m_TagString: Untagged
+  m_TagString: swordcolor002
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2516,6 +2531,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5429d289e449e1142a43a5c07b7b4b87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  particle: {fileID: 0}
 --- !u!1 &3598553534106054014
 GameObject:
   m_ObjectHideFlags: 0
@@ -2690,6 +2706,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5429d289e449e1142a43a5c07b7b4b87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  particle: {fileID: 0}
 --- !u!1 &4086853329950236590
 GameObject:
   m_ObjectHideFlags: 0
@@ -3177,6 +3194,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5429d289e449e1142a43a5c07b7b4b87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  particle: {fileID: 0}
 --- !u!4 &7555881580741310399
 Transform:
   m_ObjectHideFlags: 0

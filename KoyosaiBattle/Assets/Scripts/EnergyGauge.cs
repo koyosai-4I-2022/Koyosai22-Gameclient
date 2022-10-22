@@ -41,21 +41,6 @@ public class EnergyGauge : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.Space))
-        {
-            EnergyLossPerSec(10);
-        }
-
-        if (Input.GetKeyUp(KeyCode.Space))
-            EnergyLossPerSec(1);
-
-        /*
-        if (PlayerMotion.instance.run)
-        {
-            EnergyLossPerSec(5);
-        }
-        */
-
         //Energy‚ªŒ¸‚é•”•ª
         timer += Time.deltaTime;
         if (timer * LossPerSec >= 1)

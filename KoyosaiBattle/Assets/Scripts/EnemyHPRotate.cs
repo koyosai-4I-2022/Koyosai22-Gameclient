@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class EnemyHPRotate : MonoBehaviour
 {
-    public Canvas canvas;
     public GameObject player;
 
     // Start is called before the first frame update

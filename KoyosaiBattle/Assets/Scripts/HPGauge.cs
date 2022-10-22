@@ -36,12 +36,6 @@ public class HPGauge : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Space‚ð‰Ÿ‚µ‚½‚çƒ_ƒ[ƒW‚ðŽó‚¯‚ÄHP‚ªŒ¸‚é
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Damage(10);
-        }
-
         //1•b‚Å1‚¸‚ÂHP‚ªŒ¸‚é
         timer += Time.deltaTime;
         if (timer >= 1)

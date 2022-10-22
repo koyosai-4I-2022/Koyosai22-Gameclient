@@ -14,7 +14,17 @@ public class HPGauge : MonoBehaviour
 
     //時間経過を表す変数
     private float timer;
-    
+
+    //関数の参照
+    public static HPGauge instance;
+    public void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -42,7 +52,7 @@ public class HPGauge : MonoBehaviour
     }
 
     //被ダメージ関数
-    void Damage(int damage)
+    public void Damage(int damage)
     {
         if(slider.value > 0)
             slider.value -= damage;

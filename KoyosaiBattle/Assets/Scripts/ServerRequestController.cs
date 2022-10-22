@@ -47,13 +47,18 @@ public class ServerRequestController : MonoBehaviour
         return json;
     }
     // 引数のIDのユーザを取得
-    public static async Task<string> GetUser(int id)
+    public static async Task<PostUserJson> GetUser(int id)
     {
         var client = new HttpClient();
         var result = await client.GetAsync($"{GetBASEURL()}users/{id}");
         var json = await result.Content.ReadAsStringAsync();
+
+        if(json == "null")
+		{
+            return null;
+		}
         
-        return json;
+        return JsonUtility.FromJson<PostUserJson>(json);
     }
     // 引数の名前のユーザを登録する
     public static async Task<PostUserJson> PostUser(string name)
@@ -67,8 +72,17 @@ public class ServerRequestController : MonoBehaviour
         var result = await client.PostAsync($"{GetBASEURL()}users", content);
         var json = await result.Content.ReadAsStringAsync();
 
+        if(json == "{\"detail\":\"User conflict\"}")
+		{
+            return new PostUserJson()
+			{
+                id = -1,
+                name = ""
+			};
+        }
+
         var postJson = JsonUtility.FromJson<PostUserJson>(json);
-        
+
         return postJson;
     }
     // 引数で指定したIDのユーザの名前を書き換える

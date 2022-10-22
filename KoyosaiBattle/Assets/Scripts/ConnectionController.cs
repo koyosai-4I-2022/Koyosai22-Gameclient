@@ -258,6 +258,7 @@ public class ConnectionController : MonoBehaviour
     void SceneChange()
 	{
         uiController.state = UIController.PlayState.InputSelecting;
+        StrixNetwork.instance.selfRoomMember.SetPrimaryKey(-1);
     }
 	// テキストに表示するためのメソッド
 	void Log(string msg)

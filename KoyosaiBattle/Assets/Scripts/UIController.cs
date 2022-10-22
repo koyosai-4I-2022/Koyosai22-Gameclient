@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using SoftGear.Strix.Unity.Runtime;
 
 public class UIController : MonoBehaviour
 {
@@ -89,7 +90,8 @@ public class UIController : MonoBehaviour
     bool finishFrag = false;
 
     bool[] selectIsReady;
-    bool[] selectIsSendName;
+    bool selectIsSendName;
+    bool selectIsReceive;
 
     void Start()
     {
@@ -99,16 +101,6 @@ public class UIController : MonoBehaviour
 
     async void Update()
     {
-        if(Input.GetKeyDown(KeyCode.K))
-		{
-            var result = await ServerRequestController.GetRanking();
-            string s = "";
-            foreach(var user in result.Users)
-            {
-                s += user.name + "\n";
-            }
-            Debug.Log(s);
-        }
         switch(state)
         {
             // ゲーム画面での毎フレーム処理
@@ -186,34 +178,57 @@ public class UIController : MonoBehaviour
     // 待機画面の描画更新
     async void UpdateInputSelectingUI()
 	{
+        // InputFieldのテキストを取得
         string playerName1 = InputSelectingInputName[0].text;
-        string playerName2 = InputSelectingInputName[1].text;
 
+        // debugで使用あとで消す
+        if(Input.GetKeyDown(KeyCode.K))
+        {
+            selectIsReady[1] = true;
+        }
+        // 名前が入力されていたらフラグをtrueに
         if(!selectIsReady[0] && playerName1 != string.Empty)
 		{
             selectIsReady[0] = true;
 		}
-        if(!selectIsReady[1] && playerName2 != string.Empty)
-		{
-            selectIsReady[1] = true;
-		}
-
-        if(selectIsReady[0])
+        // すべてのフラグがtrueでサーバにPOSTしてない時にPOST処理
+        if(selectIsReady[0] && selectIsReady[1] && !selectIsSendName)
         {
             InputSelectingReady[0].color = new Color(1f,  0.9f, 0);
-        }
-        if(selectIsReady[1])
-        {
-            InputSelectingReady[1].color = new Color(1f, 0.9f, 0);
-        }
-
-        if(selectIsReady[0] && selectIsReady[1])
-        {
-            state = PlayState.Resulting;
 
             var result = await ServerRequestController.PostUser(playerName1);
-            Debug.Log(result);
+            if(result.id == -1) return;
+            Debug.Log(result.id);
             playerData.SetDictionaryID(result.name, result.id);
+            StrixNetwork.instance.selfRoomMember.SetPrimaryKey(result.id);
+            selectIsSendName = true;
+		}
+        if(selectIsSendName)
+		{
+            // 相手のIDを取得
+            long id = -1;
+            var mems = StrixNetwork.instance.roomMembers;
+            foreach(var member in mems)
+			{
+                if(member.Value != StrixNetwork.instance.selfRoomMember)
+				{
+                    id = member.Value.GetPrimaryKey();
+				}
+			}
+            if(id < 0)
+                return;
+            var result = await ServerRequestController.GetUser((int)id);
+            if(result != null)
+			{
+                selectIsReceive = true;
+                playerData.SetDictionaryID(result.name, (int)result.id);
+			}
+		}
+        if(selectIsReceive)
+		{
+            // ゲーム画面へ状態を変更
+            // デバッグ中はリザルトへ遷移
+            state = PlayState.Resulting;
 		}
 	}
     // 待機画面の初期設定
@@ -222,7 +237,8 @@ public class UIController : MonoBehaviour
         // 初期設定したのでtrue
         stateInit[1] = true;
         selectIsReady = new bool[2];
-        selectIsSendName = new bool[2];
+        selectIsSendName = false;
+        selectIsReceive = false;
 
         // リザルトパネルを表示それ以外を非表示
         SetPanelActives();

@@ -1,24 +1,35 @@
 using SoftGear.Strix.Unity.Runtime;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerData : StrixBehaviour
 {
-    public static int PlayerId;
+    [StrixSyncField, NonSerialized]
+    public int PlayerId;
 
-    public static Dictionary<string, int> DictionaryID;
+    [StrixSyncField, NonSerialized]
+    public string Name;
 
-    public static string[] Names;
+    [StrixSyncField, NonSerialized]
+    public int Score;
 
-    public int N = 1;
+    [StrixSyncField, NonSerialized]
+    public int HitPoint;
+
+    [SerializeField]
+    int defaultHP = 100;
 
     void Start()
     {
         SetUserId(10);
         Init();
-        Debug.Log($"{name}:{isLocal}");
+        if(!isLocal)
+		{
+            UIController.instance.playerDataClone = this;
+		}
     }
 
     void Update()
@@ -27,12 +38,17 @@ public class PlayerData : StrixBehaviour
     }
     void Init()
 	{
-        DictionaryID = new Dictionary<string, int>();
+        PlayerId = -1;
+        Name = string.Empty;
+        Score = 0;
+        HitPoint = defaultHP;
 	}
 
-    public void SetDictionaryID(string name, int id)
+    public void SetUser(string name, int id)
 	{
-        DictionaryID.Add(name, id);
+        PlayerId = id;
+        Name = name;
 	}
     public void SetUserId(int id) => PlayerId = id;
+    public void SetScore(int s) => Score = s;
 }

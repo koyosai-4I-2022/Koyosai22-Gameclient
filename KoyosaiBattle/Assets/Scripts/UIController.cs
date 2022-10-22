@@ -18,6 +18,8 @@ public class UIController : MonoBehaviour
     [NonSerialized]
     public PlayState state;
 
+    public static UIController instance;
+
     // 接続確認用パネル
     [SerializeField]
     GameObject connectionPanel;
@@ -36,9 +38,6 @@ public class UIController : MonoBehaviour
     // ランキング表示用のパネル
     [SerializeField]
     GameObject rankingPanel;
-
-    [SerializeField]
-    PlayerData playerData;
 
     // ゲーム画面で使用するテキストと画像
     [SerializeField]
@@ -93,9 +92,17 @@ public class UIController : MonoBehaviour
     bool selectIsSendName;
     bool selectIsReceive;
 
+    int ConflictId;
+    string ConflictName;
+
+    [SerializeField]
+    PlayerData playerData;
+    [NonSerialized]
+    public PlayerData playerDataClone;
+
     void Start()
     {
-        state = PlayState.Connection;
+        state = PlayState.Resulting;
         InitUI();
     }
 
@@ -157,6 +164,8 @@ public class UIController : MonoBehaviour
     void InitUI()
 	{
         stateInit = new bool[6];
+
+        instance = this;
 	}
 
     // ゲーム中の描画更新
@@ -194,41 +203,39 @@ public class UIController : MonoBehaviour
         // すべてのフラグがtrueでサーバにPOSTしてない時にPOST処理
         if(selectIsReady[0] && selectIsReady[1] && !selectIsSendName)
         {
+            // POSTを複数回連続で行わないようにtrue
+            selectIsSendName = true;
+
             InputSelectingReady[0].color = new Color(1f,  0.9f, 0);
 
             var result = await ServerRequestController.PostUser(playerName1);
-            if(result.id == -1) return;
-            Debug.Log(result.id);
-            playerData.SetDictionaryID(result.name, result.id);
-            StrixNetwork.instance.selfRoomMember.SetPrimaryKey(result.id);
-            selectIsSendName = true;
-		}
-        if(selectIsSendName)
-		{
-            // 相手のIDを取得
-            long id = -1;
-            var mems = StrixNetwork.instance.roomMembers;
-            foreach(var member in mems)
-			{
-                if(member.Value != StrixNetwork.instance.selfRoomMember)
-				{
-                    id = member.Value.GetPrimaryKey();
-				}
-			}
-            if(id < 0)
+
+            if(result.id == -1)
+            {
+                // すでに登録された名前だった場合にもう一度入力する
+                selectIsSendName = false;
+                InputSelectingInputName[0].text = string.Empty;
                 return;
-            var result = await ServerRequestController.GetUser((int)id);
-            if(result != null)
-			{
-                selectIsReceive = true;
-                playerData.SetDictionaryID(result.name, (int)result.id);
-			}
-		}
+            }
+
+            playerData.SetUser(result.name, result.id);
+            Debug.Log($"{playerData.PlayerId}:{playerData.Name}");
+
+            selectIsReceive = true;
+        }
+        // 相手の名前を取得を確認
         if(selectIsReceive)
 		{
-            // ゲーム画面へ状態を変更
-            // デバッグ中はリザルトへ遷移
-            state = PlayState.Resulting;
+            if(playerDataClone != null)
+            {
+                if(playerData.PlayerId != -1 && playerData.Name != string.Empty)
+                {
+                    if(playerDataClone.PlayerId != -1 && playerDataClone.Name != string.Empty)
+                    {
+                        state = PlayState.Resulting;
+                    }
+                }
+            }
 		}
 	}
     // 待機画面の初期設定
@@ -239,6 +246,9 @@ public class UIController : MonoBehaviour
         selectIsReady = new bool[2];
         selectIsSendName = false;
         selectIsReceive = false;
+
+        ConflictId = -1;
+        ConflictName = string.Empty;
 
         // リザルトパネルを表示それ以外を非表示
         SetPanelActives();
@@ -276,17 +286,30 @@ public class UIController : MonoBehaviour
     // リザルト画面の初期設定
     async void InitResultingUI()
     {
+        playerData.SetUser("TestHida09", 29);
+        playerData.Score = 200;
+        playerDataClone = new PlayerData()
+        {
+            Name = "TestHida10",
+            PlayerId = 30,
+            Score = 300,
+        };
         // 初期設定したのでtrue
         stateInit[3] = true;
 
         // リザルトパネルを表示それ以外を非表示
         SetPanelActives();
 
-        // 
-        foreach(var dic in PlayerData.DictionaryID)
-        {
-            var result = await ServerRequestController.GetScore(dic.Value);
-        }
+        // 自分と相手のスコアと名前を表示
+        ResultingName[0].text = playerData.Name;
+        ResultingScore[0].text = playerData.Score.ToString();
+
+        ResultingName[1].text = playerDataClone.Name;
+        ResultingScore[1].text = playerDataClone.Score.ToString();
+
+        // スコアをサーバへ送信
+        var result = await ServerRequestController.PostScore(playerData.Score, playerData.PlayerId);
+
     }
     // ランキング画面の描画更新
     void UpdateRankingUI()
@@ -315,7 +338,7 @@ public class UIController : MonoBehaviour
             RankingScore[i].text = result.Users[i].rate.ToString();
 		}
         // ユーザ周辺のランキングを表示
-        var result2 = await ServerRequestController.GetUserRanking(PlayerData.PlayerId);
+        var result2 = await ServerRequestController.GetUserRanking(playerData.PlayerId);
 
         // 自分より上の順位の人の数
         int higherCount = result2.higher_around_rank_users.Length;

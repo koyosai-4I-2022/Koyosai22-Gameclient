@@ -2192,8 +2192,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -0.5}
-  m_SizeDelta: {x: 780, y: 137}
+  m_AnchoredPosition: {x: 30, y: -10}
+  m_SizeDelta: {x: 1000, y: 137}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &527224566
 MonoBehaviour:
@@ -2228,7 +2228,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Enter Name
+  m_Text: Enter Connection ID
 --- !u!222 &527224567
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3492,7 +3492,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &984684722
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4263,8 +4263,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -220, y: -160}
-  m_SizeDelta: {x: 900, y: 200}
+  m_AnchoredPosition: {x: -200, y: -160}
+  m_SizeDelta: {x: 1000, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1294924466
 MonoBehaviour:
@@ -5338,7 +5338,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1540218511
 RectTransform:
   m_ObjectHideFlags: 0

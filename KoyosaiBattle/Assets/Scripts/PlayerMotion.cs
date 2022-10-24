@@ -1,3 +1,4 @@
+using SoftGear.Strix.Unity.Runtime;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -5,6 +6,10 @@ using UnityEngine;
 
 public class PlayerMotion : MonoBehaviour
 {
+    // 同期用
+    [SerializeField]
+    StrixReplicator replicator;
+
     //JoyconLibの変数
     private static readonly Joycon.Button[] m_buttons =
        Enum.GetValues(typeof(Joycon.Button)) as Joycon.Button[];
@@ -57,6 +62,10 @@ public class PlayerMotion : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // 複製されたゲームオブジェクトの場合処理を行わない
+        if(!replicator.isLocal)
+            return;
+
         //JoyconLib
         if (m_joycons == null || m_joycons.Count <= 0) return;
         float[] Lstick = m_joyconL.GetStick();

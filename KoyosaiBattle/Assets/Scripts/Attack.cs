@@ -2,9 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using SoftGear.Strix.Unity.Runtime;
 
 public class Attack : MonoBehaviour
 {
+    // 同期用
+    [SerializeField]
+    StrixReplicator replicator;
+
     //JoyconLibの変数
     private static readonly Joycon.Button[] m_buttons =
        Enum.GetValues(typeof(Joycon.Button)) as Joycon.Button[];
@@ -40,6 +45,10 @@ public class Attack : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // 複製されたゲームオブジェクトの場合処理を行わない
+        if(!replicator.isLocal)
+            return;
+
         if (m_joycons == null || m_joycons.Count <= 0) return;
 
         
@@ -67,14 +76,16 @@ public class Attack : MonoBehaviour
                     para++;
                     animator.SetInteger("slash1", para);
                 }*/
-                if (slashBool == false)
-                {
-                    slashBool = !slashBool;
-                }
-                else
-                {
-                    slashBool = !slashBool;
-                }
+                slashBool = !slashBool;
+                // 冗長
+                //if (slashBool == false)
+                //{
+                //    slashBool = !slashBool;
+                //}
+                //else
+                //{
+                //    slashBool = !slashBool;
+                //}
                 m_joyconR.SetRumble(160, 320, 0.6f, 200);
                 animator.SetBool("slash2", slashBool);
 

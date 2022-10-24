@@ -19,10 +19,6 @@ public class PlayerMotion : MonoBehaviour
     //スティックのsetting
     private float degree;
 
-    
-    //エネルギー使用率
-    private int en;
-
     //gurdとrunの状態を表す変数
     public bool guard;
     public bool run;
@@ -48,10 +44,6 @@ public class PlayerMotion : MonoBehaviour
 
         //Animatorの初期化
         Animator = GetComponent<Animator>();
-
-        //エネルギー使用率の初期化
-        en = 1;
-
     }
 
     // Update is called once per frame
@@ -62,13 +54,21 @@ public class PlayerMotion : MonoBehaviour
         float[] Lstick = m_joyconL.GetStick();
         float[] Rstick = m_joyconR.GetStick();
 
-        //ガード状態(ZLボタンを押している場合)
-        if (m_joyconL.GetButton(m_buttons[12]))
+        //エネルギーが3以上あるとき
+        if (EnergyGauge.instance.CanUse(3))
         {
-            guard = true;
-            //エネルギー使用率を変える
-            en = 3;
-            EnergyGauge.instance.EnergyLossPerSec(en);
+            //ZLボタンを押したとき
+            if (m_joyconL.GetButtonDown(m_buttons[12]))
+            {
+                guard = true;
+                //エネルギーを3使用する
+                EnergyGauge.instance.EnergyLoss(3);
+            }
+        }
+
+        //ガード状態(ZLボタンを押している場合)
+        if (guard)
+        {
             //シールドの表示
             ShieldDisplay.instance.Create();
         }
@@ -76,17 +76,25 @@ public class PlayerMotion : MonoBehaviour
         //ZLボタンを離したとき
         if (m_joyconL.GetButtonUp(m_buttons[12]))
         {
-            en = 1;
-            EnergyGauge.instance.EnergyLossPerSec(en);
             ShieldDisplay.instance.Destroy();
             guard = false;
         }
 
+        //エネルギーが2以上あるとき
+        if (EnergyGauge.instance.CanUse(2))
+        {
+            //Lボタンを押したとき
+            if (m_joyconL.GetButtonDown(m_buttons[11]))
+            {
+                run = true;
+                //エネルギーを2使用する
+                EnergyGauge.instance.EnergyLoss(2);
+            }
+        }
 
         //Lボタンを離したとき
         if (m_joyconL.GetButtonUp(m_buttons[11]))
         {
-            //HPGauge.instance.Damage(10);
             run = false;
         }
 
@@ -94,78 +102,88 @@ public class PlayerMotion : MonoBehaviour
         transform.Rotate(new Vector3(0, Rstick[0] * 3, 0));
 
         //左スティックの倒した向きから角度を得る
-        degree = Mathf.Atan2(Lstick[0], Lstick[1]);            
+        degree = Mathf.Atan2(Lstick[0], Lstick[1]);
 
-        //Walk Shoot Front
-        if (Lstick[0] != 0 || Lstick[1] != 0)//スティックを倒しているとき
+        //ガードしてない状態の時
+        if (!guard)
         {
-            //前方への移動
-            if (degree * 180 / Mathf.PI > -15 && degree * 180 / Mathf.PI < 15)
+            //Walk Shoot Front
+            if (Lstick[0] != 0 || Lstick[1] != 0)//スティックを倒しているとき
             {
-                //前に走る(Lボタンを押している場合)
-                if (m_joyconL.GetButton(m_buttons[11]))
+                //前方への移動
+                if (degree * 180 / Mathf.PI > -15 && degree * 180 / Mathf.PI < 15)
                 {
-                    Vector3 vector = new Vector3(0, 0, 1);
-                    transform.Translate(vector * Time.deltaTime * 3);
-                    Animator.Play("run1");
-                    //エネルギー使用率を+1する
-                    EnergyGauge.instance.EnergyLossPerSec(en+1);
-                    run = true;
+                    //前に走る(Lボタンを押している場合)
+                    if (m_joyconL.GetButton(m_buttons[11]))
+                    {
+                        Vector3 vector = new Vector3(0, 0, 1);
+                        //transform.Translate(vector * Time.deltaTime * 3);
+                        Animator.Play("run1");
+                        //エネルギー使用率を+1する
+                        //EnergyGauge.instance.EnergyLossPerSec(en + 1);
+                        //run = true;
+                    }
+                    //前に歩く
+                    else Animator.Play("walk1");
                 }
-                //前に歩く
-                else Animator.Play("walk1");
+
             }
 
-        }
-            
-        //斜め左前
-        if (degree * 180 / Mathf.PI <= -15 && degree * 180 / Mathf.PI >= -75)
-        {
-            Animator.Play("Jog Forward Diagonal");
-        }
+            //斜め左前
+            if (degree * 180 / Mathf.PI <= -15 && degree * 180 / Mathf.PI >= -75)
+            {
+                Animator.Play("Jog Forward Diagonal");
+            }
 
-        //Walk Left
-        if (degree * 180 / Mathf.PI < -75 && degree * 180 / Mathf.PI > -105)
-        {
-            Animator.Play("strafe2");
-        }
+            //Walk Left
+            if (degree * 180 / Mathf.PI < -75 && degree * 180 / Mathf.PI > -105)
+            {
+                Animator.Play("strafe2");
+            }
 
-        //斜め左後
-        if (degree * 180 / Mathf.PI <= -105 && degree * 180 / Mathf.PI >= -165)
-        {
-            Animator.Play("Jog Backward Diagonal");
-        }
-            
-        //Walk Back
-        if (degree * 180 / Mathf.PI < -165 || degree * 180 / Mathf.PI > 165)
-        {
-            Animator.Play("walk2");
-        }
+            //斜め左後
+            if (degree * 180 / Mathf.PI <= -105 && degree * 180 / Mathf.PI >= -165)
+            {
+                Animator.Play("Jog Backward Diagonal");
+            }
 
-        //斜め右後
-        if (degree * 180 / Mathf.PI >= 105 && degree * 180 / Mathf.PI <= 165)
-        {
-            Animator.Play("Jog Backward Diagonal (1)");
-        }
+            //Walk Back
+            if (degree * 180 / Mathf.PI < -165 || degree * 180 / Mathf.PI > 165)
+            {
+                Animator.Play("walk2");
+            }
 
-        //Walk Right
-        if (degree * 180 / Mathf.PI > 75 && degree * 180 / Mathf.PI < 105)
-        {
-            Animator.Play("strafe1");
-        }
+            //斜め右後
+            if (degree * 180 / Mathf.PI >= 105 && degree * 180 / Mathf.PI <= 165)
+            {
+                Animator.Play("Jog Backward Diagonal (1)");
+            }
 
-        //斜め右前
-        if (degree * 180 / Mathf.PI >= 15 && degree * 180 / Mathf.PI <= 75)
-        {
-            Animator.Play("Jog Forward Diagonal (1)");
-        }
+            //Walk Right
+            if (degree * 180 / Mathf.PI > 75 && degree * 180 / Mathf.PI < 105)
+            {
+                Animator.Play("strafe1");
+            }
 
-        //左スティックを倒しているとき
-        if (Lstick[0] != 0 || Lstick[1] != 0)
-        {
-            //Playerがスティックを倒した方向に進む
-            Vector3 vector = new Vector3(Mathf.Sin(degree), 0, Mathf.Cos(degree));
-            transform.Translate(vector * Time.deltaTime * 3);
+            //斜め右前
+            if (degree * 180 / Mathf.PI >= 15 && degree * 180 / Mathf.PI <= 75)
+            {
+                Animator.Play("Jog Forward Diagonal (1)");
+            }
+
+            //左スティックを倒しているとき
+            if (Lstick[0] != 0 || Lstick[1] != 0)
+            {
+                if (run)
+                {
+                    //Playerがスティックを倒した方向に進む
+                    Vector3 Runvector = new Vector3(Mathf.Sin(degree), 0, Mathf.Cos(degree));
+                    transform.Translate(Runvector * Time.deltaTime * 30);
+                }
+                //Playerがスティックを倒した方向に進む
+                Vector3 vector = new Vector3(Mathf.Sin(degree), 0, Mathf.Cos(degree));
+                transform.Translate(vector * Time.deltaTime * 5);
+            }
         }
     }
 }

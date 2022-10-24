@@ -30,7 +30,7 @@ public class ConnectionController : MonoBehaviour
 
     // message表示用
     [SerializeField]
-    Text text;
+    Text message;
 
     // connection/createのボタンテキスト
     [SerializeField]
@@ -50,18 +50,34 @@ public class ConnectionController : MonoBehaviour
     [SerializeField]
     GameObject panel;
 
+    [SerializeField]
+    PlayerData playerData;
+
+    // 
+    [SerializeField]
+    UIController uiController;
+
     // マスターサーバに接続出来ているかを入れる
     bool isConnectMaster = false;
+    
+
+    // あたり判定に使用するタグ用
+    static string PlayerTag;
 
     void Start()
     {
         // 最初はjoinは表示しない
         buttom2.gameObject.SetActive(false);
+
     }
 
     void Update()
     {
+        if(Input.GetKeyDown(KeyCode.K))
+        {
+            playerData.gameObject.name = "PC" + PCID.text;
 
+        }
     }
     // Connectionボタンのクリックイベント
     public void ConnectClick()
@@ -159,7 +175,7 @@ public class ConnectionController : MonoBehaviour
                 //    + "\nRoom String Key:" + room.GetStringKey()
                 //    + "\nRoom Menber Count:" + room.GetMemberCount()
                 //    + "\nRoom member name:" + roomMember.GetName());
-                panel.SetActive(false);
+                SceneChange();
             },
             e => //Faild
             {
@@ -200,18 +216,13 @@ public class ConnectionController : MonoBehaviour
                     if(strixNetwork.room != null)
                         break;
 
-                    Debug.Log($"host:{room.host}\n"
-                        + $"port:{room.port}"
-                        + $"protocol:{room.protocol}"
-                         + $"roomID:{room.roomId}");
-
                     strixNetwork.JoinRoom(
                          host: room.host,
                          port: room.port,
                          protocol: room.protocol,
                          roomId: room.roomId,
                          playerName: num,
-                         handler: __ => { Log("Room joined."); panel.SetActive(false);  },
+                         handler: __ => { Log("Room joined."); SceneChange();  },
                          failureHandler: joinError => Log("Join failed.Reason: " + joinError.cause)
                     );
                 }
@@ -243,21 +254,30 @@ public class ConnectionController : MonoBehaviour
             strixNetwork.LeaveRoom(_ => { Debug.Log("Sucess Leave Room"); strixNetwork.DisconnectMasterServer(); strixNetwork.Destroy(); }, _ => { });
         }
     }
-    // テキストに表示するためのメソッド
-    void Log(string msg)
+    // 接続画面から入力画面への遷移
+    void SceneChange()
+	{
+        //panel.SetActive(false);
+        //foreach(var mem in StrixNetwork.instance.roomMembers)
+            //Debug.Log($"{mem.Value.GetName()}:{mem.Value.GetUid()}");
+		uiController.state = UIController.PlayState.InputSelecting;
+		StrixNetwork.instance.selfRoomMember.SetPrimaryKey(-1);
+	}
+	// テキストに表示するためのメソッド
+	void Log(string msg)
     {
-        text.text += msg + "\n";
+        message.text += msg + "\n";
 
-        var array = text.text.Split('\n');
+        var array = message.text.Split('\n');
 
-        if(array.Length > 8)
+        if(array.Length > 11)
         {
             string s = "";
             for(int i = 1;i < array.Length;i++)
 			{
                 s += array[i] + "\n";
             }
-            text.text = s;
+            message.text = s;
         }
     }
 }

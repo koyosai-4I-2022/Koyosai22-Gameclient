@@ -228,6 +228,8 @@ public class UIController : MonoBehaviour
             // Readyを黄色にする
             InputSelectingReady[0].color = new Color(1f,  0.9f, 0);
 
+            InputSelectingInputName[0].text = String.Empty;
+
             // POST
             var result = await ServerRequestController.PostUser(playerName1);
 
@@ -280,6 +282,9 @@ public class UIController : MonoBehaviour
 
         // リザルトパネルを表示それ以外を非表示
         SetPanelActives();
+
+        // Readyを白に
+        InputSelectingReady[0].color = new Color(1f, 1f, 1f);
 
         // ランキングを取得
         var result = await ServerRequestController.GetRanking();
@@ -349,6 +354,8 @@ public class UIController : MonoBehaviour
                 // セレクト画面に遷移
                 // ローディング画面挟む？
                 state = PlayState.InputSelecting;
+
+                stateInit = new bool[6];
             }
             else
             {
@@ -388,7 +395,7 @@ public class UIController : MonoBehaviour
         var result = await ServerRequestController.GetRanking();
 
         // ランキングを上位から8今で表示
-        for(int i = 0;i < 8; i++)
+        for(int i = 0;i < 6; i++)
 		{
             RankingName[i].text = result.Users[i].name;
             RankingScore[i].text = result.Users[i].rate.ToString();

@@ -24,6 +24,8 @@ public class PlayerMotion : MonoBehaviour
     //スティックのsetting
     private float degree;
 
+    private float timer;
+
     //gurdとrunの状態を表す変数
     public bool guard;
     public bool run;
@@ -49,13 +51,17 @@ public class PlayerMotion : MonoBehaviour
 
         //Animatorの初期化
         Animator = GetComponent<Animator>();
+
+        timer = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
+        /*
         if(!replicator.isLocal)
             return;
+        */
 
         //JoyconLib
         if (m_joycons == null || m_joycons.Count <= 0) return;
@@ -66,7 +72,7 @@ public class PlayerMotion : MonoBehaviour
         if (EnergyGauge.instance.CanUse(3))
         {
             //ZLボタンを押したとき
-            if (m_joyconL.GetButtonDown(m_buttons[12]))
+            if (m_joyconL.GetButtonDown(m_buttons[12])&&!guard)
             {
                 guard = true;
                 //エネルギーを3使用する
@@ -92,7 +98,7 @@ public class PlayerMotion : MonoBehaviour
         if (EnergyGauge.instance.CanUse(2))
         {
             //Lボタンを押したとき
-            if (m_joyconL.GetButtonDown(m_buttons[11]))
+            if (m_joyconL.GetButtonDown(m_buttons[11])&&!run)
             {
                 run = true;
                 //エネルギーを2使用する
@@ -104,6 +110,12 @@ public class PlayerMotion : MonoBehaviour
         if (m_joyconL.GetButtonUp(m_buttons[11]))
         {
             run = false;
+        }
+
+        if(timer >= 0.2)
+        {
+            run = false;
+            timer = 0;
         }
 
         //右スティックでPlayerの向きを変える
@@ -122,17 +134,11 @@ public class PlayerMotion : MonoBehaviour
                 if (degree * 180 / Mathf.PI > -15 && degree * 180 / Mathf.PI < 15)
                 {
                     //前に走る(Lボタンを押している場合)
-                    if (m_joyconL.GetButton(m_buttons[11]))
-                    {
-                        Vector3 vector = new Vector3(0, 0, 1);
-                        //transform.Translate(vector * Time.deltaTime * 3);
+                    if (run)
                         Animator.Play("run1");
-                        //エネルギー使用率を+1する
-                        //EnergyGauge.instance.EnergyLossPerSec(en + 1);
-                        //run = true;
-                    }
                     //前に歩く
-                    else Animator.Play("walk1");
+                    else 
+                        Animator.Play("walk1");
                 }
 
             }
@@ -158,7 +164,10 @@ public class PlayerMotion : MonoBehaviour
             //Walk Back
             if (degree * 180 / Mathf.PI < -165 || degree * 180 / Mathf.PI > 165)
             {
-                Animator.Play("walk2");
+                if (run)
+                    Animator.Play("run2");
+                else
+                    Animator.Play("walk2");
             }
 
             //斜め右後
@@ -184,9 +193,10 @@ public class PlayerMotion : MonoBehaviour
             {
                 if (run)
                 {
+                    timer += Time.deltaTime;
                     //Playerがスティックを倒した方向に進む
                     Vector3 Runvector = new Vector3(Mathf.Sin(degree), 0, Mathf.Cos(degree));
-                    transform.Translate(Runvector * Time.deltaTime * 30);
+                    transform.Translate(Runvector * Time.deltaTime * 20);
                 }
                 //Playerがスティックを倒した方向に進む
                 Vector3 vector = new Vector3(Mathf.Sin(degree), 0, Mathf.Cos(degree));

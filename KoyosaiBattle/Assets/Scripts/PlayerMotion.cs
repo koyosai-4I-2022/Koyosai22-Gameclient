@@ -54,6 +54,9 @@ public class PlayerMotion : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(!replicator.isLocal)
+            return;
+
         //JoyconLib
         if (m_joycons == null || m_joycons.Count <= 0) return;
         float[] Lstick = m_joyconL.GetStick();

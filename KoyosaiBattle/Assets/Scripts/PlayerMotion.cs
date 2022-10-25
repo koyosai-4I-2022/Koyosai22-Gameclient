@@ -1,3 +1,4 @@
+using SoftGear.Strix.Unity.Runtime;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -5,7 +6,11 @@ using UnityEngine;
 
 public class PlayerMotion : MonoBehaviour
 {
-    //JoyconLib‚Ì•Ï”
+    // åŒæœŸç”¨
+    [SerializeField]
+    StrixReplicator replicator;
+    
+    //JoyconLibã®å¤‰æ•°
     private static readonly Joycon.Button[] m_buttons =
        Enum.GetValues(typeof(Joycon.Button)) as Joycon.Button[];
 
@@ -13,21 +18,17 @@ public class PlayerMotion : MonoBehaviour
     private Joycon m_joyconL;
     private Joycon m_joyconR;
     
-    //Animator‚Ì•Ï”
+    //Animatorã®å¤‰æ•°
     public Animator Animator;
     
-    //ƒXƒeƒBƒbƒN‚Ìsetting
+    //ã‚¹ãƒ†ã‚£ãƒƒã‚¯ã®setting
     private float degree;
 
-    
-    //ƒGƒlƒ‹ƒM[g—p—¦
-    private int en;
-
-    //gurd‚Ærun‚Ìó‘Ô‚ğ•\‚·•Ï”
+    //gurdã¨runã®çŠ¶æ…‹ã‚’è¡¨ã™å¤‰æ•°
     public bool guard;
     public bool run;
 
-    //ŠÖ”‚ÌQÆ
+    //é–¢æ•°ã®å‚ç…§
     public static PlayerMotion instance;
     public void Awake()
     {
@@ -40,132 +41,157 @@ public class PlayerMotion : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //JoyconLib‚Ì‰Šú‰»
+        //JoyconLibã®åˆæœŸåŒ–
         m_joycons = JoyconManager.Instance.j;
         if (m_joycons == null || m_joycons.Count <= 0) return;
         m_joyconL = m_joycons.Find(c => c.isLeft);
         m_joyconR = m_joycons.Find(c => !c.isLeft);
 
-        //Animator‚Ì‰Šú‰»
+        //Animatorã®åˆæœŸåŒ–
         Animator = GetComponent<Animator>();
-
-        //ƒGƒlƒ‹ƒM[g—p—¦‚Ì‰Šú‰»
-        en = 1;
-
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(!replicator.isLocal)
+            return;
+
         //JoyconLib
         if (m_joycons == null || m_joycons.Count <= 0) return;
         float[] Lstick = m_joyconL.GetStick();
         float[] Rstick = m_joyconR.GetStick();
 
-        //ƒK[ƒhó‘Ô(ZLƒ{ƒ^ƒ“‚ğ‰Ÿ‚µ‚Ä‚¢‚éê‡)
-        if (m_joyconL.GetButton(m_buttons[12]))
+        //ã‚¨ãƒãƒ«ã‚®ãƒ¼ãŒ3ä»¥ä¸Šã‚ã‚‹ã¨ã
+        if (EnergyGauge.instance.CanUse(3))
         {
-            guard = true;
-            //ƒGƒlƒ‹ƒM[g—p—¦‚ğ•Ï‚¦‚é
-            en = 3;
-            EnergyGauge.instance.EnergyLossPerSec(en);
-            //ƒV[ƒ‹ƒh‚Ì•\¦
+            //ZLãƒœã‚¿ãƒ³ã‚’æŠ¼ã—ãŸã¨ã
+            if (m_joyconL.GetButtonDown(m_buttons[12]))
+            {
+                guard = true;
+                //ã‚¨ãƒãƒ«ã‚®ãƒ¼ã‚’3ä½¿ç”¨ã™ã‚‹
+                EnergyGauge.instance.EnergyLoss(3);
+            }
+        }
+
+        //ã‚¬ãƒ¼ãƒ‰çŠ¶æ…‹(ZLãƒœã‚¿ãƒ³ã‚’æŠ¼ã—ã¦ã„ã‚‹å ´åˆ)
+        if (guard)
+        {
+            //ã‚·ãƒ¼ãƒ«ãƒ‰ã®è¡¨ç¤º
             ShieldDisplay.instance.Create();
         }
 
-        //ZLƒ{ƒ^ƒ“‚ğ—£‚µ‚½‚Æ‚«
+        //ZLãƒœã‚¿ãƒ³ã‚’é›¢ã—ãŸã¨ã
         if (m_joyconL.GetButtonUp(m_buttons[12]))
         {
-            en = 1;
-            EnergyGauge.instance.EnergyLossPerSec(en);
             ShieldDisplay.instance.Destroy();
             guard = false;
         }
 
+        //ã‚¨ãƒãƒ«ã‚®ãƒ¼ãŒ2ä»¥ä¸Šã‚ã‚‹ã¨ã
+        if (EnergyGauge.instance.CanUse(2))
+        {
+            //Lãƒœã‚¿ãƒ³ã‚’æŠ¼ã—ãŸã¨ã
+            if (m_joyconL.GetButtonDown(m_buttons[11]))
+            {
+                run = true;
+                //ã‚¨ãƒãƒ«ã‚®ãƒ¼ã‚’2ä½¿ç”¨ã™ã‚‹
+                EnergyGauge.instance.EnergyLoss(2);
+            }
+        }
 
-        //Lƒ{ƒ^ƒ“‚ğ—£‚µ‚½‚Æ‚«
+        //Lãƒœã‚¿ãƒ³ã‚’é›¢ã—ãŸã¨ã
         if (m_joyconL.GetButtonUp(m_buttons[11]))
         {
-            //HPGauge.instance.Damage(10);
             run = false;
         }
 
-        //‰EƒXƒeƒBƒbƒN‚ÅPlayer‚ÌŒü‚«‚ğ•Ï‚¦‚é
+        //å³ã‚¹ãƒ†ã‚£ãƒƒã‚¯ã§Playerã®å‘ãã‚’å¤‰ãˆã‚‹
         transform.Rotate(new Vector3(0, Rstick[0] * 3, 0));
 
-        //¶ƒXƒeƒBƒbƒN‚Ì“|‚µ‚½Œü‚«‚©‚çŠp“x‚ğ“¾‚é
-        degree = Mathf.Atan2(Lstick[0], Lstick[1]);            
+        //å·¦ã‚¹ãƒ†ã‚£ãƒƒã‚¯ã®å€’ã—ãŸå‘ãã‹ã‚‰è§’åº¦ã‚’å¾—ã‚‹
+        degree = Mathf.Atan2(Lstick[0], Lstick[1]);
 
-        //Walk Shoot Front
-        if (Lstick[0] != 0 || Lstick[1] != 0)//ƒXƒeƒBƒbƒN‚ğ“|‚µ‚Ä‚¢‚é‚Æ‚«
+        //ã‚¬ãƒ¼ãƒ‰ã—ã¦ãªã„çŠ¶æ…‹ã®æ™‚
+        if (!guard)
         {
-            //‘O•û‚Ö‚ÌˆÚ“®
-            if (degree * 180 / Mathf.PI > -15 && degree * 180 / Mathf.PI < 15)
+            //Walk Shoot Front
+            if (Lstick[0] != 0 || Lstick[1] != 0)//ã‚¹ãƒ†ã‚£ãƒƒã‚¯ã‚’å€’ã—ã¦ã„ã‚‹ã¨ã
             {
-                //‘O‚É‘–‚é(Lƒ{ƒ^ƒ“‚ğ‰Ÿ‚µ‚Ä‚¢‚éê‡)
-                if (m_joyconL.GetButton(m_buttons[11]))
+                //å‰æ–¹ã¸ã®ç§»å‹•
+                if (degree * 180 / Mathf.PI > -15 && degree * 180 / Mathf.PI < 15)
                 {
-                    Vector3 vector = new Vector3(0, 0, 1);
-                    transform.Translate(vector * Time.deltaTime * 3);
-                    Animator.Play("run1");
-                    //ƒGƒlƒ‹ƒM[g—p—¦‚ğ+1‚·‚é
-                    EnergyGauge.instance.EnergyLossPerSec(en+1);
-                    run = true;
+                    //å‰ã«èµ°ã‚‹(Lãƒœã‚¿ãƒ³ã‚’æŠ¼ã—ã¦ã„ã‚‹å ´åˆ)
+                    if (m_joyconL.GetButton(m_buttons[11]))
+                    {
+                        Vector3 vector = new Vector3(0, 0, 1);
+                        //transform.Translate(vector * Time.deltaTime * 3);
+                        Animator.Play("run1");
+                        //ã‚¨ãƒãƒ«ã‚®ãƒ¼ä½¿ç”¨ç‡ã‚’+1ã™ã‚‹
+                        //EnergyGauge.instance.EnergyLossPerSec(en + 1);
+                        //run = true;
+                    }
+                    //å‰ã«æ­©ã
+                    else Animator.Play("walk1");
                 }
-                //‘O‚É•à‚­
-                else Animator.Play("walk1");
+
             }
 
-        }
-            
-        //Î‚ß¶‘O
-        if (degree * 180 / Mathf.PI <= -15 && degree * 180 / Mathf.PI >= -75)
-        {
-            Animator.Play("Jog Forward Diagonal");
-        }
+            //æ–œã‚å·¦å‰
+            if (degree * 180 / Mathf.PI <= -15 && degree * 180 / Mathf.PI >= -75)
+            {
+                Animator.Play("Jog Forward Diagonal");
+            }
 
-        //Walk Left
-        if (degree * 180 / Mathf.PI < -75 && degree * 180 / Mathf.PI > -105)
-        {
-            Animator.Play("strafe2");
-        }
+            //Walk Left
+            if (degree * 180 / Mathf.PI < -75 && degree * 180 / Mathf.PI > -105)
+            {
+                Animator.Play("strafe2");
+            }
 
-        //Î‚ß¶Œã
-        if (degree * 180 / Mathf.PI <= -105 && degree * 180 / Mathf.PI >= -165)
-        {
-            Animator.Play("Jog Backward Diagonal");
-        }
-            
-        //Walk Back
-        if (degree * 180 / Mathf.PI < -165 || degree * 180 / Mathf.PI > 165)
-        {
-            Animator.Play("walk2");
-        }
+            //æ–œã‚å·¦å¾Œ
+            if (degree * 180 / Mathf.PI <= -105 && degree * 180 / Mathf.PI >= -165)
+            {
+                Animator.Play("Jog Backward Diagonal");
+            }
 
-        //Î‚ß‰EŒã
-        if (degree * 180 / Mathf.PI >= 105 && degree * 180 / Mathf.PI <= 165)
-        {
-            Animator.Play("Jog Backward Diagonal (1)");
-        }
+            //Walk Back
+            if (degree * 180 / Mathf.PI < -165 || degree * 180 / Mathf.PI > 165)
+            {
+                Animator.Play("walk2");
+            }
 
-        //Walk Right
-        if (degree * 180 / Mathf.PI > 75 && degree * 180 / Mathf.PI < 105)
-        {
-            Animator.Play("strafe1");
-        }
+            //æ–œã‚å³å¾Œ
+            if (degree * 180 / Mathf.PI >= 105 && degree * 180 / Mathf.PI <= 165)
+            {
+                Animator.Play("Jog Backward Diagonal (1)");
+            }
 
-        //Î‚ß‰E‘O
-        if (degree * 180 / Mathf.PI >= 15 && degree * 180 / Mathf.PI <= 75)
-        {
-            Animator.Play("Jog Forward Diagonal (1)");
-        }
+            //Walk Right
+            if (degree * 180 / Mathf.PI > 75 && degree * 180 / Mathf.PI < 105)
+            {
+                Animator.Play("strafe1");
+            }
 
-        //¶ƒXƒeƒBƒbƒN‚ğ“|‚µ‚Ä‚¢‚é‚Æ‚«
-        if (Lstick[0] != 0 || Lstick[1] != 0)
-        {
-            //Player‚ªƒXƒeƒBƒbƒN‚ğ“|‚µ‚½•ûŒü‚Éi‚Ş
-            Vector3 vector = new Vector3(Mathf.Sin(degree), 0, Mathf.Cos(degree));
-            transform.Translate(vector * Time.deltaTime * 3);
+            //æ–œã‚å³å‰
+            if (degree * 180 / Mathf.PI >= 15 && degree * 180 / Mathf.PI <= 75)
+            {
+                Animator.Play("Jog Forward Diagonal (1)");
+            }
+
+            //å·¦ã‚¹ãƒ†ã‚£ãƒƒã‚¯ã‚’å€’ã—ã¦ã„ã‚‹ã¨ã
+            if (Lstick[0] != 0 || Lstick[1] != 0)
+            {
+                if (run)
+                {
+                    //PlayerãŒã‚¹ãƒ†ã‚£ãƒƒã‚¯ã‚’å€’ã—ãŸæ–¹å‘ã«é€²ã‚€
+                    Vector3 Runvector = new Vector3(Mathf.Sin(degree), 0, Mathf.Cos(degree));
+                    transform.Translate(Runvector * Time.deltaTime * 30);
+                }
+                //PlayerãŒã‚¹ãƒ†ã‚£ãƒƒã‚¯ã‚’å€’ã—ãŸæ–¹å‘ã«é€²ã‚€
+                Vector3 vector = new Vector3(Mathf.Sin(degree), 0, Mathf.Cos(degree));
+                transform.Translate(vector * Time.deltaTime * 5);
+            }
         }
     }
 }

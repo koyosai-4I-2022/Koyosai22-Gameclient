@@ -7,6 +7,9 @@ public class Hitcollision : MonoBehaviour
     [SerializeField]
     [Tooltip("EF_HIT_M_null")]
     private ParticleSystem particle;
+    private AudioSource slashAudio;
+
+    void Start() => slashAudio = GetComponent<AudioSource>();
 
     private void OnTriggerEnter(Collider collision)
     {
@@ -20,8 +23,10 @@ public class Hitcollision : MonoBehaviour
             newParticle.transform.position = hitPos;
             //　パーティクルの発生
             newParticle.Play();
-            //　インスタンス化したパーティクルの消去
+            //　インスタンス化したパーティクルの消去   
             Destroy(newParticle.gameObject, 5.0f);
-        } 
+
+            slashAudio.PlayOneShot(slashAudio.clip);
+        }
     }
 }

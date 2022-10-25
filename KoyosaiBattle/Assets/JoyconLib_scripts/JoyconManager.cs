@@ -51,7 +51,7 @@ public class JoyconManager: MonoBehaviour
 		while (ptr != IntPtr.Zero) {
 			enumerate = (hid_device_info)Marshal.PtrToStructure (ptr, typeof(hid_device_info));
 
-			Debug.Log (enumerate.product_id);
+			//Debug.Log (enumerate.product_id);
 				if (enumerate.product_id == product_l || enumerate.product_id == product_r) {
 					if (enumerate.product_id == product_l) {
 						isLeft = true;

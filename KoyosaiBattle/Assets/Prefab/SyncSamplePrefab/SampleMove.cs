@@ -1,4 +1,5 @@
 using SoftGear.Strix.Unity.Runtime;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,8 +11,24 @@ public class SampleMove : MonoBehaviour
     [SerializeField]
     Animator animator;
 
+    //JoyconLibÇÃïœêî
+    private static readonly Joycon.Button[] m_buttons =
+       Enum.GetValues(typeof(Joycon.Button)) as Joycon.Button[];
+
+    private List<Joycon> m_joycons;
+    private Joycon m_joyconL;
+    private Joycon m_joyconR;
+
     void Start()
     {
+        // joyconÇÃê›íË
+        m_joycons = JoyconManager.Instance.j;
+        if(m_joycons == null || m_joycons.Count <= 0)
+            return;
+        m_joyconL = m_joycons.Find(c => c.isLeft);
+        m_joyconR = m_joycons.Find(c => !c.isLeft);
+
+
         if(!replicator.isLocal)
             this.transform.GetChild(0).gameObject.SetActive(false);
     }
@@ -20,15 +37,14 @@ public class SampleMove : MonoBehaviour
     {
         if(replicator.isLocal)
 		{
-            if(Input.GetKeyDown(KeyCode.K))
+            if(m_joyconR.GetButtonDown(m_buttons[1]))
 			{
-                animator.Play("walk2");
+
             }
 
-            float x = Input.GetAxis("Horizontal 1");
-            float z = Input.GetAxis("Vertical 1");
+            float[] Rstick = m_joyconR.GetStick();
 
-            this.transform.Translate(new Vector3(x, 0, z) * Time.deltaTime * 4.0f, Space.Self);
+            this.transform.Translate(new Vector3(Rstick[0], 0, Rstick[1]) * Time.deltaTime * 4.0f, Space.Self);
 		}
     }
 }

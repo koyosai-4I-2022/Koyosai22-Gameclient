@@ -257,11 +257,11 @@ public class ConnectionController : MonoBehaviour
     // 接続画面から入力画面への遷移
     void SceneChange()
 	{
-        //panel.SetActive(false);
-        //foreach(var mem in StrixNetwork.instance.roomMembers)
-            //Debug.Log($"{mem.Value.GetName()}:{mem.Value.GetUid()}");
-		uiController.state = UIController.PlayState.InputSelecting;
-		StrixNetwork.instance.selfRoomMember.SetPrimaryKey(-1);
+        panel.SetActive(false);
+        foreach(var mem in StrixNetwork.instance.roomMembers)
+            Debug.Log($"{mem.Value.GetName()}:{mem.Value.GetUid()}");
+		//uiController.state = UIController.PlayState.InputSelecting;
+		//StrixNetwork.instance.selfRoomMember.SetPrimaryKey(-1);
 	}
 	// テキストに表示するためのメソッド
 	void Log(string msg)

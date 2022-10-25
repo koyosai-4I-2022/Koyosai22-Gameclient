@@ -45,9 +45,11 @@ public class Attack : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        /*
         // 複製されたゲームオブジェクトの場合処理を行わない
         if(!replicator.isLocal)
             return;
+        */
 
         if (m_joycons == null || m_joycons.Count <= 0) return;
 

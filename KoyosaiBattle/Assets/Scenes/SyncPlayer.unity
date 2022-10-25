@@ -695,7 +695,6 @@ GameObject:
   - component: {fileID: 2116254135}
   - component: {fileID: 2116253827}
   - component: {fileID: 2116253826}
-  - component: {fileID: 2116253828}
   - component: {fileID: 2116253829}
   - component: {fileID: 2116253830}
   - component: {fileID: 2116253831}
@@ -764,20 +763,6 @@ MonoBehaviour:
   networkInstanceId: -1
   InstantiableBy: 1
   ConnectionClosedBehaviour: 1
---- !u!114 &2116253828
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2116253824}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26df046dd986ec24db29e4944285e5a4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  replicator: {fileID: 2116253827}
-  animator: {fileID: 2116254135}
 --- !u!114 &2116253829
 MonoBehaviour:
   m_ObjectHideFlags: 0

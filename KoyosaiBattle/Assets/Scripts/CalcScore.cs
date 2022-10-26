@@ -65,6 +65,9 @@ public class CalcScore : MonoBehaviour
 
     public void Score()
     {
+        // HPを取得してスコア計算する
+        AHP = UIController.instance.playerData.HitPoint;
+        BHP = UIController.instance.playerDataClone.HitPoint;
         // スコア＝生存時間＋残りHP＋与えたダメージ
         // 生存ボーナス：100pt, 撃破ボーナス:100pt
         if (AHP > BHP)

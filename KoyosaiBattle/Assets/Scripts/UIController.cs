@@ -119,6 +119,11 @@ public class UIController : MonoBehaviour
     //    }
     //}
 
+    // これをゲーム開始時にTrueにする
+    public bool isStart = false;
+    // これをゲーム終了時にTrueにする
+    public bool isFinish = false;
+
     void Awake()
     {
         state = PlayState.Connection;
@@ -196,7 +201,6 @@ public class UIController : MonoBehaviour
 
         isJoyconButtom = true;
     }
-
     // ゲーム中の描画更新
     void UpdatePlayingUI()
 	{

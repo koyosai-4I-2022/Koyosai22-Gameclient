@@ -7,6 +7,9 @@ public class Hitcollision : MonoBehaviour
     [SerializeField]
     [Tooltip("EF_HIT_M_null")]
     private ParticleSystem particle;
+    private AudioSource slashAudio;
+
+    void Start() => slashAudio = GetComponent<AudioSource>();
 
     private void OnTriggerEnter(Collider collision)
     {

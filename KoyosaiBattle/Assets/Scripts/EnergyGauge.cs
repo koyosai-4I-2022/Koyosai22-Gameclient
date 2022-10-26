@@ -36,9 +36,12 @@ public class EnergyGauge : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Energyが増加する部分
-        if(maxEnergy > energy.value)
-            energy.value += Time.deltaTime;
+        if (!PlayerMotion.instance.guard)
+        {
+            //Energyが増加する部分
+            if (maxEnergy > energy.value)
+                energy.value += Time.deltaTime;
+        }
         
         //ゲージの色を変える
         if (energy.value >= 5)//エネルギーが5以上の時

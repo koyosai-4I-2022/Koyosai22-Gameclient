@@ -109,13 +109,22 @@ public class UIController : MonoBehaviour
     private List<Joycon> m_joycons;
     private Joycon m_joyconL;
     private Joycon m_joyconR;
+    //関数の参照
+    //public static UIController UIinstance;
+    //public void Awake()
+    //{
+    //    if (UIinstance == null)
+    //    {
+    //        UIinstance = this;
+    //    }
+    //}
 
     // これをゲーム開始時にTrueにする
     public bool isStart = false;
     // これをゲーム終了時にTrueにする
     public bool isFinish = false;
 
-    void Start()
+    void Awake()
     {
         state = PlayState.Connection;
         InitUI();

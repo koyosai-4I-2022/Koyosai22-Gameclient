@@ -8,7 +8,9 @@ public class Attack : MonoBehaviour
 {
     // “¯Šú—p
     [SerializeField]
-    StrixReplicator replicator;
+    public StrixReplicator replicator;
+
+    public static Attack instance;
 
     //JoyconLib‚Ì•Ï”
     private static readonly Joycon.Button[] m_buttons =

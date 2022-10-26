@@ -98,7 +98,7 @@ public class UIController : MonoBehaviour
     string ConflictName;
 
     [SerializeField]
-    PlayerData playerData;
+    public PlayerData playerData;
     [NonSerialized]
     public PlayerData playerDataClone;
 
@@ -109,6 +109,11 @@ public class UIController : MonoBehaviour
     private List<Joycon> m_joycons;
     private Joycon m_joyconL;
     private Joycon m_joyconR;
+
+    // これをゲーム開始時にTrueにする
+    public bool isStart = false;
+    // これをゲーム終了時にTrueにする
+    public bool isFinish = false;
 
     void Start()
     {
@@ -187,7 +192,6 @@ public class UIController : MonoBehaviour
 
         isJoyconButtom = true;
     }
-
     // ゲーム中の描画更新
     void UpdatePlayingUI()
 	{

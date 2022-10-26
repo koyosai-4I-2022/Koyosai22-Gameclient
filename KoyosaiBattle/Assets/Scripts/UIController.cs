@@ -98,7 +98,7 @@ public class UIController : MonoBehaviour
     string ConflictName;
 
     [SerializeField]
-    PlayerData playerData;
+    public PlayerData playerData;
     [NonSerialized]
     public PlayerData playerDataClone;
 
@@ -109,8 +109,17 @@ public class UIController : MonoBehaviour
     private List<Joycon> m_joycons;
     private Joycon m_joyconL;
     private Joycon m_joyconR;
+    //ä÷êîÇÃéQè∆
+    //public static UIController UIinstance;
+    //public void Awake()
+    //{
+    //    if (UIinstance == null)
+    //    {
+    //        UIinstance = this;
+    //    }
+    //}
 
-    void Start()
+    void Awake()
     {
         state = PlayState.Connection;
         InitUI();

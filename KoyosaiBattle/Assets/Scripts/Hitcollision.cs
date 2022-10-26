@@ -12,7 +12,9 @@ public class Hitcollision : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("swordcolor002"))
         {
-            //hp -= collision.gameObject.GetComponent<EnemySwordManager>().powerEnemy;
+            //if (Attack.instance.replicator.isLocal)
+            //return;
+            UIController.instance.playerData.HitPoint -= 2;
             // パーティクルシステムのインスタンスを生成する。
             ParticleSystem newParticle = Instantiate(particle);
             //　パーティクル発生場所を取得し、その位置に生成する。
@@ -21,7 +23,7 @@ public class Hitcollision : MonoBehaviour
             //　パーティクルの発生
             newParticle.Play();
             //　インスタンス化したパーティクルの消去
-            Destroy(newParticle.gameObject, 5.0f);
+            Destroy(newParticle.gameObject, 1.0f);
         } 
     }
 }

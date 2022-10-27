@@ -7,6 +7,6 @@ public class EnemyHPRotate : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
-       transform.rotation = PlayerMotion.instance.transform.rotation;
+        transform.rotation = PlayerMotion.instance.transform.rotation;
     }
 }

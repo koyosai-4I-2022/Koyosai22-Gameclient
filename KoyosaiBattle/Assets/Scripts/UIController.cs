@@ -124,7 +124,12 @@ public class UIController : MonoBehaviour
     // これをゲーム終了時にTrueにする
     public bool isFinish = false;
 
-    void Awake()
+    private void Awake()
+    {
+        // データを共有するためにインスタンスを生成
+        instance = this;
+    }
+    void Start()
     {
         state = PlayState.Connection;
         InitUI();
@@ -132,6 +137,7 @@ public class UIController : MonoBehaviour
 
     async void Update()
     {
+        Debug.Log(state);
         switch(state)
         {
             // ゲーム画面での毎フレーム処理
@@ -189,8 +195,6 @@ public class UIController : MonoBehaviour
 	{
         // 各処理の初期設定用の真偽型
         stateInit = new bool[6];
-        // データを共有するためにインスタンスを生成
-        instance = this;
 
         // joyconの設定
         m_joycons = JoyconManager.Instance.j;
@@ -204,13 +208,20 @@ public class UIController : MonoBehaviour
     // ゲーム中の描画更新
     void UpdatePlayingUI()
 	{
-
+        if(isFinish)
+        {
+            CalcScore.instance.Score();
+            state = PlayState.Resulting;
+        }
 	}
     // ゲーム画面の初期設定
     void InitPlayerUI()
     {
         // 初期設定したのでtrue
         stateInit[0] = true;
+
+        // 初期化処理はここに書く
+
 
         // プレイパネルを表示それ以外を非表示
         SetPanelActives();

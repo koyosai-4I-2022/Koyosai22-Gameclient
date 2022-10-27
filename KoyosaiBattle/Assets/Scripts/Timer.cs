@@ -26,6 +26,12 @@ public class Timer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Playing状態でない時、実行しない
+        if (UIController.instance.state != UIController.PlayState.Playing)
+        {
+            return;
+        }
+
         //1秒に1ずつカウントが減る
         timer += Time.deltaTime;
         if (timer >= 1 && count > 0)

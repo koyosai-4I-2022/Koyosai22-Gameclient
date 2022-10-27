@@ -458,7 +458,11 @@ public class UIController : MonoBehaviour
 
     void SetPanelActives()
 	{
-        playingPanel.SetActive(state == PlayState.Playing);
+        if(UIController.instance.state == UIController.PlayState.Playing)
+		{
+
+		}
+        playingPanel.SetActive(state == UIController.PlayState.Playing);
         inputSelectingPanel.SetActive(state == PlayState.InputSelecting);
         RoadingPanel.SetActive(state == PlayState.Roading);
         rankingPanel.SetActive(state == PlayState.Ranking);

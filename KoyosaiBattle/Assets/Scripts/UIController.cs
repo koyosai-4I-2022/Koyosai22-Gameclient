@@ -59,9 +59,11 @@ public class UIController : MonoBehaviour
 
     // ロード画面で使用するテキストと画像
     [SerializeField]
-    Text[] RoadingText;
+    Text[] LoadingText;
     [SerializeField]
-    Image[] RoadingImage;
+    Image[] LoadingImage;
+    [SerializeField]
+    float TextChangeSpeed = 1.0f;
 
     // リザルト画面で使用するテキストと画像
     [SerializeField]
@@ -85,6 +87,7 @@ public class UIController : MonoBehaviour
     [SerializeField]
     Image[] RankingImage;
 
+    // 各処理の初期化を一度しか
     bool[] stateInit;
     bool finishFrag = false;
 
@@ -131,13 +134,15 @@ public class UIController : MonoBehaviour
     }
     void Start()
     {
+        // 最初にConnectionを表示する
         state = PlayState.Connection;
         InitUI();
     }
 
-    async void Update()
+    void Update()
     {
-        Debug.Log(state);
+        if(m_joycons == null || m_joycons.Count <= 0)
+            return;
         switch(state)
         {
             // ゲーム画面での毎フレーム処理
@@ -159,11 +164,11 @@ public class UIController : MonoBehaviour
                 UpdateInputSelectingUI();
                 break;
             // ロード画面の処理
-            case PlayState.Roading:
+            case PlayState.Loading:
                 // 最初の一回目のみ実行(メソッド内でtrueに)
                 if(!stateInit[2])
-                    InitRoadingUI();
-                UpdateRoadingUI();
+                    InitLoadingUI();
+                //UpdateLoadingUI();
                 break;
             // リザルト画面の処理
             case PlayState.Resulting:
@@ -221,7 +226,7 @@ public class UIController : MonoBehaviour
         stateInit[0] = true;
 
         // 初期化処理はここに書く
-
+        isStart = true;
 
         // プレイパネルを表示それ以外を非表示
         SetPanelActives();
@@ -234,14 +239,18 @@ public class UIController : MonoBehaviour
         string playerName1 = InputSelectingInputName[0].text;
 
         // debugで使用あとで消す
-        if(Input.GetKeyDown(KeyCode.K))
-        {
-            selectIsReady[1] = true;
-        }
+        //if(Input.GetKeyDown(KeyCode.K))
+        //{
+        //    selectIsReady[1] = true;
+        //}
         // 名前が入力されていたらフラグをtrueに
         if(!selectIsReady[0] && playerName1 != string.Empty)
 		{
             selectIsReady[0] = true;
+		}
+        if(selectIsReady[0] && m_joyconR.GetAccel().sqrMagnitude > 4f)
+		{
+            selectIsReady[1] = true;
 		}
         // すべてのフラグがtrueでサーバにPOSTしてない時にPOST処理
         if(selectIsReady[0] && selectIsReady[1] && !selectIsSendName)
@@ -321,19 +330,40 @@ public class UIController : MonoBehaviour
     }
 
     // ロード画面の描画更新
-    void UpdateRoadingUI()
-	{
-
-	}
+    IEnumerator UpdateLoadingUI()
+    {
+        // TextChangeSpeedの秒数後にテキストを変更
+        LoadingText[0].text = "Now Loading";
+        yield return new WaitForSeconds(TextChangeSpeed);
+        LoadingText[0].text = "Now Loading.";
+        yield return new WaitForSeconds(TextChangeSpeed);
+        LoadingText[0].text = "Now Loading..";
+        yield return new WaitForSeconds(TextChangeSpeed);
+        LoadingText[0].text = "Now Loading...";
+        yield return new WaitForSeconds(TextChangeSpeed);
+        FinishLoading(stateInit[1]);
+    }
     // ロード画面の初期設定
-    void InitRoadingUI()
+    void InitLoadingUI()
     {
         // 初期設定したのでtrue
         stateInit[2] = true;
 
         // リザルトパネルを表示それ以外を非表示
         SetPanelActives();
+
+        // コルーチン(非同期処理)を実行
+        StartCoroutine(nameof(UpdateLoadingUI));
     }
+    // ロード画面の終了処理
+    void FinishLoading(bool isPlayLoad)
+	{
+        if(isPlayLoad)
+            state = PlayState.Playing;
+        else
+            state = PlayState.InputSelecting;
+
+	}
 
     // リザルトの描画更新
     void UpdateResultingUI()
@@ -343,7 +373,7 @@ public class UIController : MonoBehaviour
 		{
             state = PlayState.Ranking;
             isJoyconButtom = false;
-            Invoke(nameof(InvokeTransOffset), 4f); // 4秒後にisJoyconButtonをtrueにしてボタンに反応するように
+            Invoke(nameof(InvokeTransOffset), 1f); // 4秒後にisJoyconButtonをtrueにしてボタンに反応するように
 		}
     }
     // リザルト画面の初期設定
@@ -379,6 +409,7 @@ public class UIController : MonoBehaviour
                 // ローディング画面挟む？
                 state = PlayState.InputSelecting;
 
+                // 初期化
                 stateInit = new bool[6];
             }
             else
@@ -390,7 +421,7 @@ public class UIController : MonoBehaviour
                 stateInit[3] = true;
                 isJoyconButtom = false;
                 // 4秒後にisJoyconButtomをtrueにしてボタンが反応するようにする
-                Invoke(nameof(InvokeTransOffset), 4f);
+                Invoke(nameof(InvokeTransOffset), 1f);
             }
         }
         // Bボタンでリザルト画面に逆遷移
@@ -403,7 +434,7 @@ public class UIController : MonoBehaviour
             // 4秒後にisJoyconButtomをtrueにしてボタンが反応するようにする
             stateInit[3] = false;
             isJoyconButtom = false;
-            Invoke(nameof(InvokeTransOffset), 4f);
+            Invoke(nameof(InvokeTransOffset), 1f);
         }
 	}
     // ランキング画面の初期設定
@@ -471,7 +502,7 @@ public class UIController : MonoBehaviour
 	{
         playingPanel.SetActive(state == PlayState.Playing);
         inputSelectingPanel.SetActive(state == PlayState.InputSelecting);
-        RoadingPanel.SetActive(state == PlayState.Roading);
+        RoadingPanel.SetActive(state == PlayState.Loading);
         rankingPanel.SetActive(state == PlayState.Ranking);
         resultingPanel.SetActive(state == PlayState.Resulting);
         connectionPanel.SetActive(state == PlayState.Connection);
@@ -489,7 +520,7 @@ public class UIController : MonoBehaviour
 	{
         Playing = 0,
         Paused = 1,
-        Roading = 2,
+        Loading = 2,
         InputSelecting = 3,
         Resulting = 4,
         Ranking = 5,

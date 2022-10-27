@@ -23,14 +23,6 @@ public class ServerRequestController : MonoBehaviour
 
     static string BASEURL = "http://localhost:8000/";
 
-    void Start()
-    {
-
-    }
-    async void Update()
-    {
-
-    }
 
     // Server応答用のメソッド
     // responseのjsonをTaskにいれて返す

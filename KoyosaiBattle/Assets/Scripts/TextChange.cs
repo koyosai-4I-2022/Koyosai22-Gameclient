@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class TextChange : MonoBehaviour
 {
+    // UIControllerÇ…ÉRÅ[ÉhÇà⁄êA
+
     public Text text;
     public float TextChangeSpeed;
     // Start is called before the first frame update
@@ -22,13 +24,13 @@ public class TextChange : MonoBehaviour
     private IEnumerator Load()
     {
         for(;;){
-            gameObject.GetComponent<Text>().text = "Now Loading";
+            text.text = "Now Loading";
             yield return new WaitForSeconds (TextChangeSpeed);
-            gameObject.GetComponent<Text>().text = "Now Loading.";
+            text.text = "Now Loading.";
             yield return new WaitForSeconds (TextChangeSpeed);
-            gameObject.GetComponent<Text>().text = "Now Loading..";
+            text.text = "Now Loading..";
             yield return new WaitForSeconds (TextChangeSpeed);
-            gameObject.GetComponent<Text>().text = "Now Loading...";
+            text.text = "Now Loading...";
             yield return new WaitForSeconds (TextChangeSpeed);
         }
     }

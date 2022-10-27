@@ -47,11 +47,15 @@ public class Attack : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        /*
         // 複製されたゲームオブジェクトの場合処理を行わない
-        if(!replicator.isLocal)
+        if (!replicator.isLocal)
             return;
-        */
+
+        //Playing状態でない時、実行しない
+        if (UIController.instance.state != UIController.PlayState.Playing)
+        {
+            return;
+        }
 
         if (m_joycons == null || m_joycons.Count <= 0) return;
 

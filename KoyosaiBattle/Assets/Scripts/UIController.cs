@@ -239,10 +239,10 @@ public class UIController : MonoBehaviour
         string playerName1 = InputSelectingInputName[0].text;
 
         // debugで使用あとで消す
-        if(Input.GetKeyDown(KeyCode.K))
-        {
-            selectIsReady[1] = true;
-        }
+        //if(Input.GetKeyDown(KeyCode.K))
+        //{
+        //    selectIsReady[1] = true;
+        //}
         // 名前が入力されていたらフラグをtrueに
         if(!selectIsReady[0] && playerName1 != string.Empty)
 		{
@@ -333,19 +333,14 @@ public class UIController : MonoBehaviour
     IEnumerator UpdateLoadingUI()
     {
         // TextChangeSpeedの秒数後にテキストを変更
-        Debug.Log("Now Loading");
         LoadingText[0].text = "Now Loading";
         yield return new WaitForSeconds(TextChangeSpeed);
-        Debug.Log("Now Loading.");
         LoadingText[0].text = "Now Loading.";
         yield return new WaitForSeconds(TextChangeSpeed);
-        Debug.Log("Now Loading..");
         LoadingText[0].text = "Now Loading..";
         yield return new WaitForSeconds(TextChangeSpeed);
-        Debug.Log("Now Loading...");
         LoadingText[0].text = "Now Loading...";
         yield return new WaitForSeconds(TextChangeSpeed);
-        Debug.Log("Loading Finish");
         FinishLoading(stateInit[1]);
     }
     // ロード画面の初期設定

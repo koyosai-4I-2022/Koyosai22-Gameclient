@@ -50,6 +50,10 @@ public class JSample : MonoBehaviour
 	float mag = 1.2f;
 	float threshold = 9f;
 
+	float magShoulderToArm2;
+	float magArm2ToArm1;
+	float magArm1ToHand;
+
     void Start()
     {
 		// フレームレートを固定 60FPS
@@ -73,10 +77,15 @@ public class JSample : MonoBehaviour
 
 		Sword.transform.rotation = m_joyconR.GetVector();
 		threshold = mag * mag;
+
+		magShoulderToArm2 = ( ( Arm2.transform.localPosition - Shoulder.transform.localPosition ) * 100f ).magnitude / 100f;
+		magArm2ToArm1 = ( ( Arm1.transform.localPosition - Shoulder.transform.localPosition ) * 100f ).magnitude / 100f;
+		magArm1ToHand = ( ( Hand.transform.localPosition - Shoulder.transform.localPosition ) * 100f ).magnitude / 100f;
+		Debug.Log($"{magShoulderToArm2}:{magArm2ToArm1}:{magArm1ToHand}");
 	}
 
-    // Update is called once per frame
-    void Update()
+	// Update is called once per frame
+	void Update()
 	{
         if(m_joycons == null || m_joycons.Count <= 0)
             return;
@@ -133,13 +142,10 @@ public class JSample : MonoBehaviour
 			//	}
 			//}
 
-
 			//beforeAccel = dif;
-
 			//{
 			//    J.transform.rotation = ori;
 			//}
-
 			//Debug.Log($"{ori}");
 
 			// 前フレームの加速度の差を取得
@@ -154,6 +160,7 @@ public class JSample : MonoBehaviour
 			float sqr = accUnity.sqrMagnitude;
 			beforeAccel = m_joyconR.GetAccel();
 			deltaAccel = accUnity;
+
 			if(sqr > p)
 			{
 				swingPos += accUnity;
@@ -168,12 +175,6 @@ public class JSample : MonoBehaviour
 				{
 					Sword.transform.localPosition = ( vec );
 				}
-				var svec = Sword.transform.position - Shoulder.transform.position;
-				var svecp3 = svec / 3f;
-				//Arm2.transform.localPosition = svecp3;
-				//Arm1.transform.localPosition = svecp3;
-				//Hand.transform.localPosition = svecp3;
-
 				count = 0;
 				//if(!par.isPlaying) par.Play();
 				//Debug.Log($"{accUnity}:{accUnity.sqrMagnitude}");
@@ -191,6 +192,13 @@ public class JSample : MonoBehaviour
 					count = 0;
 				}
 			}
+			var svec = Sword.transform.position - Shoulder.transform.position;
+			var svecN = svec.normalized;
+
+			Arm2.transform.localPosition = svecN * magShoulderToArm2;
+			Arm1.transform.localPosition = svecN * magArm2ToArm1;
+			Hand.transform.localPosition = svecN * magArm1ToHand;
+
 			//Hand.transform.position = Sword.transform.position;
 
 			//C.transform.position += acc * Time.deltaTime * 1f;

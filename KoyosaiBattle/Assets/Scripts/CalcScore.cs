@@ -30,16 +30,18 @@ public class CalcScore : MonoBehaviour
     private bool beingMeasured;
     private float startTime;
     private float elapsedTime;
+
+    public static CalcScore instance;
     
     
 
     // Start is called before the first frame update
     void Start()
     {
-        AHP = UIController.instance.playerData.HitPoint;
-        BHP = UIController.instance.playerDataClone.HitPoint;
-        UIController.instance.playerData.Score = 0;
-        UIController.instance.playerDataClone.Score = 0;
+        //AHP = UIController.instance.playerData.HitPoint;
+        //BHP = UIController.instance.playerDataClone.HitPoint;
+        //UIController.instance.playerData.Score = 0;
+        //UIController.instance.playerDataClone.Score = 0;
         beingMeasured = false;
     }
 

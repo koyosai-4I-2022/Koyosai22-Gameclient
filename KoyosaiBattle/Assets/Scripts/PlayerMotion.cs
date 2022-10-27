@@ -24,7 +24,7 @@ public class PlayerMotion : MonoBehaviour
     //スティックのsetting
     private float degree;
 
-    private float timer;
+    private float RunTime;
 
     //gurdとrunの状態を表す変数
     public bool guard;
@@ -51,17 +51,27 @@ public class PlayerMotion : MonoBehaviour
 
         //Animatorの初期化
         Animator = GetComponent<Animator>();
+        Animator.enabled = false;
 
-        timer = 0;
+        //時間の初期化
+        RunTime = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
-        /*
+        
         if(!replicator.isLocal)
             return;
-        */
+
+        //Playing状態でない時、実行しない
+        if (UIController.instance.state != UIController.PlayState.Playing)
+        {
+            return;
+        }
+
+        //Animatorを再生
+        Animator.enabled = true;
 
         //JoyconLib
         if (m_joycons == null || m_joycons.Count <= 0) return;
@@ -116,10 +126,10 @@ public class PlayerMotion : MonoBehaviour
             run = false;
         }
 
-        if(timer >= 0.2)
+        if(RunTime >= 0.2)
         {
             run = false;
-            timer = 0;
+            RunTime = 0;
         }
 
         //右スティックでPlayerの向きを変える
@@ -139,10 +149,10 @@ public class PlayerMotion : MonoBehaviour
                 {
                     //前に走る(Lボタンを押している場合)
                     if (run)
-                        Animator.Play("run1");
+                        Animator.SetBool("run1", true);
                     //前に歩く
-                    else 
-                        Animator.Play("walk1");
+                    else
+                        Animator.SetBool("walk1", true);
                 }
 
             }
@@ -150,46 +160,46 @@ public class PlayerMotion : MonoBehaviour
             //斜め左前
             if (degree * 180 / Mathf.PI <= -15 && degree * 180 / Mathf.PI >= -75)
             {
-                Animator.Play("Jog Forward Diagonal");
+                Animator.SetBool("Jog Forward Diagonal",true);
             }
 
             //Walk Left
             if (degree * 180 / Mathf.PI < -75 && degree * 180 / Mathf.PI > -105)
             {
-                Animator.Play("strafe2");
+                Animator.SetBool("strafe2",true);
             }
 
             //斜め左後
             if (degree * 180 / Mathf.PI <= -105 && degree * 180 / Mathf.PI >= -165)
             {
-                Animator.Play("Jog Backward Diagonal");
+                Animator.SetBool("Jog Backward Diagonal",true);
             }
 
             //Walk Back
             if (degree * 180 / Mathf.PI < -165 || degree * 180 / Mathf.PI > 165)
             {
                 if (run)
-                    Animator.Play("run2");
+                    Animator.SetBool("run2",true);
                 else
-                    Animator.Play("walk2");
+                    Animator.SetBool("walk2",true);
             }
 
             //斜め右後
             if (degree * 180 / Mathf.PI >= 105 && degree * 180 / Mathf.PI <= 165)
             {
-                Animator.Play("Jog Backward Diagonal (1)");
+                Animator.SetBool("Jog Backward Diagonal (1)",true);
             }
 
             //Walk Right
             if (degree * 180 / Mathf.PI > 75 && degree * 180 / Mathf.PI < 105)
             {
-                Animator.Play("strafe1");
+                Animator.SetBool("strafe1",true);
             }
 
             //斜め右前
             if (degree * 180 / Mathf.PI >= 15 && degree * 180 / Mathf.PI <= 75)
             {
-                Animator.Play("Jog Forward Diagonal (1)");
+                Animator.SetBool("Jog Forward Diagonal (1)",true);
             }
 
             //左スティックを倒しているとき
@@ -197,7 +207,7 @@ public class PlayerMotion : MonoBehaviour
             {
                 if (run)
                 {
-                    timer += Time.deltaTime;
+                    RunTime += Time.deltaTime;
                     //Playerがスティックを倒した方向に進む
                     Vector3 Runvector = new Vector3(Mathf.Sin(degree), 0, Mathf.Cos(degree));
                     transform.Translate(Runvector * Time.deltaTime * 20);
@@ -209,7 +219,8 @@ public class PlayerMotion : MonoBehaviour
         }
         if(UIController.instance.playerData.HitPoint <= 0)
         {
-            Animator.Play("death");
+            Animator.SetBool("death1",true);
+            UIController.instance.isFinish = true;
         }
     }
 }

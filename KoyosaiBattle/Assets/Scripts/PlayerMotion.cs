@@ -95,14 +95,18 @@ public class PlayerMotion : MonoBehaviour
         }
 
         //エネルギーが2以上あるとき
-        if (EnergyGauge.instance.CanUse(2))
+        if (!guard && EnergyGauge.instance.CanUse(2))
         {
+            
             //Lボタンを押したとき
             if (m_joyconL.GetButtonDown(m_buttons[11])&&!run)
             {
-                run = true;
-                //エネルギーを2使用する
-                EnergyGauge.instance.EnergyLoss(2);
+                if (Lstick[0] != 0 || Lstick[1] != 0)
+                {
+                    run = true;
+                    //エネルギーを2使用する
+                    EnergyGauge.instance.EnergyLoss(2);
+                }
             }
         }
 
@@ -202,6 +206,10 @@ public class PlayerMotion : MonoBehaviour
                 Vector3 vector = new Vector3(Mathf.Sin(degree), 0, Mathf.Cos(degree));
                 transform.Translate(vector * Time.deltaTime * 5);
             }
+        }
+        if(UIController.instance.playerData.HitPoint <= 0)
+        {
+            Animator.Play("death");
         }
     }
 }

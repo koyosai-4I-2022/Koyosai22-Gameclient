@@ -30,25 +30,23 @@ public class HPGauge : MonoBehaviour
     {
         //SliderのValueを初期化
         slider.value = maxHp;
-        
+        UIController.instance.playerData.HitPoint = maxHp;
     }
 
     // Update is called once per frame
     void Update()
     {
-        //1秒で1ずつHPが減る
-        timer += Time.deltaTime;
-        if (timer >= 1)
-        {
-            Damage(1);
-            timer = 0;
-        }
+        //現在のHitPointをsliderに適用
+        slider.value = UIController.instance.playerData.HitPoint;
     }
 
     //被ダメージ関数
-    public void Damage(int damage)
+    /*public void Damage()
     {
-        if(slider.value > 0)
-            slider.value -= damage;
-    }
+        if (slider.value > 0)
+        {
+            UIController.instance.playerData.HitPoint -= 10;
+            slider.value = UIController.instance.playerData.HitPoint;
+        }
+    }*/
 }

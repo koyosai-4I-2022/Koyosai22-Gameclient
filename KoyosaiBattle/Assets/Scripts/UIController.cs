@@ -97,9 +97,9 @@ public class UIController : MonoBehaviour
     int ConflictId;
     string ConflictName;
 
-    [SerializeField] // 自分のデータ
+    [SerializeField]
     public PlayerData playerData;
-    [NonSerialized] // 相手のデータ
+    [NonSerialized]
     public PlayerData playerDataClone;
 
     //JoyconLibの変数
@@ -109,8 +109,22 @@ public class UIController : MonoBehaviour
     private List<Joycon> m_joycons;
     private Joycon m_joyconL;
     private Joycon m_joyconR;
+    //関数の参照
+    //public static UIController UIinstance;
+    //public void Awake()
+    //{
+    //    if (UIinstance == null)
+    //    {
+    //        UIinstance = this;
+    //    }
+    //}
 
-    void Start()
+    // これをゲーム開始時にTrueにする
+    public bool isStart = false;
+    // これをゲーム終了時にTrueにする
+    public bool isFinish = false;
+
+    void Awake()
     {
         state = PlayState.Connection;
         InitUI();
@@ -187,7 +201,6 @@ public class UIController : MonoBehaviour
 
         isJoyconButtom = true;
     }
-
     // ゲーム中の描画更新
     void UpdatePlayingUI()
 	{

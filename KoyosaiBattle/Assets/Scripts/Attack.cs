@@ -8,7 +8,9 @@ public class Attack : MonoBehaviour
 {
     // 同期用
     [SerializeField]
-    StrixReplicator replicator;
+    public StrixReplicator replicator;
+
+    public static Attack instance;
 
     //JoyconLibの変数
     private static readonly Joycon.Button[] m_buttons =
@@ -45,9 +47,11 @@ public class Attack : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        /*
         // 複製されたゲームオブジェクトの場合処理を行わない
         if(!replicator.isLocal)
             return;
+        */
 
         if (m_joycons == null || m_joycons.Count <= 0) return;
 

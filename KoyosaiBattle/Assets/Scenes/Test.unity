@@ -325,7 +325,7 @@ Transform:
   - {fileID: 867155391}
   - {fileID: 1737362451}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &86277292
 MonoBehaviour:
@@ -3267,7 +3267,6 @@ GameObject:
   - component: {fileID: 843202541}
   - component: {fileID: 843202540}
   - component: {fileID: 843202539}
-  - component: {fileID: 843202538}
   m_Layer: 0
   m_Name: swordcolor002
   m_TagString: swordcolor002
@@ -3289,18 +3288,6 @@ Transform:
   m_Father: {fileID: 970605192}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 8.774, y: 100.635, z: 100}
---- !u!114 &843202538
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 843202536}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 99243bf8a4487324ea4f95b4ba434589, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!65 &843202539
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4077,7 +4064,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &970282494
 GameObject:

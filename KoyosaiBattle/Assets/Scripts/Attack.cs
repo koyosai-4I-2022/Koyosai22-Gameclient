@@ -42,6 +42,11 @@ public class Attack : MonoBehaviour
 
         //Animator‚Ì‰Šú‰»
         animator = GetComponent<Animator>();
+
+        if(!replicator.isLocal)
+        {
+            this.gameObject.transform.GetChild(0).gameObject.SetActive(false);
+        }
     }
 
     // Update is called once per frame

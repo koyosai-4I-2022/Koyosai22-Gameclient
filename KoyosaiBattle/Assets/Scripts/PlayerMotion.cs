@@ -71,12 +71,17 @@ public class PlayerMotion : MonoBehaviour
         }
 
         //Animatorを再生
-        Animator.enabled = true;
+        if (!Animator.enabled)
+            Animator.enabled = true;
 
         //JoyconLib
         if (m_joycons == null || m_joycons.Count <= 0) return;
         float[] Lstick = m_joyconL.GetStick();
         float[] Rstick = m_joyconR.GetStick();
+
+
+
+
 
         //エネルギーが3以上あるとき
         if (EnergyGauge.instance.CanUse(3))
@@ -152,7 +157,10 @@ public class PlayerMotion : MonoBehaviour
                         Animator.SetBool("run1", true);
                     //前に歩く
                     else
+                    {
+                        Animator.SetBool("run1", false);
                         Animator.SetBool("walk1", true);
+                    }
                 }
 
             }
@@ -179,9 +187,12 @@ public class PlayerMotion : MonoBehaviour
             if (degree * 180 / Mathf.PI < -165 || degree * 180 / Mathf.PI > 165)
             {
                 if (run)
-                    Animator.SetBool("run2",true);
+                    Animator.SetBool("run2", true);
                 else
-                    Animator.SetBool("walk2",true);
+                {
+                    Animator.SetBool("run2", false);
+                    Animator.SetBool("walk2", true);
+                }
             }
 
             //斜め右後
@@ -222,5 +233,10 @@ public class PlayerMotion : MonoBehaviour
             Animator.SetBool("death1",true);
             UIController.instance.isFinish = true;
         }
+    }
+
+    public void Walk1FinishEvent()
+    {
+
     }
 }

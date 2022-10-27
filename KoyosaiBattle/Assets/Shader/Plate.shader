@@ -50,7 +50,7 @@ Shader "Unlit/Plate"
                 fixed4 col = tex2D(_MainTex, i.uv);
                 // apply fog
                 UNITY_APPLY_FOG(i.fogCoord, col);
-                fixed2 v = step(0 , sin(150 * i.uv)) * 0.5;
+                fixed2 v = step(0.4 , sin(150 * i.uv)) * 0.5;
                 return col * frac(v.x + v.y) * 2;
                 // return col * step(0, sin(50 * i.uv.x));
             }

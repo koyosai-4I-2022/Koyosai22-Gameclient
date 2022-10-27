@@ -97,9 +97,9 @@ public class UIController : MonoBehaviour
     int ConflictId;
     string ConflictName;
 
-    [SerializeField]
-    PlayerData playerData;
-    [NonSerialized]
+    [SerializeField] // 自分のデータ
+    public PlayerData playerData;
+    [NonSerialized] // 相手のデータ
     public PlayerData playerDataClone;
 
     //JoyconLibの変数

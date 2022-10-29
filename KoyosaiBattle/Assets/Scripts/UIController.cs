@@ -137,7 +137,6 @@ public class UIController : MonoBehaviour
 
     async void Update()
     {
-        Debug.Log(state);
         switch(state)
         {
             // ƒQ[ƒ€‰æ–Ê‚Å‚Ì–ˆƒtƒŒ[ƒ€ˆ—

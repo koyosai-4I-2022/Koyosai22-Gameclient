@@ -158,7 +158,6 @@ public class PlayerMotion : MonoBehaviour
                     //前に歩く
                     else
                     {
-                        Animator.SetBool("run1", false);
                         Animator.SetBool("walk1", true);
                     }
                 }
@@ -190,7 +189,6 @@ public class PlayerMotion : MonoBehaviour
                     Animator.SetBool("run2", true);
                 else
                 {
-                    Animator.SetBool("run2", false);
                     Animator.SetBool("walk2", true);
                 }
             }
@@ -233,10 +231,5 @@ public class PlayerMotion : MonoBehaviour
             Animator.SetBool("death1",true);
             UIController.instance.isFinish = true;
         }
-    }
-
-    public void Walk1FinishEvent()
-    {
-
     }
 }

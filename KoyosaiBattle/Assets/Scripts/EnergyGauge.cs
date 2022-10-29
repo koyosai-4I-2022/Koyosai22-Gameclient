@@ -56,7 +56,6 @@ public class EnergyGauge : MonoBehaviour
         {
             energy.value  -= i;
         }
-        Debug.Log("エネルギー消費しました");
     }
 
     //エネルギーが引数以上あるかを判断する関数

@@ -30,7 +30,7 @@ public class EnergyGauge : MonoBehaviour
     void Start()
     {
         //Slider‚ÌValue‚ğ‰Šú‰»
-        energy.value = maxEnergy;
+        InitializeEnergyGauge();
     }
 
     // Update is called once per frame
@@ -64,5 +64,11 @@ public class EnergyGauge : MonoBehaviour
         if (energy.value - k >= 0)
             return true;
         else return false;
+    }
+
+    public void InitializeEnergyGauge()
+    {
+        //Slider‚ÌValue‚ğ‰Šú‰»
+        energy.value = maxEnergy;
     }
 }

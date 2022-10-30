@@ -7,45 +7,45 @@ using SoftGear.Strix.Unity.Runtime;
 
 public class UIController : MonoBehaviour
 {
-    // Œ»İ‚Ìó‘Ô
-    // 0 ƒQ[ƒ€’†
-    // 1 ’†’f’†
-    // 2 ƒ[ƒh’†
-    // 3 ‘Ò‹@‰æ–Ê
-    // 4 ƒŠƒUƒ‹ƒg
-    // 5 ƒ‰ƒ“ƒLƒ“ƒO
-    // 6 Ú‘±
+    // ç¾åœ¨ã®çŠ¶æ…‹
+    // 0 ã‚²ãƒ¼ãƒ ä¸­
+    // 1 ä¸­æ–­ä¸­
+    // 2 ãƒ­ãƒ¼ãƒ‰ä¸­
+    // 3 å¾…æ©Ÿç”»é¢
+    // 4 ãƒªã‚¶ãƒ«ãƒˆ
+    // 5 ãƒ©ãƒ³ã‚­ãƒ³ã‚°
+    // 6 æ¥ç¶š
     [NonSerialized]
     public PlayState state;
 
     public static UIController instance;
 
-    // Ú‘±Šm”F—pƒpƒlƒ‹
+    // æ¥ç¶šç¢ºèªç”¨ãƒ‘ãƒãƒ«
     [SerializeField]
     GameObject connectionPanel;
-    // ƒQ[ƒ€’†‚Ìƒpƒlƒ‹
+    // ã‚²ãƒ¼ãƒ ä¸­ã®ãƒ‘ãƒãƒ«
     [SerializeField]
     GameObject playingPanel;
-    // ƒvƒŒƒCƒ„[–¼“ü—Í(ƒQ[ƒ€‚ªn‚Ü‚é‘O‚Ì‘Ò‹@‰æ–Ê)—p‚Ìƒpƒlƒ‹
+    // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼åå…¥åŠ›(ã‚²ãƒ¼ãƒ ãŒå§‹ã¾ã‚‹å‰ã®å¾…æ©Ÿç”»é¢)ç”¨ã®ãƒ‘ãƒãƒ«
     [SerializeField]
     GameObject inputSelectingPanel;
-    // ƒ[ƒh’†‚Ì•\¦—pƒpƒlƒ‹
+    // ãƒ­ãƒ¼ãƒ‰ä¸­ã®è¡¨ç¤ºç”¨ãƒ‘ãƒãƒ«
     [SerializeField]
     GameObject RoadingPanel;
-    // ƒŠƒUƒ‹ƒg•\¦—p‚Ìƒpƒlƒ‹
+    // ãƒªã‚¶ãƒ«ãƒˆè¡¨ç¤ºç”¨ã®ãƒ‘ãƒãƒ«
     [SerializeField]
     GameObject resultingPanel;
-    // ƒ‰ƒ“ƒLƒ“ƒO•\¦—p‚Ìƒpƒlƒ‹
+    // ãƒ©ãƒ³ã‚­ãƒ³ã‚°è¡¨ç¤ºç”¨ã®ãƒ‘ãƒãƒ«
     [SerializeField]
     GameObject rankingPanel;
 
-    // ƒQ[ƒ€‰æ–Ê‚Åg—p‚·‚éƒeƒLƒXƒg‚Æ‰æ‘œ
+    // ã‚²ãƒ¼ãƒ ç”»é¢ã§ä½¿ç”¨ã™ã‚‹ãƒ†ã‚­ã‚¹ãƒˆã¨ç”»åƒ
     [SerializeField]
     Text[] PlayingText;
     [SerializeField]
     Image[] PlayingImage;
 
-    // ‘Ò‹@‘I‘ğ‰æ–Ê‚Åg—p‚·‚éƒeƒLƒXƒg‚Æ‰æ‘œ
+    // å¾…æ©Ÿé¸æŠç”»é¢ã§ä½¿ç”¨ã™ã‚‹ãƒ†ã‚­ã‚¹ãƒˆã¨ç”»åƒ
     [SerializeField]
     Image[] InputSelectingReady;
     [SerializeField]
@@ -57,7 +57,7 @@ public class UIController : MonoBehaviour
     [SerializeField]
     InputField[] InputSelectingInputName;
 
-    // ƒ[ƒh‰æ–Ê‚Åg—p‚·‚éƒeƒLƒXƒg‚Æ‰æ‘œ
+    // ãƒ­ãƒ¼ãƒ‰ç”»é¢ã§ä½¿ç”¨ã™ã‚‹ãƒ†ã‚­ã‚¹ãƒˆã¨ç”»åƒ
     [SerializeField]
     Text[] LoadingText;
     [SerializeField]
@@ -65,7 +65,7 @@ public class UIController : MonoBehaviour
     [SerializeField]
     float TextChangeSpeed = 1.0f;
 
-    // ƒŠƒUƒ‹ƒg‰æ–Ê‚Åg—p‚·‚éƒeƒLƒXƒg‚Æ‰æ‘œ
+    // ãƒªã‚¶ãƒ«ãƒˆç”»é¢ã§ä½¿ç”¨ã™ã‚‹ãƒ†ã‚­ã‚¹ãƒˆã¨ç”»åƒ
     [SerializeField]
     Text[] ResultingName;
     [SerializeField]
@@ -73,7 +73,7 @@ public class UIController : MonoBehaviour
     [SerializeField]
     Image[] ResultingImage;
 
-    // ƒ‰ƒ“ƒLƒ“ƒO‰æ–Ê‚Åg—p‚·‚éƒeƒLƒXƒg‚Æ‰æ‘œ
+    // ãƒ©ãƒ³ã‚­ãƒ³ã‚°ç”»é¢ã§ä½¿ç”¨ã™ã‚‹ãƒ†ã‚­ã‚¹ãƒˆã¨ç”»åƒ
     [SerializeField]
     Text[] RankingName;
     [SerializeField]
@@ -87,7 +87,7 @@ public class UIController : MonoBehaviour
     [SerializeField]
     Image[] RankingImage;
 
-    // Šeˆ—‚Ì‰Šú‰»‚ğˆê“x‚µ‚©
+    // å„å‡¦ç†ã®åˆæœŸåŒ–ã‚’ä¸€åº¦ã—ã‹
     bool[] stateInit;
     bool finishFrag = false;
 
@@ -105,14 +105,14 @@ public class UIController : MonoBehaviour
     [NonSerialized]
     public PlayerData playerDataClone;
 
-    //JoyconLib‚Ì•Ï”
+    //JoyconLibã®å¤‰æ•°
     private static readonly Joycon.Button[] m_buttons =
        Enum.GetValues(typeof(Joycon.Button)) as Joycon.Button[];
 
     private List<Joycon> m_joycons;
     private Joycon m_joyconL;
     private Joycon m_joyconR;
-    //ŠÖ”‚ÌQÆ
+    //é–¢æ•°ã®å‚ç…§
     //public static UIController UIinstance;
     //public void Awake()
     //{
@@ -122,19 +122,19 @@ public class UIController : MonoBehaviour
     //    }
     //}
 
-    // ‚±‚ê‚ğƒQ[ƒ€ŠJn‚ÉTrue‚É‚·‚é
+    // ã“ã‚Œã‚’ã‚²ãƒ¼ãƒ é–‹å§‹æ™‚ã«Trueã«ã™ã‚‹
     public bool isStart = false;
-    // ‚±‚ê‚ğƒQ[ƒ€I—¹‚ÉTrue‚É‚·‚é
+    // ã“ã‚Œã‚’ã‚²ãƒ¼ãƒ çµ‚äº†æ™‚ã«Trueã«ã™ã‚‹
     public bool isFinish = false;
 
     private void Awake()
     {
-        // ƒf[ƒ^‚ğ‹¤—L‚·‚é‚½‚ß‚ÉƒCƒ“ƒXƒ^ƒ“ƒX‚ğ¶¬
+        // ãƒ‡ãƒ¼ã‚¿ã‚’å…±æœ‰ã™ã‚‹ãŸã‚ã«ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ç”Ÿæˆ
         instance = this;
     }
     void Start()
     {
-        // Å‰‚ÉConnection‚ğ•\¦‚·‚é
+        // æœ€åˆã«Connectionã‚’è¡¨ç¤ºã™ã‚‹
         state = PlayState.Connection;
         InitUI();
     }
@@ -145,47 +145,47 @@ public class UIController : MonoBehaviour
             return;
         switch(state)
         {
-            // ƒQ[ƒ€‰æ–Ê‚Å‚Ì–ˆƒtƒŒ[ƒ€ˆ—
+            // ã‚²ãƒ¼ãƒ ç”»é¢ã§ã®æ¯ãƒ•ãƒ¬ãƒ¼ãƒ å‡¦ç†
             case PlayState.Playing:
-                // Å‰‚Ìˆê‰ñ–Ú‚Ì‚İÀs(ƒƒ\ƒbƒh“à‚Åtrue‚É)
+                // æœ€åˆã®ä¸€å›ç›®ã®ã¿å®Ÿè¡Œ(ãƒ¡ã‚½ãƒƒãƒ‰å†…ã§trueã«)
                 if(!stateInit[0])
                     InitPlayerUI();
                 UpdatePlayingUI();
                 break;
-            // ’†’f’†‚Ìˆ—
+            // ä¸­æ–­ä¸­ã®å‡¦ç†
             case PlayState.Paused:
                 
                 break;
-            // “ü—Í‘I‘ğ‰æ–Ê‚Ìˆ—
+            // å…¥åŠ›é¸æŠç”»é¢ã®å‡¦ç†
             case PlayState.InputSelecting:
-                // Å‰‚Ìˆê‰ñ–Ú‚Ì‚İÀs(ƒƒ\ƒbƒh“à‚Åtrue‚É)
+                // æœ€åˆã®ä¸€å›ç›®ã®ã¿å®Ÿè¡Œ(ãƒ¡ã‚½ãƒƒãƒ‰å†…ã§trueã«)
                 if(!stateInit[1])
                     InitInputSelectingUI();
                 UpdateInputSelectingUI();
                 break;
-            // ƒ[ƒh‰æ–Ê‚Ìˆ—
+            // ãƒ­ãƒ¼ãƒ‰ç”»é¢ã®å‡¦ç†
             case PlayState.Loading:
-                // Å‰‚Ìˆê‰ñ–Ú‚Ì‚İÀs(ƒƒ\ƒbƒh“à‚Åtrue‚É)
+                // æœ€åˆã®ä¸€å›ç›®ã®ã¿å®Ÿè¡Œ(ãƒ¡ã‚½ãƒƒãƒ‰å†…ã§trueã«)
                 if(!stateInit[2])
                     InitLoadingUI();
                 //UpdateLoadingUI();
                 break;
-            // ƒŠƒUƒ‹ƒg‰æ–Ê‚Ìˆ—
+            // ãƒªã‚¶ãƒ«ãƒˆç”»é¢ã®å‡¦ç†
             case PlayState.Resulting:
-                //  Å‰‚Ìˆê‰ñ–Ú‚Ì‚İÀs(ƒƒ\ƒbƒh“à‚Åtrue‚É)
+                //  æœ€åˆã®ä¸€å›ç›®ã®ã¿å®Ÿè¡Œ(ãƒ¡ã‚½ãƒƒãƒ‰å†…ã§trueã«)
                 if(!stateInit[3])
                     InitResultingUI();
                 UpdateResultingUI();
                 break;
-            // ƒ‰ƒ“ƒLƒ“ƒO‰æ–Ê‚Ìˆ—
+            // ãƒ©ãƒ³ã‚­ãƒ³ã‚°ç”»é¢ã®å‡¦ç†
             case PlayState.Ranking:
-                // Å‰‚Ìˆê‰ñ–Ú‚Ì‚İÀs(ƒƒ\ƒbƒh“à‚Åtrue‚É)
+                // æœ€åˆã®ä¸€å›ç›®ã®ã¿å®Ÿè¡Œ(ãƒ¡ã‚½ãƒƒãƒ‰å†…ã§trueã«)
                 if(!stateInit[4])
                     InitRankingUI();
                 UpdateRankingUI();
                 
                 break;
-            // Ú‘±ˆ—
+            // æ¥ç¶šå‡¦ç†
             case PlayState.Connection:
                 if(!stateInit[5])
                     InitConnectionUI();
@@ -195,13 +195,13 @@ public class UIController : MonoBehaviour
                 break;
         }
     }
-    // UI‚Ì‰Šúİ’è
+    // UIã®åˆæœŸè¨­å®š
     void InitUI()
 	{
-        // Šeˆ—‚Ì‰Šúİ’è—p‚Ì^‹UŒ^
+        // å„å‡¦ç†ã®åˆæœŸè¨­å®šç”¨ã®çœŸå½å‹
         stateInit = new bool[6];
 
-        // joycon‚Ìİ’è
+        // joyconã®è¨­å®š
         m_joycons = JoyconManager.Instance.j;
         if(m_joycons == null || m_joycons.Count <= 0)
             return;
@@ -210,7 +210,7 @@ public class UIController : MonoBehaviour
 
         isJoyconButtom = true;
     }
-    // ƒQ[ƒ€’†‚Ì•`‰æXV
+    // ã‚²ãƒ¼ãƒ ä¸­ã®æç”»æ›´æ–°
     void UpdatePlayingUI()
 	{
         if(isFinish)
@@ -219,31 +219,31 @@ public class UIController : MonoBehaviour
             state = PlayState.Resulting;
         }
 	}
-    // ƒQ[ƒ€‰æ–Ê‚Ì‰Šúİ’è
+    // ã‚²ãƒ¼ãƒ ç”»é¢ã®åˆæœŸè¨­å®š
     void InitPlayerUI()
     {
-        // ‰Šúİ’è‚µ‚½‚Ì‚Åtrue
+        // åˆæœŸè¨­å®šã—ãŸã®ã§true
         stateInit[0] = true;
 
-        // ‰Šú‰»ˆ—‚Í‚±‚±‚É‘‚­
+        // åˆæœŸåŒ–å‡¦ç†ã¯ã“ã“ã«æ›¸ã
         isStart = true;
 
-        // ƒvƒŒƒCƒpƒlƒ‹‚ğ•\¦‚»‚êˆÈŠO‚ğ”ñ•\¦
+        // ãƒ—ãƒ¬ã‚¤ãƒ‘ãƒãƒ«ã‚’è¡¨ç¤ºãã‚Œä»¥å¤–ã‚’éè¡¨ç¤º
         SetPanelActives();
     }
 
-    // ‘Ò‹@‰æ–Ê‚Ì•`‰æXV
+    // å¾…æ©Ÿç”»é¢ã®æç”»æ›´æ–°
     async void UpdateInputSelectingUI()
 	{
-        // InputField‚ÌƒeƒLƒXƒg‚ğæ“¾
+        // InputFieldã®ãƒ†ã‚­ã‚¹ãƒˆã‚’å–å¾—
         string playerName1 = InputSelectingInputName[0].text;
 
-        // debug‚Åg—p‚ ‚Æ‚ÅÁ‚·
+        // debugã§ä½¿ç”¨ã‚ã¨ã§æ¶ˆã™
         //if(Input.GetKeyDown(KeyCode.K))
         //{
         //    selectIsReady[1] = true;
         //}
-        // –¼‘O‚ª“ü—Í‚³‚ê‚Ä‚¢‚½‚çƒtƒ‰ƒO‚ğtrue‚É
+        // åå‰ãŒå…¥åŠ›ã•ã‚Œã¦ã„ãŸã‚‰ãƒ•ãƒ©ã‚°ã‚’trueã«
         if(!selectIsReady[0] && playerName1 != string.Empty)
 		{
             selectIsReady[0] = true;
@@ -252,13 +252,13 @@ public class UIController : MonoBehaviour
 		{
             selectIsReady[1] = true;
 		}
-        // ‚·‚×‚Ä‚Ìƒtƒ‰ƒO‚ªtrue‚ÅƒT[ƒo‚ÉPOST‚µ‚Ä‚È‚¢‚ÉPOSTˆ—
+        // ã™ã¹ã¦ã®ãƒ•ãƒ©ã‚°ãŒtrueã§ã‚µãƒ¼ãƒã«POSTã—ã¦ãªã„æ™‚ã«POSTå‡¦ç†
         if(selectIsReady[0] && selectIsReady[1] && !selectIsSendName)
         {
-            // POST‚ğ•¡”‰ñ˜A‘±‚Ås‚í‚È‚¢‚æ‚¤‚Étrue
+            // POSTã‚’è¤‡æ•°å›é€£ç¶šã§è¡Œã‚ãªã„ã‚ˆã†ã«true
             selectIsSendName = true;
 
-            // Ready‚ğ‰©F‚É‚·‚é
+            // Readyã‚’é»„è‰²ã«ã™ã‚‹
             InputSelectingReady[0].color = new Color(1f,  0.9f, 0);
 
             InputSelectingInputName[0].text = String.Empty;
@@ -266,10 +266,10 @@ public class UIController : MonoBehaviour
             // POST
             var result = await ServerRequestController.PostUser(playerName1);
 
-            // ‚·‚Å‚É“o˜^‚³‚ê‚Ä‚¢‚é–¼‘O‚¾‚Á‚½ê‡‚ÉÄ“x“ü—Í‚ğ‚µ‚Ä‚à‚ç‚¤
+            // ã™ã§ã«ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹åå‰ã ã£ãŸå ´åˆã«å†åº¦å…¥åŠ›ã‚’ã—ã¦ã‚‚ã‚‰ã†
             if(result.id == -1)
             {
-                // ‚·‚Å‚É“o˜^‚³‚ê‚½–¼‘O‚¾‚Á‚½ê‡‚É‚à‚¤ˆê“x“ü—Í‚·‚é
+                // ã™ã§ã«ç™»éŒ²ã•ã‚ŒãŸåå‰ã ã£ãŸå ´åˆã«ã‚‚ã†ä¸€åº¦å…¥åŠ›ã™ã‚‹
                 selectIsSendName = false;
                 InputSelectingInputName[0].text = string.Empty;
                 selectIsReady[0] = false;
@@ -282,18 +282,18 @@ public class UIController : MonoBehaviour
 
             selectIsReceive = true;
         }
-        // ‘Šè‚Ì–¼‘O‚ğæ“¾‚ğŠm”F
-        if(selectIsReceive) // ©•ª‚Ìƒf[ƒ^‚ğPOSTÏ‚İ
+        // ç›¸æ‰‹ã®åå‰ã‚’å–å¾—ã‚’ç¢ºèª
+        if(selectIsReceive) // è‡ªåˆ†ã®ãƒ‡ãƒ¼ã‚¿ã‚’POSTæ¸ˆã¿
 		{
-            if(playerDataClone != null) // Ú‘±‚ªŠ®—¹‚µ‚Ä“¯Šúo—ˆ‚Ä‚¢‚é
+            if(playerDataClone != null) // æ¥ç¶šãŒå®Œäº†ã—ã¦åŒæœŸå‡ºæ¥ã¦ã„ã‚‹
             {
-                if(playerData.PlayerId != -1 && playerData.Name != string.Empty) // Name‚ÆID‚ª“o˜^‚³‚ê‚Ä‚¢‚é
+                if(playerData.PlayerId != -1 && playerData.Name != string.Empty) // Nameã¨IDãŒç™»éŒ²ã•ã‚Œã¦ã„ã‚‹
                 { // 
                     if(playerDataClone.PlayerId != -1 && playerDataClone.Name != string.Empty) 
-                    { // “¯Šú‚³‚ê‚½Name‚ÆID‚ª“o˜^‚³‚ê‚Ä‚¢‚é
+                    { // åŒæœŸã•ã‚ŒãŸNameã¨IDãŒç™»éŒ²ã•ã‚Œã¦ã„ã‚‹
 
-                        // ƒQ[ƒ€‰æ–Ê‚Ö‚Ì‘JˆÚ
-                        // –{—ˆ‚ÍInputSelecting->Roading->Playing‚Ì‡‚É‘JˆÚ
+                        // ã‚²ãƒ¼ãƒ ç”»é¢ã¸ã®é·ç§»
+                        // æœ¬æ¥ã¯InputSelecting->Roading->Playingã®é †ã«é·ç§»
                         state = PlayState.Resulting;
                         //state = PlayState.Roading;
                     }
@@ -301,10 +301,10 @@ public class UIController : MonoBehaviour
             }
 		}
 	}
-    // ‘Ò‹@‰æ–Ê‚Ì‰Šúİ’è
+    // å¾…æ©Ÿç”»é¢ã®åˆæœŸè¨­å®š
     async void InitInputSelectingUI()
     {
-        // ‰Šúİ’è‚µ‚½‚Ì‚Åtrue
+        // åˆæœŸè¨­å®šã—ãŸã®ã§true
         stateInit[1] = true;
         selectIsReady = new bool[2];
         selectIsSendName = false;
@@ -313,13 +313,13 @@ public class UIController : MonoBehaviour
         ConflictId = -1;
         ConflictName = string.Empty;
 
-        // ƒŠƒUƒ‹ƒgƒpƒlƒ‹‚ğ•\¦‚»‚êˆÈŠO‚ğ”ñ•\¦
+        // ãƒªã‚¶ãƒ«ãƒˆãƒ‘ãƒãƒ«ã‚’è¡¨ç¤ºãã‚Œä»¥å¤–ã‚’éè¡¨ç¤º
         SetPanelActives();
 
-        // Ready‚ğ”’‚É
+        // Readyã‚’ç™½ã«
         InputSelectingReady[0].color = new Color(1f, 1f, 1f);
 
-        // ƒ‰ƒ“ƒLƒ“ƒO‚ğæ“¾
+        // ãƒ©ãƒ³ã‚­ãƒ³ã‚°ã‚’å–å¾—
         var result = await ServerRequestController.GetRanking();
 
         for(int i = 0; i < 3;i++)
@@ -329,10 +329,10 @@ public class UIController : MonoBehaviour
 		}
     }
 
-    // ƒ[ƒh‰æ–Ê‚Ì•`‰æXV
+    // ãƒ­ãƒ¼ãƒ‰ç”»é¢ã®æç”»æ›´æ–°
     IEnumerator UpdateLoadingUI()
     {
-        // TextChangeSpeed‚Ì•b”Œã‚ÉƒeƒLƒXƒg‚ğ•ÏX
+        // TextChangeSpeedã®ç§’æ•°å¾Œã«ãƒ†ã‚­ã‚¹ãƒˆã‚’å¤‰æ›´
         LoadingText[0].text = "Now Loading";
         yield return new WaitForSeconds(TextChangeSpeed);
         LoadingText[0].text = "Now Loading.";
@@ -343,19 +343,19 @@ public class UIController : MonoBehaviour
         yield return new WaitForSeconds(TextChangeSpeed);
         FinishLoading(stateInit[1]);
     }
-    // ƒ[ƒh‰æ–Ê‚Ì‰Šúİ’è
+    // ãƒ­ãƒ¼ãƒ‰ç”»é¢ã®åˆæœŸè¨­å®š
     void InitLoadingUI()
     {
-        // ‰Šúİ’è‚µ‚½‚Ì‚Åtrue
+        // åˆæœŸè¨­å®šã—ãŸã®ã§true
         stateInit[2] = true;
 
-        // ƒŠƒUƒ‹ƒgƒpƒlƒ‹‚ğ•\¦‚»‚êˆÈŠO‚ğ”ñ•\¦
+        // ãƒªã‚¶ãƒ«ãƒˆãƒ‘ãƒãƒ«ã‚’è¡¨ç¤ºãã‚Œä»¥å¤–ã‚’éè¡¨ç¤º
         SetPanelActives();
 
-        // ƒRƒ‹[ƒ`ƒ“(”ñ“¯Šúˆ—)‚ğÀs
+        // ã‚³ãƒ«ãƒ¼ãƒãƒ³(éåŒæœŸå‡¦ç†)ã‚’å®Ÿè¡Œ
         StartCoroutine(nameof(UpdateLoadingUI));
     }
-    // ƒ[ƒh‰æ–Ê‚ÌI—¹ˆ—
+    // ãƒ­ãƒ¼ãƒ‰ç”»é¢ã®çµ‚äº†å‡¦ç†
     void FinishLoading(bool isPlayLoad)
 	{
         if(isPlayLoad)
@@ -365,121 +365,121 @@ public class UIController : MonoBehaviour
 
 	}
 
-    // ƒŠƒUƒ‹ƒg‚Ì•`‰æXV
+    // ãƒªã‚¶ãƒ«ãƒˆã®æç”»æ›´æ–°
     void UpdateResultingUI()
     {
-        // Aƒ{ƒ^ƒ“‚ğ‰Ÿ‚µ‚½‚Æ‚«‚ÉRanking‚É‘JˆÚ
+        // Aãƒœã‚¿ãƒ³ã‚’æŠ¼ã—ãŸã¨ãã«Rankingã«é·ç§»
         if(isJoyconButtom && m_joyconR.GetButtonDown(m_buttons[1]))
 		{
             state = PlayState.Ranking;
             isJoyconButtom = false;
-            Invoke(nameof(InvokeTransOffset), 1f); // 4•bŒã‚ÉisJoyconButton‚ğtrue‚É‚µ‚Äƒ{ƒ^ƒ“‚É”½‰‚·‚é‚æ‚¤‚É
+            Invoke(nameof(InvokeTransOffset), 1f); // 4ç§’å¾Œã«isJoyconButtonã‚’trueã«ã—ã¦ãƒœã‚¿ãƒ³ã«åå¿œã™ã‚‹ã‚ˆã†ã«
 		}
     }
-    // ƒŠƒUƒ‹ƒg‰æ–Ê‚Ì‰Šúİ’è
+    // ãƒªã‚¶ãƒ«ãƒˆç”»é¢ã®åˆæœŸè¨­å®š
     async void InitResultingUI()
     {
-        // ‰Šúİ’è‚µ‚½‚Ì‚Åtrue
+        // åˆæœŸè¨­å®šã—ãŸã®ã§true
         stateInit[3] = true;
 
-        // ƒŠƒUƒ‹ƒgƒpƒlƒ‹‚ğ•\¦‚»‚êˆÈŠO‚ğ”ñ•\¦
+        // ãƒªã‚¶ãƒ«ãƒˆãƒ‘ãƒãƒ«ã‚’è¡¨ç¤ºãã‚Œä»¥å¤–ã‚’éè¡¨ç¤º
         SetPanelActives();
 
-        // ©•ª‚Æ‘Šè‚ÌƒXƒRƒA‚Æ–¼‘O‚ğ•\¦
+        // è‡ªåˆ†ã¨ç›¸æ‰‹ã®ã‚¹ã‚³ã‚¢ã¨åå‰ã‚’è¡¨ç¤º
         ResultingName[0].text = playerData.Name;
         ResultingScore[0].text = playerData.Score.ToString();
 
         ResultingName[1].text = playerDataClone.Name;
         ResultingScore[1].text = playerDataClone.Score.ToString();
         
-        // ƒXƒRƒA‚ğƒT[ƒo‚Ö‘—M
+        // ã‚¹ã‚³ã‚¢ã‚’ã‚µãƒ¼ãƒã¸é€ä¿¡
         var result = await ServerRequestController.PostScore(playerData.Score, playerData.PlayerId);
     }
-    // ƒ‰ƒ“ƒLƒ“ƒO‰æ–Ê‚Ì•`‰æXV
+    // ãƒ©ãƒ³ã‚­ãƒ³ã‚°ç”»é¢ã®æç”»æ›´æ–°
     void UpdateRankingUI()
 	{
-        // Aƒ{ƒ^ƒ“‚ÅƒZƒŒƒNƒg‰æ–Ê‚É‘JˆÚ,ƒŠƒUƒ‹ƒg‰æ–Ê‚ğ•\¦‚µ‚Ä‚¢‚é‚Íƒ‰ƒ“ƒLƒ“ƒO‚É–ß‚·
-        // isJoyconButtom‚Å˜A‘±‚Å‘JˆÚ‚·‚é‚Ì‚ğ–h‚®
+        // Aãƒœã‚¿ãƒ³ã§ã‚»ãƒ¬ã‚¯ãƒˆç”»é¢ã«é·ç§»,ãƒªã‚¶ãƒ«ãƒˆç”»é¢ã‚’è¡¨ç¤ºã—ã¦ã„ã‚‹æ™‚ã¯ãƒ©ãƒ³ã‚­ãƒ³ã‚°ã«æˆ»ã™
+        // isJoyconButtomã§é€£ç¶šã§é·ç§»ã™ã‚‹ã®ã‚’é˜²ã
         if(isJoyconButtom && m_joyconR.GetButtonDown(m_buttons[1]))
         {
-            // stateInit[3]‚ğg‚Á‚ÄƒŠƒUƒ‹ƒg•\¦’†‚ÍƒZƒŒƒNƒg‚É‘JˆÚ‚µ‚È‚¢‚æ‚¤‚É‚·‚é
+            // stateInit[3]ã‚’ä½¿ã£ã¦ãƒªã‚¶ãƒ«ãƒˆè¡¨ç¤ºä¸­ã¯ã‚»ãƒ¬ã‚¯ãƒˆã«é·ç§»ã—ãªã„ã‚ˆã†ã«ã™ã‚‹
             if(stateInit[3])
             {
-                // ƒZƒŒƒNƒg‰æ–Ê‚É‘JˆÚ
-                // ƒ[ƒfƒBƒ“ƒO‰æ–Ê‹²‚ŞH
+                // ã‚»ãƒ¬ã‚¯ãƒˆç”»é¢ã«é·ç§»
+                // ãƒ­ãƒ¼ãƒ‡ã‚£ãƒ³ã‚°ç”»é¢æŒŸã‚€ï¼Ÿ
                 state = PlayState.InputSelecting;
 
-                // ‰Šú‰»
+                // åˆæœŸåŒ–
                 stateInit = new bool[6];
             }
             else
             {
-                // ƒ‰ƒ“ƒLƒ“ƒO‚ğ•\¦AƒŠƒUƒ‹ƒg‚ğ”ñ•\¦
+                // ãƒ©ãƒ³ã‚­ãƒ³ã‚°ã‚’è¡¨ç¤ºã€ãƒªã‚¶ãƒ«ãƒˆã‚’éè¡¨ç¤º
                 resultingPanel.SetActive(false);
                 rankingPanel.SetActive(true);
 
                 stateInit[3] = true;
                 isJoyconButtom = false;
-                // 4•bŒã‚ÉisJoyconButtom‚ğtrue‚É‚µ‚Äƒ{ƒ^ƒ“‚ª”½‰‚·‚é‚æ‚¤‚É‚·‚é
+                // 4ç§’å¾Œã«isJoyconButtomã‚’trueã«ã—ã¦ãƒœã‚¿ãƒ³ãŒåå¿œã™ã‚‹ã‚ˆã†ã«ã™ã‚‹
                 Invoke(nameof(InvokeTransOffset), 1f);
             }
         }
-        // Bƒ{ƒ^ƒ“‚ÅƒŠƒUƒ‹ƒg‰æ–Ê‚É‹t‘JˆÚ
+        // Bãƒœã‚¿ãƒ³ã§ãƒªã‚¶ãƒ«ãƒˆç”»é¢ã«é€†é·ç§»
         if(isJoyconButtom && m_joyconR.GetButtonDown(m_buttons[0]))
 		{
             //
             resultingPanel.SetActive(true);
             rankingPanel.SetActive(false);
 
-            // 4•bŒã‚ÉisJoyconButtom‚ğtrue‚É‚µ‚Äƒ{ƒ^ƒ“‚ª”½‰‚·‚é‚æ‚¤‚É‚·‚é
+            // 4ç§’å¾Œã«isJoyconButtomã‚’trueã«ã—ã¦ãƒœã‚¿ãƒ³ãŒåå¿œã™ã‚‹ã‚ˆã†ã«ã™ã‚‹
             stateInit[3] = false;
             isJoyconButtom = false;
             Invoke(nameof(InvokeTransOffset), 1f);
         }
 	}
-    // ƒ‰ƒ“ƒLƒ“ƒO‰æ–Ê‚Ì‰Šúİ’è
+    // ãƒ©ãƒ³ã‚­ãƒ³ã‚°ç”»é¢ã®åˆæœŸè¨­å®š
     async void InitRankingUI()
 	{
-        // ‰Šúİ’è‚µ‚½‚Ì‚Åtrue
+        // åˆæœŸè¨­å®šã—ãŸã®ã§true
         stateInit[4] = true;
 
-        // ƒ‰ƒ“ƒLƒ“ƒOƒpƒlƒ‹‚ğ•\¦‚»‚êˆÈŠO‚ğ”ñ•\¦
+        // ãƒ©ãƒ³ã‚­ãƒ³ã‚°ãƒ‘ãƒãƒ«ã‚’è¡¨ç¤ºãã‚Œä»¥å¤–ã‚’éè¡¨ç¤º
         SetPanelActives();
         
-        // ƒ‰ƒ“ƒLƒ“ƒOãˆÊ‚©‚çæ“¾
+        // ãƒ©ãƒ³ã‚­ãƒ³ã‚°ä¸Šä½ã‹ã‚‰å–å¾—
         var result = await ServerRequestController.GetRanking();
 
-        // ƒ‰ƒ“ƒLƒ“ƒO‚ğãˆÊ‚©‚ç8¡‚Å•\¦
+        // ãƒ©ãƒ³ã‚­ãƒ³ã‚°ã‚’ä¸Šä½ã‹ã‚‰8ä»Šã§è¡¨ç¤º
         for(int i = 0;i < 6; i++)
 		{
             RankingName[i].text = result.Users[i].name;
             RankingScore[i].text = result.Users[i].rate.ToString();
 		}
-        // ƒ†[ƒUü•Ó‚Ìƒ‰ƒ“ƒLƒ“ƒO‚ğ•\¦
+        // ãƒ¦ãƒ¼ã‚¶å‘¨è¾ºã®ãƒ©ãƒ³ã‚­ãƒ³ã‚°ã‚’è¡¨ç¤º
         var result2 = await ServerRequestController.GetUserRanking(playerData.PlayerId);
 
-        // ©•ª‚æ‚èã‚Ì‡ˆÊ‚Ìl‚Ì”
+        // è‡ªåˆ†ã‚ˆã‚Šä¸Šã®é †ä½ã®äººã®æ•°
         int higherCount = result2.higher_around_rank_users.Length;
-        // ©•ª‚æ‚è‰º‚Ì‡ˆÊ‚Ìl‚Ì”
+        // è‡ªåˆ†ã‚ˆã‚Šä¸‹ã®é †ä½ã®äººã®æ•°
         int lowerCount = result2.lower_around_rank_users.Length;
 
-        // ü•Ó‡ˆÊ‚Ì•\¦‚Íã‰º2l‚¸‚Â‚È‚Ì‚Å”‚ª2ˆÈã‚È‚ç2‚É2‚Â–¢–‚È‚ç”‚ğ“ü‚ê‚é
-        // ŠeTEXT”z—ñ‚Í[0-1]ãˆÊA[2]©•ªA[3-4]‰ºˆÊ‚Ì\¬
+        // å‘¨è¾ºé †ä½ã®è¡¨ç¤ºã¯ä¸Šä¸‹2äººãšã¤ãªã®ã§æ•°ãŒ2ä»¥ä¸Šãªã‚‰2ã«2ã¤æœªæº€ãªã‚‰æ•°ã‚’å…¥ã‚Œã‚‹
+        // å„TEXTé…åˆ—ã¯[0-1]ä¸Šä½ã€[2]è‡ªåˆ†ã€[3-4]ä¸‹ä½ã®æ§‹æˆ
         for(int i = 0; i < (higherCount < 2 ? higherCount : 2); i++)
 		{
             RankingAroundRank[1 - i].text = result2.higher_around_rank_users[higherCount - i - 1].rank.ToString();
             RankingAroundName[1 - i].text = result2.higher_around_rank_users[higherCount - i - 1].name;
             RankingAroundScore[1 - i].text = result2.higher_around_rank_users[higherCount - i - 1].rate.ToString();
         }
-        // ‰ºˆÊ
+        // ä¸‹ä½
         for(int j = 0; j < (lowerCount < 2 ? lowerCount : 2); j++)
 		{
-            // ”z—ñ‚Ìˆø”‚É[3-4]‚ğ“ü‚ê‚é‚½‚ß‚É3‚ğ‘«‚·
+            // é…åˆ—ã®å¼•æ•°ã«[3-4]ã‚’å…¥ã‚Œã‚‹ãŸã‚ã«3ã‚’è¶³ã™
             RankingAroundRank[3 + j].text = result2.lower_around_rank_users[j].rank.ToString();
             RankingAroundName[3 + j].text = result2.lower_around_rank_users[j].name;
             RankingAroundScore[3 + j].text = result2.lower_around_rank_users[j].rate.ToString();
         }
-        // ©•ª‚Ì‡ˆÊ‚Æ–¼‘OAƒXƒRƒA‚ğ^‚ñ’†‚É•\¦[2]
+        // è‡ªåˆ†ã®é †ä½ã¨åå‰ã€ã‚¹ã‚³ã‚¢ã‚’çœŸã‚“ä¸­ã«è¡¨ç¤º[2]
         RankingAroundRank[2].text = result2.self.rank.ToString();
         RankingAroundName[2].text = result2.self.name;
         RankingAroundScore[2].text = result2.self.rate.ToString();
@@ -492,10 +492,10 @@ public class UIController : MonoBehaviour
     {
         stateInit[5] = true;
 
-        // Ú‘±‰æ–ÊˆÈŠO‚ğ”ñ•\¦
+        // æ¥ç¶šç”»é¢ä»¥å¤–ã‚’éè¡¨ç¤º
         SetPanelActives();
     }
-    // ŠÔ·‚ÌÀs—p
+    // æ™‚é–“å·®ã®å®Ÿè¡Œç”¨
     void InvokeTransOffset() => isJoyconButtom = true;
 
     void SetPanelActives()
@@ -508,14 +508,14 @@ public class UIController : MonoBehaviour
         connectionPanel.SetActive(state == PlayState.Connection);
     }
 
-    // Œ»İ‚Ìó‘Ô‚ğ•\‚·—ñ‹“Œ^
-    // 0 ƒQ[ƒ€’†
-    // 1 ’†’f’†
-    // 2 ƒ[ƒh’†
-    // 3 ‘Ò‹@‰æ–Ê
-    // 4 ƒŠƒUƒ‹ƒg
-    // 5 ƒ‰ƒ“ƒLƒ“ƒO
-    // 6 Ú‘±
+    // ç¾åœ¨ã®çŠ¶æ…‹ã‚’è¡¨ã™åˆ—æŒ™å‹
+    // 0 ã‚²ãƒ¼ãƒ ä¸­
+    // 1 ä¸­æ–­ä¸­
+    // 2 ãƒ­ãƒ¼ãƒ‰ä¸­
+    // 3 å¾…æ©Ÿç”»é¢
+    // 4 ãƒªã‚¶ãƒ«ãƒˆ
+    // 5 ãƒ©ãƒ³ã‚­ãƒ³ã‚°
+    // 6 æ¥ç¶š
     public enum PlayState
 	{
         Playing = 0,

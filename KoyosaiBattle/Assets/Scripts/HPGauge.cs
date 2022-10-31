@@ -12,9 +12,6 @@ public class HPGauge : MonoBehaviour
     //SliderのMaxValueと同じにする
      public int maxHp = 100;
 
-    //時間経過を表す変数
-    private float timer;
-
     //関数の参照
     public static HPGauge instance;
     public void Awake()
@@ -29,7 +26,7 @@ public class HPGauge : MonoBehaviour
     void Start()
     {
         //SliderのValueを初期化
-        slider.value = maxHp;
+        InitializeHPGauge();
         UIController.instance.playerData.HitPoint = maxHp;
     }
 
@@ -38,6 +35,12 @@ public class HPGauge : MonoBehaviour
     {
         //現在のHitPointをsliderに適用
         slider.value = UIController.instance.playerData.HitPoint;
+    }
+
+    public void InitializeHPGauge()
+    {
+        //SliderのValueを初期化
+        slider.value = maxHp;
     }
 
     //被ダメージ関数

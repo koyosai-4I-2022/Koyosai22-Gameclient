@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -96,7 +96,7 @@ public class UIController : MonoBehaviour
     bool selectIsReceive;
 
     bool isJoyconButtom;
-    
+
     int ConflictId;
     string ConflictName;
 
@@ -148,46 +148,46 @@ public class UIController : MonoBehaviour
             // ゲーム画面での毎フレーム処理
             case PlayState.Playing:
                 // 最初の一回目のみ実行(メソッド内でtrueに)
-                if(!stateInit[0])
+                if (!stateInit[0])
                     InitPlayerUI();
                 UpdatePlayingUI();
                 break;
             // 中断中の処理
             case PlayState.Paused:
-                
+
                 break;
             // 入力選択画面の処理
             case PlayState.InputSelecting:
                 // 最初の一回目のみ実行(メソッド内でtrueに)
-                if(!stateInit[1])
+                if (!stateInit[1])
                     InitInputSelectingUI();
                 UpdateInputSelectingUI();
                 break;
             // ロード画面の処理
             case PlayState.Loading:
                 // 最初の一回目のみ実行(メソッド内でtrueに)
-                if(!stateInit[2])
+                if (!stateInit[2])
                     InitLoadingUI();
                 //UpdateLoadingUI();
                 break;
             // リザルト画面の処理
             case PlayState.Resulting:
                 //  最初の一回目のみ実行(メソッド内でtrueに)
-                if(!stateInit[3])
+                if (!stateInit[3])
                     InitResultingUI();
                 UpdateResultingUI();
                 break;
             // ランキング画面の処理
             case PlayState.Ranking:
                 // 最初の一回目のみ実行(メソッド内でtrueに)
-                if(!stateInit[4])
+                if (!stateInit[4])
                     InitRankingUI();
                 UpdateRankingUI();
-                
+
                 break;
             // 接続処理
             case PlayState.Connection:
-                if(!stateInit[5])
+                if (!stateInit[5])
                     InitConnectionUI();
                 UpdateConnectionUI();
                 break;
@@ -197,13 +197,13 @@ public class UIController : MonoBehaviour
     }
     // UIの初期設定
     void InitUI()
-	{
+    {
         // 各処理の初期設定用の真偽型
         stateInit = new bool[6];
 
         // joyconの設定
         m_joycons = JoyconManager.Instance.j;
-        if(m_joycons == null || m_joycons.Count <= 0)
+        if (m_joycons == null || m_joycons.Count <= 0)
             return;
         m_joyconL = m_joycons.Find(c => c.isLeft);
         m_joyconR = m_joycons.Find(c => !c.isLeft);
@@ -212,13 +212,13 @@ public class UIController : MonoBehaviour
     }
     // ゲーム中の描画更新
     void UpdatePlayingUI()
-	{
-        if(isFinish)
+    {
+        if (isFinish)
         {
             CalcScore.instance.Score();
             state = PlayState.Resulting;
         }
-	}
+    }
     // ゲーム画面の初期設定
     void InitPlayerUI()
     {
@@ -227,6 +227,10 @@ public class UIController : MonoBehaviour
 
         // 初期化処理はここに書く
         isStart = true;
+        EnergyGauge.instance.InitializeEnergyGauge();
+        HPGauge.instance.InitializeHPGauge();
+        Timer.instance.InitializeTimer();
+        AnimationEvent.instance.InitializeAnimationEvent();
 
         // プレイパネルを表示それ以外を非表示
         SetPanelActives();
@@ -234,7 +238,7 @@ public class UIController : MonoBehaviour
 
     // 待機画面の描画更新
     async void UpdateInputSelectingUI()
-	{
+    {
         // InputFieldのテキストを取得
         string playerName1 = InputSelectingInputName[0].text;
 
@@ -244,22 +248,22 @@ public class UIController : MonoBehaviour
         //    selectIsReady[1] = true;
         //}
         // 名前が入力されていたらフラグをtrueに
-        if(!selectIsReady[0] && playerName1 != string.Empty)
-		{
+        if (!selectIsReady[0] && playerName1 != string.Empty)
+        {
             selectIsReady[0] = true;
-		}
-        if(selectIsReady[0] && m_joyconR.GetAccel().sqrMagnitude > 4f)
-		{
+        }
+        if (selectIsReady[0] && m_joyconR.GetAccel().sqrMagnitude > 4f)
+        {
             selectIsReady[1] = true;
-		}
+        }
         // すべてのフラグがtrueでサーバにPOSTしてない時にPOST処理
-        if(selectIsReady[0] && selectIsReady[1] && !selectIsSendName)
+        if (selectIsReady[0] && selectIsReady[1] && !selectIsSendName)
         {
             // POSTを複数回連続で行わないようにtrue
             selectIsSendName = true;
 
             // Readyを黄色にする
-            InputSelectingReady[0].color = new Color(1f,  0.9f, 0);
+            InputSelectingReady[0].color = new Color(1f, 0.9f, 0);
 
             InputSelectingInputName[0].text = String.Empty;
 
@@ -267,7 +271,7 @@ public class UIController : MonoBehaviour
             var result = await ServerRequestController.PostUser(playerName1);
 
             // すでに登録されている名前だった場合に再度入力をしてもらう
-            if(result.id == -1)
+            if (result.id == -1)
             {
                 // すでに登録された名前だった場合にもう一度入力する
                 selectIsSendName = false;
@@ -283,13 +287,13 @@ public class UIController : MonoBehaviour
             selectIsReceive = true;
         }
         // 相手の名前を取得を確認
-        if(selectIsReceive) // 自分のデータをPOST済み
-		{
-            if(playerDataClone != null) // 接続が完了して同期出来ている
+        if (selectIsReceive) // 自分のデータをPOST済み
+        {
+            if (playerDataClone != null) // 接続が完了して同期出来ている
             {
-                if(playerData.PlayerId != -1 && playerData.Name != string.Empty) // NameとIDが登録されている
+                if (playerData.PlayerId != -1 && playerData.Name != string.Empty) // NameとIDが登録されている
                 { // 
-                    if(playerDataClone.PlayerId != -1 && playerDataClone.Name != string.Empty) 
+                    if (playerDataClone.PlayerId != -1 && playerDataClone.Name != string.Empty)
                     { // 同期されたNameとIDが登録されている
 
                         // ゲーム画面への遷移
@@ -299,8 +303,8 @@ public class UIController : MonoBehaviour
                     }
                 }
             }
-		}
-	}
+        }
+    }
     // 待機画面の初期設定
     async void InitInputSelectingUI()
     {
@@ -322,11 +326,11 @@ public class UIController : MonoBehaviour
         // ランキングを取得
         var result = await ServerRequestController.GetRanking();
 
-        for(int i = 0; i < 3;i++)
-		{
+        for (int i = 0; i < 3; i++)
+        {
             InputSelectRankingName[i].text = $"{result.Users[i].name}";
             InputSelectRankingScore[i].text = $"{result.Users[i].rate}";
-		}
+        }
     }
 
     // ロード画面の描画更新
@@ -357,24 +361,24 @@ public class UIController : MonoBehaviour
     }
     // ロード画面の終了処理
     void FinishLoading(bool isPlayLoad)
-	{
-        if(isPlayLoad)
+    {
+        if (isPlayLoad)
             state = PlayState.Playing;
         else
             state = PlayState.InputSelecting;
 
-	}
+    }
 
     // リザルトの描画更新
     void UpdateResultingUI()
     {
         // Aボタンを押したときにRankingに遷移
-        if(isJoyconButtom && m_joyconR.GetButtonDown(m_buttons[1]))
-		{
+        if (isJoyconButtom && m_joyconR.GetButtonDown(m_buttons[1]))
+        {
             state = PlayState.Ranking;
             isJoyconButtom = false;
             Invoke(nameof(InvokeTransOffset), 1f); // 4秒後にisJoyconButtonをtrueにしてボタンに反応するように
-		}
+        }
     }
     // リザルト画面の初期設定
     async void InitResultingUI()
@@ -391,19 +395,19 @@ public class UIController : MonoBehaviour
 
         ResultingName[1].text = playerDataClone.Name;
         ResultingScore[1].text = playerDataClone.Score.ToString();
-        
+
         // スコアをサーバへ送信
         var result = await ServerRequestController.PostScore(playerData.Score, playerData.PlayerId);
     }
     // ランキング画面の描画更新
     void UpdateRankingUI()
-	{
+    {
         // Aボタンでセレクト画面に遷移,リザルト画面を表示している時はランキングに戻す
         // isJoyconButtomで連続で遷移するのを防ぐ
-        if(isJoyconButtom && m_joyconR.GetButtonDown(m_buttons[1]))
+        if (isJoyconButtom && m_joyconR.GetButtonDown(m_buttons[1]))
         {
             // stateInit[3]を使ってリザルト表示中はセレクトに遷移しないようにする
-            if(stateInit[3])
+            if (stateInit[3])
             {
                 // セレクト画面に遷移
                 // ローディング画面挟む？
@@ -425,8 +429,8 @@ public class UIController : MonoBehaviour
             }
         }
         // Bボタンでリザルト画面に逆遷移
-        if(isJoyconButtom && m_joyconR.GetButtonDown(m_buttons[0]))
-		{
+        if (isJoyconButtom && m_joyconR.GetButtonDown(m_buttons[0]))
+        {
             //
             resultingPanel.SetActive(true);
             rankingPanel.SetActive(false);
@@ -436,25 +440,25 @@ public class UIController : MonoBehaviour
             isJoyconButtom = false;
             Invoke(nameof(InvokeTransOffset), 1f);
         }
-	}
+    }
     // ランキング画面の初期設定
     async void InitRankingUI()
-	{
+    {
         // 初期設定したのでtrue
         stateInit[4] = true;
 
         // ランキングパネルを表示それ以外を非表示
         SetPanelActives();
-        
+
         // ランキング上位から取得
         var result = await ServerRequestController.GetRanking();
 
         // ランキングを上位から8今で表示
-        for(int i = 0;i < 6; i++)
-		{
+        for (int i = 0; i < 6; i++)
+        {
             RankingName[i].text = result.Users[i].name;
             RankingScore[i].text = result.Users[i].rate.ToString();
-		}
+        }
         // ユーザ周辺のランキングを表示
         var result2 = await ServerRequestController.GetUserRanking(playerData.PlayerId);
 
@@ -465,15 +469,15 @@ public class UIController : MonoBehaviour
 
         // 周辺順位の表示は上下2人ずつなので数が2以上なら2に2つ未満なら数を入れる
         // 各TEXT配列は[0-1]上位、[2]自分、[3-4]下位の構成
-        for(int i = 0; i < (higherCount < 2 ? higherCount : 2); i++)
-		{
+        for (int i = 0; i < (higherCount < 2 ? higherCount : 2); i++)
+        {
             RankingAroundRank[1 - i].text = result2.higher_around_rank_users[higherCount - i - 1].rank.ToString();
             RankingAroundName[1 - i].text = result2.higher_around_rank_users[higherCount - i - 1].name;
             RankingAroundScore[1 - i].text = result2.higher_around_rank_users[higherCount - i - 1].rate.ToString();
         }
         // 下位
-        for(int j = 0; j < (lowerCount < 2 ? lowerCount : 2); j++)
-		{
+        for (int j = 0; j < (lowerCount < 2 ? lowerCount : 2); j++)
+        {
             // 配列の引数に[3-4]を入れるために3を足す
             RankingAroundRank[3 + j].text = result2.lower_around_rank_users[j].rank.ToString();
             RankingAroundName[3 + j].text = result2.lower_around_rank_users[j].name;
@@ -485,9 +489,9 @@ public class UIController : MonoBehaviour
         RankingAroundScore[2].text = result2.self.rate.ToString();
     }
     void UpdateConnectionUI()
-	{
+    {
 
-	}
+    }
     void InitConnectionUI()
     {
         stateInit[5] = true;
@@ -499,7 +503,7 @@ public class UIController : MonoBehaviour
     void InvokeTransOffset() => isJoyconButtom = true;
 
     void SetPanelActives()
-	{
+    {
         playingPanel.SetActive(state == PlayState.Playing);
         inputSelectingPanel.SetActive(state == PlayState.InputSelecting);
         RoadingPanel.SetActive(state == PlayState.Loading);
@@ -517,7 +521,7 @@ public class UIController : MonoBehaviour
     // 5 ランキング
     // 6 接続
     public enum PlayState
-	{
+    {
         Playing = 0,
         Paused = 1,
         Loading = 2,
@@ -525,5 +529,5 @@ public class UIController : MonoBehaviour
         Resulting = 4,
         Ranking = 5,
         Connection = 6
-	}
+    }
 }

@@ -6,6 +6,16 @@ public class AnimationEvent : MonoBehaviour
 {
     public Animator animator;
 
+    //instanceÇ≈éQè∆Ç∑ÇÈÇΩÇﬂ
+    public static AnimationEvent instance;
+    public void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -76,5 +86,20 @@ public class AnimationEvent : MonoBehaviour
         animator.SetBool("Jog Backward Diagonal", false);
         animator.SetBool("Jog Backward Diagonal (1)", false);
         Debug.Log("AllFalseEvent");
+    }
+
+    public void InitializeAnimationEvent()
+    {
+        animator.SetBool("run1", false);
+        animator.SetBool("run2", false);
+        animator.SetBool("walk1", false);
+        animator.SetBool("walk2", false);
+        animator.SetBool("strafe1", false);
+        animator.SetBool("strafe2", false);
+        animator.SetBool("Jog Forward Diagonal", false);
+        animator.SetBool("Jog Forward Diagonal (1)", false);
+        animator.SetBool("Jog Backward Diagonal", false);
+        animator.SetBool("Jog Backward Diagonal (1)", false);
+        animator.SetBool("death1", false);
     }
 }

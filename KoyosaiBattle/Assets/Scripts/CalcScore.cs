@@ -32,11 +32,14 @@ public class CalcScore : MonoBehaviour
     private float elapsedTime;
 
     public static CalcScore instance;
-    
-    
 
-    // Start is called before the first frame update
-    void Start()
+	private void Awake()
+	{
+		instance = this;
+	}
+
+	// Start is called before the first frame update
+	void Start()
     {
         //AHP = UIController.instance.playerData.HitPoint;
         //BHP = UIController.instance.playerDataClone.HitPoint;

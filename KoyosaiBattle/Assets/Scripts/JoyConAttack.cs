@@ -6,6 +6,8 @@ using SoftGear.Strix.Unity.Runtime;
 
 public class JoyConAttack : MonoBehaviour
 {
+	public static JoyConAttack instance;
+
 	[SerializeField]
 	StrixReplicator replicator;
 	[SerializeField]
@@ -41,6 +43,14 @@ public class JoyConAttack : MonoBehaviour
 	int count = 0;
 
 	float disArm2ToHand;
+
+	private void Awake()
+	{
+		if(!replicator.isLocal)
+		{
+			instance = this;
+		}
+	}
 
 	void Start()
 	{

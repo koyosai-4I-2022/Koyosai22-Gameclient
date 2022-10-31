@@ -12,9 +12,9 @@ public class SwordController : MonoBehaviour
 
     void Start()
     {
-        if(!replicator.isLocal && UIController.instance.playerDataClone != null)
+        if(!replicator.isLocal && JoyConAttack.instance != null)
 		{
-            this.transform.parent = UIController.instance.playerDataClone.gameObject.transform;
+            this.transform.parent = JoyConAttack.instance.gameObject.transform;
             isInit = true;
 		}
     }
@@ -22,9 +22,9 @@ public class SwordController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(!isInit && !replicator.isLocal && UIController.instance.playerDataClone != null)
+        if(!isInit && !replicator.isLocal && JoyConAttack.instance != null)
         {
-            this.transform.parent = UIController.instance.playerDataClone.gameObject.transform;
+            this.transform.parent = JoyConAttack.instance.gameObject.transform;
             isInit = true;
         }
     }

@@ -12601,7 +12601,6 @@ GameObject:
   - component: {fileID: 5593989183989997384}
   - component: {fileID: 5593989183989997391}
   - component: {fileID: 5593989183989997390}
-  - component: {fileID: 5593989183989997381}
   m_Layer: 0
   m_Name: Volinier-motion2-joycon
   m_TagString: Untagged
@@ -12640,22 +12639,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 5593989183989997173}
---- !u!114 &5593989183989997381
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5593989183989997378}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1088213620, guid: f2c2112f638c5b8489d16403d930373b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncPosition: 1
-  syncRotation: 1
-  syncVelocity: 1
-  syncAngularVelocity: 1
 --- !u!114 &5593989183989997384
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12671,7 +12654,6 @@ MonoBehaviour:
   strixBehaviours:
   - {fileID: 5593989183989997391}
   - {fileID: 5593989183989997390}
-  - {fileID: 5593989183989997381}
   objectType: 262146
   sendRate: 5
   syncDestroy: 1

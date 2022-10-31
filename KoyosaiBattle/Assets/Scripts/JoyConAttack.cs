@@ -69,6 +69,7 @@ public class JoyConAttack : MonoBehaviour
 		if(!replicator.isLocal)
 		{
 			this.transform.GetChild(0).gameObject.SetActive(false);
+			this.GetComponent<Animator>().enabled = true;
 		}
 	}
 

@@ -30,7 +30,7 @@ public class EnergyGauge : MonoBehaviour
     void Start()
     {
         //SliderのValueを初期化
-        energy.value = maxEnergy;
+        InitializeEnergyGauge();
     }
 
     // Update is called once per frame
@@ -56,7 +56,6 @@ public class EnergyGauge : MonoBehaviour
         {
             energy.value  -= i;
         }
-        Debug.Log("エネルギー消費しました");
     }
 
     //エネルギーが引数以上あるかを判断する関数
@@ -65,5 +64,11 @@ public class EnergyGauge : MonoBehaviour
         if (energy.value - k >= 0)
             return true;
         else return false;
+    }
+
+    public void InitializeEnergyGauge()
+    {
+        //SliderのValueを初期化
+        energy.value = maxEnergy;
     }
 }

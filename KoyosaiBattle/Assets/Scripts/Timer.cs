@@ -16,11 +16,21 @@ public class Timer : MonoBehaviour
     [SerializeField]
     private int count;
 
+    //instance‚ÅQÆ‚·‚é‚½‚ß
+    public static Timer instance;
+    public void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
         //‰Šú‰»
-        timer = 0;
+        InitializeTimer();
     }
 
     // Update is called once per frame
@@ -41,5 +51,12 @@ public class Timer : MonoBehaviour
         }
         //Text‚Åcount‚ğ•\¦‚·‚é
         text.text = string.Format("{0:00}",count) ; 
+    }
+
+    public void InitializeTimer()
+    {
+        //‰Šú‰»
+        timer = 0;
+        count = 180;
     }
 }

@@ -22,6 +22,14 @@ public class PlayerData : StrixBehaviour
     [SerializeField]
     int defaultHP = 100;
 
+    private void Awake()
+    {
+        if (!isLocal)
+        {
+            UIController.instance.playerDataClone = this;
+        }
+    }
+
     void Start()
     {
         SetUserId(10);

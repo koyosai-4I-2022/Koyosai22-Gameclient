@@ -167,7 +167,7 @@ public class ConnectionController : MonoBehaviour
                 var room = strixNetwork.room;
                 var roomMember = strixNetwork.selfRoomMember;
 
-                Log("Success Create Room");
+                //Log("Success Create Room");
                 //Log("Sucess Create Room"
                 //    + "\nRoom name:" + room.GetName()
                 //    + "\nRoom capacity:" + room.GetCapacity()
@@ -222,7 +222,10 @@ public class ConnectionController : MonoBehaviour
                          protocol: room.protocol,
                          roomId: room.roomId,
                          playerName: num,
-                         handler: __ => { Log("Room joined."); SceneChange();  },
+                         handler: __ => { 
+                             //Log("Room joined.");
+                             SceneChange(); 
+                         },
                          failureHandler: joinError => Log("Join failed.Reason: " + joinError.cause)
                     );
                 }
@@ -260,7 +263,9 @@ public class ConnectionController : MonoBehaviour
         panel.SetActive(false);
         //foreach(var mem in StrixNetwork.instance.roomMembers)
         //    Debug.Log($"{mem.Value.GetName()}:{mem.Value.GetUid()}");
-        uiController.state = UIController.PlayState.Playing;
+        UIController.instance.state = UIController.PlayState.Playing;
+        //UIController.instance.state = UIController.PlayState.Loading;
+        //uiController.state = UIController.PlayState.InputSelecting;
         StrixNetwork.instance.selfRoomMember.SetPrimaryKey(-1);
     }
 	// テキストに表示するためのメソッド

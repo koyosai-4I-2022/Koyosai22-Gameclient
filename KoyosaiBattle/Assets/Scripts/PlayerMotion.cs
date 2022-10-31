@@ -9,7 +9,10 @@ public class PlayerMotion : MonoBehaviour
     // 同期用
     [SerializeField]
     StrixReplicator replicator;
-    
+
+    [SerializeField]
+    float moveSpeed = 10f;
+
     //JoyconLibの変数
     private static readonly Joycon.Button[] m_buttons =
        Enum.GetValues(typeof(Joycon.Button)) as Joycon.Button[];
@@ -223,7 +226,7 @@ public class PlayerMotion : MonoBehaviour
                 }
                 //Playerがスティックを倒した方向に進む
                 Vector3 vector = new Vector3(Mathf.Sin(degree), 0, Mathf.Cos(degree));
-                transform.Translate(vector * Time.deltaTime * 5);
+                transform.Translate(vector * Time.deltaTime * moveSpeed);
             }
         }
         if(UIController.instance.playerData.HitPoint <= 0)

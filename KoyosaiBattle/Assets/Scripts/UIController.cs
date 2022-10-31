@@ -297,9 +297,9 @@ public class UIController : MonoBehaviour
                     { // 同期されたNameとIDが登録されている
 
                         // ゲーム画面への遷移
-                        // 本来はInputSelecting->Roading->Playingの順に遷移
-                        state = PlayState.Resulting;
-                        //state = PlayState.Roading;
+                        // 本来はInputSelecting->Loading->Playingの順に遷移
+                        //state = PlayState.Resulting;
+                        state = PlayState.Loading;
                     }
                 }
             }

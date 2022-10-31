@@ -188,8 +188,9 @@ GameObject:
   - component: {fileID: 6953217639732540943}
   - component: {fileID: 8822069803927285495}
   - component: {fileID: 6497037400348228244}
+  - component: {fileID: 6182555328777208047}
   m_Layer: 0
-  m_Name: Volinier-motion2
+  m_Name: Volinier-motion2-sync
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -247,6 +248,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   replicator: {fileID: 244768932035113276}
+  animator: {fileID: 0}
 --- !u!114 &244768932035113276
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -347,6 +349,24 @@ MonoBehaviour:
   Animator: {fileID: 1952676494618535935}
   SynchronizeStates: 1
   ParameterSynchronizationFlags: 0101
+--- !u!114 &6182555328777208047
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1718164200747128306}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee33eb18f4b12ef4fa70b50456d41bf3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  replicator: {fileID: 0}
+  Sword: {fileID: 0}
+  Hand: {fileID: 0}
+  Arm1: {fileID: 0}
+  Arm2: {fileID: 0}
+  Shoulder: {fileID: 0}
 --- !u!1 &1803250293610588901
 GameObject:
   m_ObjectHideFlags: 0
@@ -1056,7 +1076,6 @@ GameObject:
   - component: {fileID: 961354651457758595}
   - component: {fileID: 3076976416997232969}
   - component: {fileID: 1615190913273895395}
-  - component: {fileID: 5272455114334959739}
   m_Layer: 0
   m_Name: swordcolor002
   m_TagString: swordcolor002
@@ -1144,19 +1163,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.2, y: 0.868702, z: 8.537753}
   m_Center: {x: 0.008531131, y: -0.961716, z: -3.0553055}
---- !u!114 &5272455114334959739
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3581313672992026780}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 99243bf8a4487324ea4f95b4ba434589, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  powerEnemy: 300
 --- !u!1 &3684026151984995687
 GameObject:
   m_ObjectHideFlags: 0

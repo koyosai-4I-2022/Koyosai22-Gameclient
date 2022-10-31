@@ -4,12 +4,12 @@ using UnityEngine;
 using System;
 using SoftGear.Strix.Unity.Runtime;
 
-public class JSample : MonoBehaviour
+public class JoyConAttack : MonoBehaviour
 {
 	[SerializeField]
 	StrixReplicator replicator;
-    [SerializeField]
-    GameObject Sword;
+	[SerializeField]
+	GameObject Sword;
 	[SerializeField]
 	GameObject Hand;
 	[SerializeField]
@@ -18,43 +18,43 @@ public class JSample : MonoBehaviour
 	GameObject Arm2;
 	[SerializeField]
 	GameObject Shoulder;
-    //JoyconLibの変数
-    private static readonly Joycon.Button[] m_buttons =
-       Enum.GetValues(typeof(Joycon.Button)) as Joycon.Button[];
+	//JoyconLibの変数
+	private static readonly Joycon.Button[] m_buttons =
+	   Enum.GetValues(typeof(Joycon.Button)) as Joycon.Button[];
 
-    private List<Joycon> m_joycons;
-    private Joycon m_joyconL;
-    private Joycon m_joyconR;
+	private List<Joycon> m_joycons;
+	private Joycon m_joyconL;
+	private Joycon m_joyconR;
 
-    Vector3 beforeAccel;
-    Vector3 deltaAccel;
-    Vector3 BasePosition;
+	Vector3 beforeAccel;
+	Vector3 deltaAccel;
+	Vector3 BasePosition;
 	Vector3 BaseEuler;
 	Vector3 swingPos;
 	Vector3 stayAccel;
 	Vector3 beforeGyro;
-    Vector3 gravity = new Vector3(0, -9.81f, 0);
+	Vector3 gravity = new Vector3(0, -9.81f, 0);
 
 	Vector3 Arm2DefaultAngle = new Vector3(57.8f, 271.0f, 182.5f);
 	Vector3 difShoulder = new Vector3(32.108f, 2.953f, 0.071f);
 
-    int count = 0;
+	int count = 0;
 
 	float disArm2ToHand;
 
-    void Start()
-    {
+	void Start()
+	{
 		// フレームレートを固定 60FPS
 		Application.targetFrameRate = 60;
-        // joyconの設定
-        m_joycons = JoyconManager.Instance.j;
-        if(m_joycons == null || m_joycons.Count <= 0)
-            return;
-        m_joyconL = m_joycons.Find(c => c.isLeft);
-        m_joyconR = m_joycons.Find(c => !c.isLeft);
+		// joyconの設定
+		m_joycons = JoyconManager.Instance.j;
+		if(m_joycons == null || m_joycons.Count <= 0)
+			return;
+		m_joyconL = m_joycons.Find(c => c.isLeft);
+		m_joyconR = m_joycons.Find(c => !c.isLeft);
 
-        beforeAccel = m_joyconL.GetAccel();
-        beforeGyro = m_joyconR.GetGyro();
+		beforeAccel = m_joyconL.GetAccel();
+		beforeGyro = m_joyconR.GetGyro();
 
 		BasePosition = new Vector3(0.4f, 0.7f, -0.1f);
 		BaseEuler = new Vector3(43.502f, -12.026f, -102.049f);
@@ -63,9 +63,13 @@ public class JSample : MonoBehaviour
 		Sword.transform.rotation = m_joyconR.GetVector();
 
 		Arm2DefaultAngle = Hand.transform.position - Arm2.transform.position;//new Vector3(1.6f, -1.0f, 0.1f);
-		disArm2ToHand = (Hand.transform.position - Arm2.transform.position).magnitude;
-		Debug.Log((Arm1.transform.position - Arm2.transform.position).magnitude);
+		disArm2ToHand = ( Hand.transform.position - Arm2.transform.position ).magnitude;
 		stayAccel = Vector3.zero;
+
+		if(!replicator.isLocal)
+		{
+			this.transform.GetChild(0).gameObject.SetActive(false);
+		}
 	}
 
 	// Update is called once per frame
@@ -110,7 +114,7 @@ public class JSample : MonoBehaviour
 		if(sqr > 0.25f)
 		{
 			swingPos += accUnity;
-			var vec = BasePosition + swingPos.normalized * 0.72f;
+			var vec = BasePosition + swingPos.normalized * 0.75f;
 			stayAccel = Vector3.zero;
 			Sword.transform.localPosition = vec;
 			count = 0;
@@ -152,3 +156,4 @@ public class JSample : MonoBehaviour
 		}
 	}
 }
+

@@ -19,6 +19,8 @@ public class JSample : MonoBehaviour
 	GameObject Arm2;
 	[SerializeField]
 	GameObject Shoulder;
+	[SerializeField]
+	Vector3 v;
 
     [SerializeField]
     ParticleSystem par;
@@ -41,18 +43,26 @@ public class JSample : MonoBehaviour
     Vector3 BasePosition;
 	Vector3 BaseEuler;
 	Vector3 swingPos;
+	Vector3 stayAccel;
 	Vector3 beforeGyro;
     Vector3 gravity = new Vector3(0, -9.81f, 0);
 
-    int count = 0;
-	int count2 = 0;
+	Vector3 Arm2DefaultAngle = new Vector3(57.8f, 271.0f, 182.5f);
+	Vector3 difShoulder = new Vector3(32.108f, 2.953f, 0.071f);
 
-	float mag = 1.2f;
+    int count = 0;
+	int swingCount = 0;
+
+	float mag = 1.0f;
 	float threshold = 9f;
 
-	float magShoulderToArm2;
-	float magArm2ToArm1;
-	float magArm1ToHand;
+	float disArm2ToHand;
+
+	[Range(-360f, 360f)]
+	public float angle = 0f;
+
+	[SerializeField]
+	Vector3 dif;
 
     void Start()
     {
@@ -78,10 +88,10 @@ public class JSample : MonoBehaviour
 		Sword.transform.rotation = m_joyconR.GetVector();
 		threshold = mag * mag;
 
-		magShoulderToArm2 = ( ( Arm2.transform.localPosition - Shoulder.transform.localPosition ) * 100f ).magnitude / 100f;
-		magArm2ToArm1 = ( ( Arm1.transform.localPosition - Shoulder.transform.localPosition ) * 100f ).magnitude / 100f;
-		magArm1ToHand = ( ( Hand.transform.localPosition - Shoulder.transform.localPosition ) * 100f ).magnitude / 100f;
-		Debug.Log($"{magShoulderToArm2}:{magArm2ToArm1}:{magArm1ToHand}");
+		Arm2DefaultAngle = Hand.transform.position - Arm2.transform.position;//new Vector3(1.6f, -1.0f, 0.1f);
+		disArm2ToHand = (Hand.transform.position - Arm2.transform.position).magnitude;
+		Debug.Log((Arm1.transform.position - Arm2.transform.position).magnitude);
+		stayAccel = Vector3.zero;
 	}
 
 	// Update is called once per frame
@@ -89,17 +99,14 @@ public class JSample : MonoBehaviour
 	{
         if(m_joycons == null || m_joycons.Count <= 0)
             return;
-		count2++;
 
 		//if(count2 > 2)
 		{
-			count2 = 0;
-
 			var acc = m_joyconR.GetAccel();
 			var gyro = m_joyconR.GetGyro();
 			var ori = m_joyconR.GetVector();
 
-			count++;
+			//count++;
 			acc = new Vector3(acc.y, -acc.x, acc.x);
 			//sub[1].transform.position = ((gyro + gyro1 + gyro2)/ 3f).normalized;
 			if(Mathf.Abs(gyro.x) < p)
@@ -113,45 +120,10 @@ public class JSample : MonoBehaviour
 			var m = 1f;//acc.magnitude;
 			Sword.transform.Rotate(new Vector3(-gyro.y, -gyro.x, -gyro.z) * m);
 
-			//if(m_joyconR.GetButtonDown(m_buttons[0]))
-			//	//Cube.transform.rotation = Quaternion.Euler(0, 0, 0);
-			//	Cube.transform.LookAt(acc * -1);
-			//	//Cube.transform.rotation = ori;
-
-			//if(count > 30)
-			//{
-			//	count = 0;
-			//}
-
-			//acc = m_joyconR.GetAccel();
-			//      var dif = acc - beforeAccel;
-			//var vel = (dif + beforeAccel) / 2f;
-
-			//if(dif.sqrMagnitude > 0.25f)
-			//{
-			//	Cube.transform.localPosition += ( -vel ) * Time.deltaTime * 3f;
-			//}
-			//else
-			//{
-			//	count++;
-			//	if(count > 200)
-			//	{
-			//		Cube.transform.localPosition = BasePosition;
-			//		Cube.transform.rotation = Quaternion.Euler(0, 0, 0);
-			//		count = 0;
-			//	}
-			//}
-
-			//beforeAccel = dif;
-			//{
-			//    J.transform.rotation = ori;
-			//}
-			//Debug.Log($"{ori}");
-
 			// ‘OƒtƒŒ[ƒ€‚Ì‰Á‘¬“x‚Ì·‚ðŽæ“¾
 			acc = m_joyconR.GetAccel() - beforeAccel;
 			// ‰Á‘¬“x‚Ì—v‘f‚ðC³‚·‚é
-			Vector3 accUnity = new Vector3(-acc.y, -acc.x, -acc.z);
+			Vector3 accUnity = new Vector3(-acc.y, -acc.x, -acc.z) + stayAccel;
 			//accUnity = new Vector3(-acc.y, -acc.x, -acc.z) + gyro.normalized;
 			//var dif = accUnity - deltaAccel;
 			// Šµ«‚ð’Ç‰Á
@@ -164,16 +136,20 @@ public class JSample : MonoBehaviour
 			if(sqr > p)
 			{
 				swingPos += accUnity;
-				var vec = BasePosition + swingPos;
+				var vec = BasePosition + swingPos.normalized * 0.72f;
 				//Sword.transform.localPosition = beforeAccel;
+				var arm2Pos = Arm2.transform.position;
+				var dif = vec - arm2Pos;
+				stayAccel = Vector3.zero;
 
-				if(swingPos.sqrMagnitude > threshold)
+				//if(dif.sqrMagnitude > disArm2ToHand * disArm2ToHand)
 				{
-					Sword.transform.localPosition = vec.normalized * mag;
+					Sword.transform.localPosition = vec;
 				}
-				else
+				//else
 				{
-					Sword.transform.localPosition = ( vec );
+					//var vecin = (Arm2.transform.position - Sword.transform.position).normalized * 0.03f;
+					//Sword.transform.localPosition = ( vec );
 				}
 				count = 0;
 				//if(!par.isPlaying) par.Play();
@@ -184,24 +160,36 @@ public class JSample : MonoBehaviour
 				count++;
 				if(count > 20)
 				{
-					//Sword.transform.position = Hand.transform.position;
-					//Sword.transform.position = Vector3.up;
+
 					Sword.transform.localRotation = Quaternion.Euler(BaseEuler);
 					swingPos = Vector3.zero;
-					Sword.transform.localPosition = BasePosition;
+					Sword.transform.localPosition = BasePosition;// + Vector3.up * 0.3f;
 					count = 0;
 				}
 			}
-			var svec = Sword.transform.position - Shoulder.transform.position;
-			var svecN = svec.normalized;
+			// ˜r‚ð’Ç]‚³‚¹‚é
+			{
+				float dis = disArm2ToHand - (Sword.transform.position - Arm2.transform.position).magnitude;
+				var Arm2ToArm1 = Arm1.transform.TransformPoint(Arm1.transform.localPosition) - Arm2.transform.position;
+				var Arm2ToSword = (Sword.transform.position - Arm2.transform.position);
+				var A2SNor = Arm2ToSword.normalized * 1.906625f;
 
-			Arm2.transform.localPosition = svecN * magShoulderToArm2;
-			Arm1.transform.localPosition = svecN * magArm2ToArm1;
-			Hand.transform.localPosition = svecN * magArm1ToHand;
+				float angle_x;
+				float angle_y = 0f;
+				float angle_z;
+				if(Arm2ToSword.x > 0f)
+				{
+					angle_x = Mathf.Atan2(Arm2ToSword.y, Mathf.Abs(Arm2ToSword.x)) * Mathf.Rad2Deg;
+					angle_z = Mathf.Atan2(Arm2ToSword.z, Mathf.Abs(Arm2ToSword.x)) * Mathf.Rad2Deg;
+				}
+				else
+				{
+					angle_x = -Mathf.Atan2(Arm2ToSword.y, Mathf.Abs(Arm2ToSword.x)) * Mathf.Rad2Deg;
+					angle_z = 180 - Mathf.Atan2(Arm2ToSword.z, Mathf.Abs(Arm2ToSword.x)) * Mathf.Rad2Deg;
+				}
 
-			//Hand.transform.position = Sword.transform.position;
-
-			//C.transform.position += acc * Time.deltaTime * 1f;
+				Arm2.transform.localRotation = Quaternion.Euler(new Vector3(-angle_x, angle_y, angle_z) - difShoulder);
+			}
 		}
 	}
 }

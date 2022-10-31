@@ -141,9 +141,9 @@ public class UIController : MonoBehaviour
 
     void Update()
     {
-        if (m_joycons == null || m_joycons.Count <= 0)
+        if(m_joycons == null || m_joycons.Count <= 0)
             return;
-        switch (state)
+        switch(state)
         {
             // ゲーム画面での毎フレーム処理
             case PlayState.Playing:

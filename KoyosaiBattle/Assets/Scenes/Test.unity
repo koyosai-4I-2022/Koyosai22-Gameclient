@@ -3786,6 +3786,7 @@ MonoBehaviour:
   - {fileID: 371970287}
   RankingImage: []
   playerData: {fileID: 1295927093}
+  playerDataClone: {fileID: 0}
   isStart: 0
   isFinish: 0
 --- !u!1 &867155390
@@ -3836,6 +3837,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particle: {fileID: 5258520932066381814, guid: fb1bfe99cb1e10a4b8a44b7ae996dccc, type: 3}
+  replicator: {fileID: 0}
 --- !u!65 &867155393
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5093,6 +5095,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particle: {fileID: 5258520932066381814, guid: fb1bfe99cb1e10a4b8a44b7ae996dccc, type: 3}
+  replicator: {fileID: 0}
 --- !u!65 &1152200109
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6125,6 +6128,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particle: {fileID: 5258520932066381814, guid: fb1bfe99cb1e10a4b8a44b7ae996dccc, type: 3}
+  replicator: {fileID: 0}
 --- !u!65 &1298227335
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7045,6 +7049,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particle: {fileID: 5258520932066381814, guid: fb1bfe99cb1e10a4b8a44b7ae996dccc, type: 3}
+  replicator: {fileID: 0}
 --- !u!65 &1430933657
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8076,6 +8081,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particle: {fileID: 5258520932066381814, guid: fb1bfe99cb1e10a4b8a44b7ae996dccc, type: 3}
+  replicator: {fileID: 0}
 --- !u!65 &1635844679
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8572,6 +8578,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particle: {fileID: 5258520932066381814, guid: fb1bfe99cb1e10a4b8a44b7ae996dccc, type: 3}
+  replicator: {fileID: 0}
 --- !u!65 &1704063064
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9703,6 +9710,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particle: {fileID: 5258520932066381814, guid: fb1bfe99cb1e10a4b8a44b7ae996dccc, type: 3}
+  replicator: {fileID: 0}
 --- !u!65 &1959263253
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -12627,6 +12635,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particle: {fileID: 5258520932066381814, guid: fb1bfe99cb1e10a4b8a44b7ae996dccc, type: 3}
+  replicator: {fileID: 5593989183989997384}
 --- !u!114 &5593989183989997384
 MonoBehaviour:
   m_ObjectHideFlags: 0

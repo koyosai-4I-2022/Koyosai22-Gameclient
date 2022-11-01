@@ -12724,13 +12724,13 @@ MonoBehaviour:
   m_Script: {fileID: -1762331577, guid: f2c2112f638c5b8489d16403d930373b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NearDistance: 0.02
-  MaxSpeed: 10
+  NearDistance: 0.001
+  MaxSpeed: 20
   Acceleration: 100
   Damping: 0
   SyncPeriodMin: 50
-  SyncPeriodMax: 200
-  PredictionPeriod: 300
+  SyncPeriodMax: 100
+  PredictionPeriod: 500
 --- !u!114 &5593989183989997389
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12797,7 +12797,7 @@ MonoBehaviour:
   strixBehaviours:
   - {fileID: 5593989183989997388}
   objectType: 262147
-  sendRate: 5
+  sendRate: 15
   syncDestroy: 1
   networkInstanceId: -1
   InstantiableBy: 1
@@ -12992,6 +12992,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee33eb18f4b12ef4fa70b50456d41bf3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  clone: {fileID: 0}
   replicator: {fileID: 5593989183989997384}
   Sword: {fileID: 5593989183989997386}
   Hand: {fileID: 5593989183989997336}

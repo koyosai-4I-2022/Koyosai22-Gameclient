@@ -7,6 +7,7 @@ using SoftGear.Strix.Unity.Runtime;
 public class JoyConAttack : MonoBehaviour
 {
 	public static JoyConAttack instance;
+	public Transform clone;
 
 	[SerializeField]
 	StrixReplicator replicator;
@@ -46,7 +47,7 @@ public class JoyConAttack : MonoBehaviour
 
 	private void Awake()
 	{
-		if(!replicator.isLocal)
+		if(replicator.isLocal)
 		{
 			instance = this;
 		}
@@ -78,6 +79,7 @@ public class JoyConAttack : MonoBehaviour
 
 		if(!replicator.isLocal)
 		{
+			clone = this.gameObject.transform;
 			this.transform.GetChild(0).gameObject.SetActive(false);
 			this.transform.GetChild(1).gameObject.SetActive(false);
 			this.GetComponent<Animator>().enabled = true;

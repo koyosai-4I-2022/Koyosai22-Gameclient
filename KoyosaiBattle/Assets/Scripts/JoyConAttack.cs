@@ -80,7 +80,6 @@ public class JoyConAttack : MonoBehaviour
 
 		if(!replicator.isLocal)
 		{
-			clone = this.gameObject.transform;
 			this.transform.GetChild(0).gameObject.SetActive(false);
 			this.transform.GetChild(1).gameObject.SetActive(false);
 			this.GetComponent<Animator>().enabled = true;

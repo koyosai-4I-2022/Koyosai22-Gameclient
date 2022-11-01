@@ -234,12 +234,10 @@ public class UIController : MonoBehaviour
 
         if(StrixNetwork.instance.isRoomOwner)
 		{
-            Debug.Log(JoyConAttack.instance.gameObject.name);
             JoyConAttack.instance.gameObject.transform.position += Vector3.back * 30f;
 		}
         else
         {
-            Debug.Log(JoyConAttack.instance.gameObject.name);
             JoyConAttack.instance.gameObject.transform.Rotate(0, 180f, 0);
             JoyConAttack.instance.gameObject.transform.position += Vector3.forward * 30f;
 		}

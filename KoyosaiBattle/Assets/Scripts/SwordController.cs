@@ -16,9 +16,11 @@ public class SwordController : MonoBehaviour
 
     void Start()
     {
-        if(!replicator.isLocal && JoyConAttack.instance.clone != null)
-		{
-            this.transform.parent = JoyConAttack.instance.clone.gameObject.transform;
+        if(!replicator.isLocal)// && JoyConAttack.instance.clone != null)
+        {
+            Debug.Log("Set Parent");
+            var player = GameObject.Find("Volinier-motion2-joycon(Clone)");
+            this.transform.parent = player.transform;
             this.transform.localScale = Vector3.one;
             isInit = true;
 		}

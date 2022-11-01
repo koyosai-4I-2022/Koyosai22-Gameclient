@@ -29,6 +29,7 @@ public class SwordController : MonoBehaviour
     {
         if(!isInit && !replicator.isLocal && JoyConAttack.instance.clone != null)
         {
+            Debug.Log("Set Parent");
             this.transform.parent = JoyConAttack.instance.clone.gameObject.transform;
             this.transform.localScale = Vector3.one;
             isInit = true;

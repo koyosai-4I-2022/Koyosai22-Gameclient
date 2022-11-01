@@ -7,5 +7,7 @@ public class SwordCollision : MonoBehaviour
 	private void OnCollisionEnter(Collision collision)
 	{
 		Debug.Log($"Hit:{collision.gameObject.tag}");
+
+
 	}
 }

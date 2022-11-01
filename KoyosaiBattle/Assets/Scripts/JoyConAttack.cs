@@ -47,9 +47,10 @@ public class JoyConAttack : MonoBehaviour
 
 	private void Awake()
 	{
-		if(replicator.isLocal)
+		if(replicator.isLocal && instance == null)
 		{
 			instance = this;
+			Debug.Log("Init");
 		}
 	}
 

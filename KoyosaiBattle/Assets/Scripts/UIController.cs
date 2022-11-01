@@ -215,6 +215,7 @@ public class UIController : MonoBehaviour
     {
         if (isFinish)
         {
+            CalcScore.instance.Timer();
             CalcScore.instance.Score();
             state = PlayState.Resulting;
         }
@@ -227,6 +228,7 @@ public class UIController : MonoBehaviour
 
         // 初期化処理はここに書く
         isStart = true;
+        CalcScore.instance.Timer();
         EnergyGauge.instance.InitializeEnergyGauge();
         HPGauge.instance.InitializeHPGauge();
         Timer.instance.InitializeTimer();

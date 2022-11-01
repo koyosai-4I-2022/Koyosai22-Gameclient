@@ -19,7 +19,6 @@ public class Hitcollision : MonoBehaviour
         if (collision.gameObject.CompareTag("swordcolor002"))
         {
             var pparent = collision.transform.parent.parent.gameObject;
-            Debug.Log($"{pparent.name}:{collision.name}");
             if(pparent != this.gameObject)
             {
                 // パーティクルシステムのインスタンスを生成する。

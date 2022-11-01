@@ -54,7 +54,7 @@ public class CalcScore : MonoBehaviour
 
     }
 
-    private void Timer()
+    public void Timer()
     {
         // 時間計測
         if (UIController.instance.isStart == true)

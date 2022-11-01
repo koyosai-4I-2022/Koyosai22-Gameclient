@@ -13,6 +13,7 @@ public class Hitcollision : MonoBehaviour
 
     private void OnTriggerEnter(Collider collision)
     {
+        Debug.Log("hit");
         if (collision.gameObject.CompareTag("swordcolor002"))
         {
             //if (Attack.instance.replicator.isLocal)

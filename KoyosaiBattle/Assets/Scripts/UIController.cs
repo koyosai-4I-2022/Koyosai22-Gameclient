@@ -232,6 +232,16 @@ public class UIController : MonoBehaviour
         Timer.instance.InitializeTimer();
         AnimationEvent.instance.InitializeAnimationEvent();
 
+        if(StrixNetwork.instance.isRoomOwner)
+		{
+            JoyConAttack.instance.gameObject.transform.position += Vector3.back * 10f;
+		}
+        else
+		{
+            JoyConAttack.instance.gameObject.transform.Rotate(0, 180f, 0);
+            JoyConAttack.instance.gameObject.transform.position += Vector3.forward * 10f;
+		}
+
         // プレイパネルを表示それ以外を非表示
         SetPanelActives();
     }

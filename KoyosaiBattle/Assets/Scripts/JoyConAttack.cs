@@ -131,7 +131,7 @@ public class JoyConAttack : MonoBehaviour
 
 		if(sqr > 0.25f)
 		{
-			swingPos += accUnity;
+			swingPos += accUnity * 0.95f;
 			var vec = BasePosition + swingPos.normalized * 0.75f;
 			stayAccel = Vector3.zero;
 			Sword.transform.localPosition = vec;

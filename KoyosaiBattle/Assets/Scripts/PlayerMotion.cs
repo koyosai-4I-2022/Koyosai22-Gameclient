@@ -222,7 +222,7 @@ public class PlayerMotion : MonoBehaviour
                     RunTime += Time.deltaTime;
                     //Playerがスティックを倒した方向に進む
                     Vector3 Runvector = new Vector3(Mathf.Sin(degree), 0, Mathf.Cos(degree));
-                    transform.Translate(Runvector * Time.deltaTime * 20);
+                    transform.Translate(Runvector * Time.deltaTime * 4f * moveSpeed);
                 }
                 //Playerがスティックを倒した方向に進む
                 Vector3 vector = new Vector3(Mathf.Sin(degree), 0, Mathf.Cos(degree));

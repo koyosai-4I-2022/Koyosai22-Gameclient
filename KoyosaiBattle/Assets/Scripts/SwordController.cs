@@ -1,12 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using SoftGear.Strix.Unity.Runtime;
 
 public class SwordController : MonoBehaviour
 {
     [SerializeField]
     StrixReplicator replicator;
+
+    [SerializeField]
+    Text txt;
 
     bool isInit = false;
 
@@ -29,5 +33,9 @@ public class SwordController : MonoBehaviour
             this.transform.localScale = Vector3.one;
             isInit = true;
         }
+        string s = "Player:" + UIController.instance.playerData.HitPoint.ToString() + "\n";
+        if(UIController.instance.playerDataClone != null)
+            s += "Enemy:" + UIController.instance.playerDataClone.HitPoint.ToString();
+        txt.text = s;
     }
 }

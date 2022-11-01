@@ -13,21 +13,23 @@ public class Hitcollision : MonoBehaviour
 
     private void OnTriggerEnter(Collider collision)
     {
-        Debug.Log("hit");
         if (collision.gameObject.CompareTag("swordcolor002"))
         {
-            //if (Attack.instance.replicator.isLocal)
-            //return;
-            UIController.instance.playerData.HitPoint -= 2;
-            // パーティクルシステムのインスタンスを生成する。
-            ParticleSystem newParticle = Instantiate(particle);
-            //　パーティクル発生場所を取得し、その位置に生成する。
-            Vector3 hitPos = collision.ClosestPointOnBounds(this.transform.position);
-            newParticle.transform.position = hitPos;
-            //　パーティクルの発生
-            newParticle.Play();
-            //　インスタンス化したパーティクルの消去
-            Destroy(newParticle.gameObject, 1.0f);
+            if(collision.gameObject.transform.parent.name.Contains("Clone"))
+            {
+                //if (Attack.instance.replicator.isLocal)
+                //return;
+                UIController.instance.playerData.HitPoint -= 2;
+                // パーティクルシステムのインスタンスを生成する。
+                ParticleSystem newParticle = Instantiate(particle);
+                //　パーティクル発生場所を取得し、その位置に生成する。
+                Vector3 hitPos = collision.ClosestPointOnBounds(this.transform.position);
+                newParticle.transform.position = hitPos;
+                //　パーティクルの発生
+                newParticle.Play();
+                //　インスタンス化したパーティクルの消去
+                Destroy(newParticle.gameObject, 1.0f);
+            }
         } 
     }
 }

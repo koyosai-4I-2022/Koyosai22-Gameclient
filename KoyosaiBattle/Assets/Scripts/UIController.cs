@@ -102,7 +102,7 @@ public class UIController : MonoBehaviour
 
     [SerializeField]
     public PlayerData playerData;
-    [NonSerialized]
+    [SerializeField]
     public PlayerData playerDataClone;
 
     //JoyconLibの変数

@@ -1,21 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using SoftGear.Strix.Unity.Runtime;
 
 public class Hitcollision : MonoBehaviour
 {
     [SerializeField]
     [Tooltip("EF_HIT_M_null")]
     private ParticleSystem particle;
+    [SerializeField]
+    StrixReplicator replicator;
     private AudioSource slashAudio;
 
     void Start() => slashAudio = GetComponent<AudioSource>();
 
     private void OnTriggerEnter(Collider collision)
     {
+        if(replicator.isLocal)
+            return;
+
         if (collision.gameObject.CompareTag("swordcolor002"))
         {
-            if(collision.gameObject.transform.parent.name.Contains("Clone"))
+            string swordName = collision.gameObject.transform.parent.name + "(";
+            string playerName = collision.gameObject.transform.parent.parent.name + "(";
+            if(swordName.Split('(')[1] != playerName.Split('(')[1])
             {
                 //if (Attack.instance.replicator.isLocal)
                 //return;

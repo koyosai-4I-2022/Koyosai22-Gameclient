@@ -50,7 +50,6 @@ public class JoyConAttack : MonoBehaviour
 		if(replicator.isLocal && instance == null)
 		{
 			instance = this;
-			Debug.Log("Init");
 		}
 	}
 

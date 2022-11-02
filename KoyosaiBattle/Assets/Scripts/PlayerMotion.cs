@@ -138,7 +138,7 @@ public class PlayerMotion : MonoBehaviour
         }
 
         //右スティックでPlayerの向きを変える
-        transform.Rotate(new Vector3(0, Rstick[0] * 3, 0));
+        transform.Rotate(new Vector3(0, Rstick[0] * 5, 0));
 
         //左スティックの倒した向きから角度を得る
         degree = Mathf.Atan2(Lstick[0], Lstick[1]);
@@ -214,6 +214,7 @@ public class PlayerMotion : MonoBehaviour
             //左スティックを倒しているとき
             if (Lstick[0] != 0 || Lstick[1] != 0)
             {
+                MotionStrict();//動ける距離を制限
                 if (run)
                 {
                     RunTime += Time.deltaTime;
@@ -230,6 +231,29 @@ public class PlayerMotion : MonoBehaviour
         {
             Animator.SetBool("death1",true);
             UIController.instance.isFinish = true;
+        }
+    }
+
+    private void MotionStrict()
+    {
+        float i = 10;//縦の補正値
+
+        float posx = transform.position.x;//x座標
+        float posz = transform.position.z - i;//補正したz座標
+
+        float absposx = Mathf.Abs(posx);//xの絶対値
+        float absposz = Mathf.Abs(posz);//zの補正した絶対値
+
+        int repos = 2; //外に出たときにどれだけ戻すか
+
+        if (absposx > 15 )
+        {
+            transform.position += Vector3.left * repos * Mathf.Sign(posx);
+        }
+
+        if(absposz > 33)
+        {
+            transform.position += Vector3.back * repos * Mathf.Sign(posz);
         }
     }
 }

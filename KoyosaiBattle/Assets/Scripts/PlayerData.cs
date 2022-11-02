@@ -20,7 +20,7 @@ public class PlayerData : StrixBehaviour
     public int HitPoint;
 
     [SerializeField]
-    int defaultHP = 100;
+    int defaultHP = 150;
     [StrixSyncField]
     public bool isFinish = false;
     [StrixSyncField]

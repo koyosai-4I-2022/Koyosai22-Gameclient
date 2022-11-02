@@ -87,6 +87,11 @@ public class UIController : MonoBehaviour
     [SerializeField]
     Image[] RankingImage;
 
+    [SerializeField]
+    Camera loadCamera;
+    [SerializeField]
+    Camera playCamera;
+
     // 各処理の初期化を一度しか
     bool[] stateInit;
     bool finishFrag = false;
@@ -213,7 +218,7 @@ public class UIController : MonoBehaviour
     // ゲーム中の描画更新
     void UpdatePlayingUI()
     {
-        if(playerDataClone.HitPoint <= 0)
+        if(playerDataClone != null && playerDataClone.HitPoint <= 0)
 		{
             state = PlayState.Resulting;
 		}
@@ -251,6 +256,9 @@ public class UIController : MonoBehaviour
 
         // プレイパネルを表示それ以外を非表示
         SetPanelActives();
+
+        loadCamera.gameObject.SetActive(false);
+        playCamera.gameObject.SetActive(true);
     }
 
     // 待機画面の描画更新
@@ -348,6 +356,9 @@ public class UIController : MonoBehaviour
             InputSelectRankingName[i].text = $"{result.Users[i].name}";
             InputSelectRankingScore[i].text = $"{result.Users[i].rate}";
         }
+
+        loadCamera.gameObject.SetActive(true);
+        playCamera.gameObject.SetActive(false);
     }
 
     // ロード画面の描画更新
@@ -432,6 +443,9 @@ public class UIController : MonoBehaviour
 
         // スコアをサーバへ送信
         var result = await ServerRequestController.PostScore(playerData.Score, playerData.PlayerId);
+
+        loadCamera.gameObject.SetActive(true);
+        playCamera.gameObject.SetActive(false);
     }
     // ランキング画面の描画更新
     void UpdateRankingUI()

@@ -243,12 +243,12 @@ public class PlayerMotion : MonoBehaviour
 
         int repos = 2; //外に出たときにどれだけ戻すか
 
-        if (absposx > 15 )
+        if (absposx > 105 )
         {
             transform.position += Vector3.left * repos * Mathf.Sign(posx);
         }
 
-        if(absposz > 33)
+        if(absposz > 231)
         {
             transform.position += Vector3.back * repos * Mathf.Sign(posz);
         }

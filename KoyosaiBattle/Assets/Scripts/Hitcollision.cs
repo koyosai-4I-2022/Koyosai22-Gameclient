@@ -10,9 +10,11 @@ public class Hitcollision : MonoBehaviour
     private ParticleSystem particle;
     [SerializeField]
     StrixReplicator replicator;
+    [SerializeField]
     private AudioSource slashAudio;
 
-    int damage = 4;
+    int damage = 6;
+    int hitCount = 0;
 
     void Start() => slashAudio = GetComponent<AudioSource>();
 
@@ -29,10 +31,14 @@ public class Hitcollision : MonoBehaviour
                         return;
                     //if (Attack.instance.replicator.isLocal)
                     //return;
-                    UIController.instance.playerData.HitPoint -= damage / 2;
+                    UIController.instance.playerData.HitPoint -= (damage - hitCount) / 2;
+                    hitCount++;
+                    if(hitCount > damage)
+                        hitCount = damage;
                 }
                 else
                 {
+                    slashAudio.Play();
                     // パーティクルシステムのインスタンスを生成する。
                     ParticleSystem newParticle = Instantiate(particle);
                     //　パーティクル発生場所を取得し、その位置に生成する。
@@ -46,7 +52,10 @@ public class Hitcollision : MonoBehaviour
                         return;
                     //if (Attack.instance.replicator.isLocal)
                     //return;
-                    UIController.instance.playerData.HitPoint -= damage;
+                    UIController.instance.playerData.HitPoint -= (damage - hitCount);
+                    hitCount++;
+                    if(hitCount > damage)
+                        hitCount = damage;
                 }
             }
         } 

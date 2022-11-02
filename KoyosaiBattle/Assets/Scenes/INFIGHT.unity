@@ -5086,7 +5086,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7395c494e394be44f8e65ecfc59cec69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slider: {fileID: 0}
+  slider: {fileID: 1764833889}
   maxHp: 100
 --- !u!114 &1336672534
 MonoBehaviour:
@@ -5100,8 +5100,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c58167a6662d264408b5fc6f3419ec4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  energy: {fileID: 0}
-  sliderImage: {fileID: 0}
+  energy: {fileID: 1119304367}
+  sliderImage: {fileID: 1645577846}
   maxEnergy: 10
 --- !u!1 &1343423502
 GameObject:

@@ -5035,6 +5035,7 @@ GameObject:
   - component: {fileID: 1336672531}
   - component: {fileID: 1336672534}
   - component: {fileID: 1336672533}
+  - component: {fileID: 1336672535}
   m_Layer: 0
   m_Name: Score
   m_TagString: Untagged
@@ -5103,6 +5104,20 @@ MonoBehaviour:
   energy: {fileID: 1119304367}
   sliderImage: {fileID: 1645577846}
   maxEnergy: 10
+--- !u!114 &1336672535
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1336672530}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91528ab4d8568104880fc3dd7dfed10b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 219301375}
+  count: 0
 --- !u!1 &1343423502
 GameObject:
   m_ObjectHideFlags: 0

@@ -217,15 +217,14 @@ public class PlayerMotion : MonoBehaviour
             //左スティックを倒しているとき
             if (Lstick[0] != 0 || Lstick[1] != 0)
             {
+                //Playerがスティックを倒した方向に進む
+                Vector3 vector = new Vector3(Mathf.Sin(degree), 0, Mathf.Cos(degree));
                 if (run)
                 {
                     RunTime += Time.deltaTime;
                     //Playerがスティックを倒した方向に進む
-                    Vector3 Runvector = new Vector3(Mathf.Sin(degree), 0, Mathf.Cos(degree));
-                    transform.Translate(Runvector * Time.deltaTime * 4f * moveSpeed);
+                    transform.Translate(vector * Time.deltaTime * 4f * moveSpeed);
                 }
-                //Playerがスティックを倒した方向に進む
-                Vector3 vector = new Vector3(Mathf.Sin(degree), 0, Mathf.Cos(degree));
                 transform.Translate(vector * Time.deltaTime * moveSpeed);
             }
         }

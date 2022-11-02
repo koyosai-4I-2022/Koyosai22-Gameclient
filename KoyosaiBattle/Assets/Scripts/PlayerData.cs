@@ -21,6 +21,8 @@ public class PlayerData : StrixBehaviour
 
     [SerializeField]
     int defaultHP = 100;
+    [StrixSyncField]
+    bool isFinish = false;
 
     private void Awake()
     {
@@ -50,6 +52,7 @@ public class PlayerData : StrixBehaviour
         Name = string.Empty;
         Score = 0;
         HitPoint = defaultHP;
+        isFinish = false;
 	}
 
     public void SetUser(string name, int id)

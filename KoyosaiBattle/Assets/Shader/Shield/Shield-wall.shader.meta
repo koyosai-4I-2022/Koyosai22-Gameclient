@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: eb6e6f2577e6d6d4dae22a5da25be89a
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures:
+  - _MatCap_Outside: {fileID: 2800000, guid: a6eee83a259b9db409fe29157d8e74b7, type: 3}
+  - _MatCap_Inside: {fileID: 2800000, guid: ecee5a680c27252428f7fc95ca8e50dc, type: 3}
+  - _Shield_Emission: {fileID: 2800000, guid: cb701408f27c1bd408164f81eb24431b, type: 3}
+  - _Normal: {fileID: 2800000, guid: a1a3064659f939440a14a814636de25e, type: 3}
+  - _texcoord3: {instanceID: 0}
+  - _texcoord: {instanceID: 0}
+  - _texcoord2: {instanceID: 0}
+  nonModifiableTextures: []
+  preprocessorOverride: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

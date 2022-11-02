@@ -5033,6 +5033,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1336672532}
   - component: {fileID: 1336672531}
+  - component: {fileID: 1336672534}
+  - component: {fileID: 1336672533}
   m_Layer: 0
   m_Name: Score
   m_TagString: Untagged
@@ -5072,6 +5074,35 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1336672533
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1336672530}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7395c494e394be44f8e65ecfc59cec69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slider: {fileID: 0}
+  maxHp: 100
+--- !u!114 &1336672534
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1336672530}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c58167a6662d264408b5fc6f3419ec4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  energy: {fileID: 0}
+  sliderImage: {fileID: 0}
+  maxEnergy: 10
 --- !u!1 &1343423502
 GameObject:
   m_ObjectHideFlags: 0

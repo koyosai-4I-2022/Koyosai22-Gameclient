@@ -261,12 +261,9 @@ public class ConnectionController : MonoBehaviour
     void SceneChange()
 	{
         panel.SetActive(false);
-        //foreach(var mem in StrixNetwork.instance.roomMembers)
-        //    Debug.Log($"{mem.Value.GetName()}:{mem.Value.GetUid()}");
-        UIController.instance.state = UIController.PlayState.Playing;
-		//UIController.instance.state = UIController.PlayState.Loading;
-		//UIController.instance.state = UIController.PlayState.Resulting;
-		//UIController.instance.state = UIController.PlayState.InputSelecting;
+		//foreach(var mem in StrixNetwork.instance.roomMembers)
+		//    Debug.Log($"{mem.Value.GetName()}:{mem.Value.GetUid()}");
+        UIController.instance.state = UIController.PlayState.InputSelecting;
 		StrixNetwork.instance.selfRoomMember.SetPrimaryKey(-1);
     }
 	// テキストに表示するためのメソッド

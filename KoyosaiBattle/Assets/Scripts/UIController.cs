@@ -213,6 +213,10 @@ public class UIController : MonoBehaviour
     // ゲーム中の描画更新
     void UpdatePlayingUI()
     {
+        if(playerData.isFinish)
+		{
+            state = PlayState.Resulting;
+		}
         if (isFinish)
         {
             CalcScore.instance.Timer();

@@ -22,7 +22,7 @@ public class PlayerData : StrixBehaviour
     [SerializeField]
     int defaultHP = 100;
     [StrixSyncField]
-    bool isFinish = false;
+    public bool isFinish = false;
 
     private void Awake()
     {

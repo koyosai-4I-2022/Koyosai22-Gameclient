@@ -5,8 +5,6 @@ using System;
 
 public class CalcScore : MonoBehaviour
 {
-    [SerializeField]
-    HPGauge hpgauge;
     // [SerializeField]
     // UIController UIController;
     GameFinish gamefinish;
@@ -86,11 +84,11 @@ public class CalcScore : MonoBehaviour
             UIController.instance.playerData.Score = ( int ) (      //playerAのスコア(勝者)
                 ( (GameTimeMax - elapsedTime) * TimeRate )          //速く倒すとスコアアップ
                 + ( AHP * HPRate )                                  //体力が多く残っているとスコアアップ
-                + ( ( hpgauge.maxHp - BHP ) * DamegeRate ) );       //敵に多くダメージを与えるとスコアアップ
+                + ( ( HPGauge.instance.maxHp - BHP ) * DamegeRate ) );       //敵に多くダメージを与えるとスコアアップ
             UIController.instance.playerDataClone.Score = ( int ) ( //playerAのスコア(敗者)
                 ( ( GameTimeMax - elapsedTime ) * TimeRate )        //速く倒すとスコアアップ
                 + ( BHP * HPRate )                                  //体力が多く残っているとスコアアップ
-                + ( ( hpgauge.maxHp - AHP ) * DamegeRate ) );       //敵に多くダメージを与えるとスコアアップ
+                + ( ( HPGauge.instance.maxHp - AHP ) * DamegeRate ) );       //敵に多くダメージを与えるとスコアアップ
             if (BHP == 0)
             {
                 //PlayerA撃破ボーナス
@@ -109,11 +107,11 @@ public class CalcScore : MonoBehaviour
             UIController.instance.playerData.Score = ( int ) (
                 ( ( GameTimeMax - elapsedTime ) * TimeRate )
                 + ( AHP * HPRate )
-                + ( ( hpgauge.maxHp - BHP ) * DamegeRate ) );
+                + ( ( HPGauge.instance.maxHp - BHP ) * DamegeRate ) );
             UIController.instance.playerDataClone.Score = ( int ) ( 
                 ( (GameTimeMax - elapsedTime) * TimeRate )
                 + ( BHP * HPRate )
-                + ( ( hpgauge.maxHp - AHP ) * DamegeRate ) );
+                + ( ( HPGauge.instance.maxHp - AHP ) * DamegeRate ) );
             if(AHP == 0)
             {
                 //PlayerB撃破ボーナス
@@ -133,5 +131,6 @@ public class CalcScore : MonoBehaviour
             UIController.instance.playerData.Score += 200;
             UIController.instance.playerDataClone.Score += 200;
         }
+        UIController.instance.playerDataClone.isFinish = true;
     }
 }

@@ -395,6 +395,13 @@ public class UIController : MonoBehaviour
     // リザルト画面の初期設定
     async void InitResultingUI()
     {
+#if UNITY_EDITOR
+        playerData.Name = "TestDev1";
+        playerData.Score = 200;
+        playerDataClone = new PlayerData();
+        playerDataClone.Name = "TestDev2";
+        playerDataClone.Score = 190;
+#endif
         // 初期設定したのでtrue
         stateInit[3] = true;
 
@@ -407,6 +414,23 @@ public class UIController : MonoBehaviour
 
         ResultingName[1].text = playerDataClone.Name;
         ResultingScore[1].text = playerDataClone.Score.ToString();
+
+        if(playerData.Score > playerDataClone.Score)
+        {
+            ResultingImage[0].gameObject.SetActive(true);
+            ResultingImage[1].gameObject.SetActive(false);
+
+            int nlen = playerData.Name.Length;
+            ResultingImage[0].rectTransform.anchoredPosition = new Vector2(-50 - 50 * nlen, 200f);
+        }
+        else if(playerData.Score < playerDataClone.Score)
+        {
+            ResultingImage[0].gameObject.SetActive(false);
+            ResultingImage[1].gameObject.SetActive(true);
+
+            int nlen = playerDataClone.Name.Length;
+            ResultingImage[1].rectTransform.anchoredPosition = new Vector2(-50 - 50 * nlen, 200f);
+        }
 
         // スコアをサーバへ送信
         var result = await ServerRequestController.PostScore(playerData.Score, playerData.PlayerId);

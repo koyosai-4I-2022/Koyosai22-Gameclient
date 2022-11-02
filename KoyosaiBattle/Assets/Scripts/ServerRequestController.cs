@@ -133,7 +133,16 @@ public class ServerRequestController : MonoBehaviour
         var result = await client.PostAsync($"{GetBASEURL()}users/{id}/scores", content);
         var json = await result.Content.ReadAsStringAsync();
 
-        var j = JsonUtility.FromJson<PostUserJson>(json);
+        PostUserJson j;
+        try
+        {
+            j = JsonUtility.FromJson<PostUserJson>(json);
+        }
+		catch
+		{
+            j = new PostUserJson();
+            j.id = -1;
+		}
         SetID(j.id);
         
         return json;

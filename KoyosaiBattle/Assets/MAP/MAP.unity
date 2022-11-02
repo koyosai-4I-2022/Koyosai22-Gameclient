@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028328, g: 0.22571322, b: 0.30692163, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -407,6 +407,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particle: {fileID: 5258520932066381814, guid: fb1bfe99cb1e10a4b8a44b7ae996dccc, type: 3}
+  replicator: {fileID: 0}
 --- !u!65 &39918864
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -971,7 +972,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   strixBehaviours:
   - {fileID: 132495459}
-  objectType: 786434
+  objectType: 1048577
   sendRate: 5
   syncDestroy: 0
   networkInstanceId: -1
@@ -1152,7 +1153,7 @@ MonoBehaviour:
   strixBehaviours:
   - {fileID: 141274243}
   - {fileID: 141274242}
-  objectType: 786433
+  objectType: 1048578
   sendRate: 5
   syncDestroy: 1
   networkInstanceId: -1
@@ -1184,6 +1185,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   replicator: {fileID: 141274244}
+  moveSpeed: 10
   Animator: {fileID: 141274248}
   guard: 0
   run: 0
@@ -4126,6 +4128,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particle: {fileID: 5258520932066381814, guid: fb1bfe99cb1e10a4b8a44b7ae996dccc, type: 3}
+  replicator: {fileID: 0}
 --- !u!65 &792230349
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4896,6 +4899,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particle: {fileID: 5258520932066381814, guid: fb1bfe99cb1e10a4b8a44b7ae996dccc, type: 3}
+  replicator: {fileID: 0}
 --- !u!65 &871421835
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5131,6 +5135,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particle: {fileID: 5258520932066381814, guid: fb1bfe99cb1e10a4b8a44b7ae996dccc, type: 3}
+  replicator: {fileID: 0}
 --- !u!65 &909710865
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5892,6 +5897,7 @@ MonoBehaviour:
   - {fileID: 856343090}
   RankingImage: []
   playerData: {fileID: 132495459}
+  playerDataClone: {fileID: 0}
   isStart: 0
   isFinish: 0
 --- !u!1 &1097789168
@@ -8560,6 +8566,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particle: {fileID: 5258520932066381814, guid: fb1bfe99cb1e10a4b8a44b7ae996dccc, type: 3}
+  replicator: {fileID: 0}
 --- !u!65 &1751387293
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10415,6 +10422,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particle: {fileID: 5258520932066381814, guid: fb1bfe99cb1e10a4b8a44b7ae996dccc, type: 3}
+  replicator: {fileID: 0}
 --- !u!65 &2142769450
 BoxCollider:
   m_ObjectHideFlags: 0

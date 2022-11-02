@@ -21,8 +21,11 @@ public class ServerRequestController : MonoBehaviour
     static int Id = -1;
     static long Score = 100;
 
-    //static string BASEURL = "https://score-server-production.up.railway.app/"; 
+#if UNITY_EDITOR
     static string BASEURL = "http://localhost:8000/";
+#else
+    static string BASEURL = "https://score-server-production.up.railway.app/"; 
+#endif
 
 
     // Server応答用のメソッド

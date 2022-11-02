@@ -4722,6 +4722,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   defaultHP: 100
+  isFinish: 0
+  isGuard: 0
 --- !u!114 &1295927094
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4789,7 +4791,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0.673, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -5055,7 +5057,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11e3e13b96322484a9dc0e233deff528, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hpgauge: {fileID: 0}
   TimeRate: 1
   HPRate: 1
   DamegeRate: 1
@@ -5135,7 +5136,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1343423503
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6320,7 +6321,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0.78099996, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -7258,7 +7259,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1864891797
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8516,19 +8517,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!114 &5593989183989996327
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5593989183989997278}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57422341f6278a44b8088cb05e554097, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  replicator: {fileID: 5593989183989997280}
 --- !u!4 &5593989183989997152
 Transform:
   m_ObjectHideFlags: 0
@@ -9736,7 +9724,6 @@ GameObject:
   - component: {fileID: 5593989183989997210}
   - component: {fileID: 5593989183989997164}
   - component: {fileID: 5593989183989997162}
-  - component: {fileID: 5593989183989996327}
   - component: {fileID: 5593989183989997280}
   - component: {fileID: 5593989183989997279}
   m_Layer: 0
@@ -10110,6 +10097,7 @@ GameObject:
   - component: {fileID: 5593989183989997381}
   - component: {fileID: 5593989183989997382}
   - component: {fileID: 5593989183989997383}
+  - component: {fileID: 5593989183989997394}
   m_Layer: 0
   m_Name: Volinier-motion2-joycon
   m_TagString: Untagged
@@ -10364,6 +10352,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   replicator: {fileID: 5593989183989997392}
+--- !u!114 &5593989183989997394
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5593989183989997378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57422341f6278a44b8088cb05e554097, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  replicator: {fileID: 5593989183989997280}
+  shield: {fileID: 5593989183989997278}
 --- !u!1 &5593989183989997395
 GameObject:
   m_ObjectHideFlags: 0

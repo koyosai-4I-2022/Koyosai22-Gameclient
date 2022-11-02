@@ -7,6 +7,8 @@ public class ShieldDisplay : MonoBehaviour
 {
     [SerializeField]
     StrixReplicator replicator;
+    [SerializeField]
+    GameObject shield;
     
     //ä÷êîÇÃéQè∆
     public static ShieldDisplay instance;
@@ -24,26 +26,24 @@ public class ShieldDisplay : MonoBehaviour
         if(!replicator.isLocal)
         {
             var player = GameObject.Find("Volinier-motion2-joycon(Clone)");
-            this.transform.parent = player.transform;
-            this.transform.localScale = Vector3.one;
+            shield.transform.parent = player.transform;
+            shield.transform.localScale = Vector3.one;
         }
 
-        gameObject.SetActive(false);
+        shield.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(replicator.isLocal)
+		{
+            shield.SetActive(UIController.instance.playerData.isGuard);
+		}
+        else
+		{
+            shield.SetActive(UIController.instance.playerDataClone.isGuard);
+        }
 
-    }
-
-    public void Create()
-    {
-        gameObject.SetActive(true);
-    }
-
-    public void Destroy()
-    {
-        gameObject.SetActive(false);
     }
 }

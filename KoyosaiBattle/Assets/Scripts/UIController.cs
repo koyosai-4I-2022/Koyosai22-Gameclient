@@ -213,7 +213,7 @@ public class UIController : MonoBehaviour
     // ゲーム中の描画更新
     void UpdatePlayingUI()
     {
-        if(playerData.isFinish)
+        if(playerDataClone.HitPoint <= 0)
 		{
             state = PlayState.Resulting;
 		}
@@ -247,6 +247,7 @@ public class UIController : MonoBehaviour
             JoyConAttack.instance.gameObject.transform.Rotate(0, 180f, 0);
             JoyConAttack.instance.gameObject.transform.position += Vector3.forward * 30f;
 		}
+        playerData.Init();
 
         // プレイパネルを表示それ以外を非表示
         SetPanelActives();
@@ -399,13 +400,6 @@ public class UIController : MonoBehaviour
     // リザルト画面の初期設定
     async void InitResultingUI()
     {
-#if UNITY_EDITOR
-        playerData.Name = "TestDev1";
-        playerData.Score = 200;
-        playerDataClone = new PlayerData();
-        playerDataClone.Name = "TestDev2";
-        playerDataClone.Score = 190;
-#endif
         // 初期設定したのでtrue
         stateInit[3] = true;
 

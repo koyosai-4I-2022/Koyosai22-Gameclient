@@ -23,6 +23,8 @@ public class PlayerData : StrixBehaviour
     int defaultHP = 100;
     [StrixSyncField]
     public bool isFinish = false;
+    [StrixSyncField]
+    public bool isGuard = false;
 
     private void Awake()
     {
@@ -46,13 +48,14 @@ public class PlayerData : StrixBehaviour
     {
 
     }
-    void Init()
+    public void Init()
 	{
         PlayerId = -1;
         Name = string.Empty;
         Score = 0;
-        HitPoint = defaultHP;
+        HitPoint = HPGauge.instance.maxHp;
         isFinish = false;
+        isGuard = false;
 	}
 
     public void SetUser(string name, int id)

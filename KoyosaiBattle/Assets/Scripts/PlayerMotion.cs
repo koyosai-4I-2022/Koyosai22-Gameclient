@@ -73,6 +73,8 @@ public class PlayerMotion : MonoBehaviour
             return;
         }
 
+        UIController.instance.playerData.isGuard = guard;
+
         //Animatorを再生
         if (!Animator.enabled)
             Animator.enabled = true;
@@ -98,17 +100,10 @@ public class PlayerMotion : MonoBehaviour
             }
         }
 
-        //ガード状態(ZLボタンを押している場合)
-        if (guard)
-        {
-            //シールドの表示
-            ShieldDisplay.instance.Create();
-        }
-
         //ZLボタンを離したとき
         if (m_joyconL.GetButtonUp(m_buttons[12]))
         {
-            ShieldDisplay.instance.Destroy();
+            //ShieldDisplay.instance.Destroy();
             guard = false;
         }
 
@@ -223,7 +218,7 @@ public class PlayerMotion : MonoBehaviour
                 {
                     RunTime += Time.deltaTime;
                     //Playerがスティックを倒した方向に進む
-                    transform.Translate(vector * Time.deltaTime * 4f * moveSpeed);
+                    transform.Translate(vector * Time.deltaTime * 6f * moveSpeed);
                 }
                 transform.Translate(vector * Time.deltaTime * moveSpeed);
             }

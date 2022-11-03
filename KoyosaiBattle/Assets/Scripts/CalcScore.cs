@@ -68,7 +68,6 @@ public class CalcScore : MonoBehaviour
         if (UIController.instance.isFinish == true)
         {
             elapsedTime = Time.time - startTime;
-            UIController.instance.isFinish = false;
         }
     }
 
@@ -85,7 +84,7 @@ public class CalcScore : MonoBehaviour
                 ( (GameTimeMax - elapsedTime) * TimeRate )          //速く倒すとスコアアップ
                 + ( AHP * HPRate )                                  //体力が多く残っているとスコアアップ
                 + ( ( HPGauge.instance.maxHp - BHP ) * DamegeRate ) );       //敵に多くダメージを与えるとスコアアップ
-            UIController.instance.playerDataClone.Score = ( int ) ( //playerAのスコア(敗者)
+            UIController.instance.playerData.EnemyScore = ( int ) ( //playerAのスコア(敗者)
                 ( ( GameTimeMax - elapsedTime ) * TimeRate )        //速く倒すとスコアアップ
                 + ( BHP * HPRate )                                  //体力が多く残っているとスコアアップ
                 + ( ( HPGauge.instance.maxHp - AHP ) * DamegeRate ) );       //敵に多くダメージを与えるとスコアアップ
@@ -97,7 +96,7 @@ public class CalcScore : MonoBehaviour
             else
 			{
                 //PlayerB生存ボーナス
-                UIController.instance.playerDataClone.Score += SurvivalBonus;
+                UIController.instance.playerData.EnemyScore += SurvivalBonus;
             }
             //PlayerA生存ボーナス
             UIController.instance.playerData.Score += SurvivalBonus;
@@ -109,14 +108,14 @@ public class CalcScore : MonoBehaviour
                 + ( AHP * HPRate )
                 + ( ( HPGauge.instance.maxHp - BHP ) * DamegeRate ) );
 
-            UIController.instance.playerDataClone.Score = ( int ) ( 
+            UIController.instance.playerDataClone.EnemyScore = ( int ) ( 
                 ( (GameTimeMax - elapsedTime) * TimeRate )
                 + ( BHP * HPRate )
                 + ( ( HPGauge.instance.maxHp - AHP ) * DamegeRate ) );
             if(AHP == 0)
             {
                 //PlayerB撃破ボーナス
-                UIController.instance.playerDataClone.Score += KillBonus;
+                UIController.instance.playerDataClone.EnemyScore += KillBonus;
             }
             else
             {
@@ -124,7 +123,7 @@ public class CalcScore : MonoBehaviour
                 UIController.instance.playerData.Score += SurvivalBonus;
             }
             //PlayerB生存ボーナス
-            UIController.instance.playerDataClone.Score += SurvivalBonus;
+            UIController.instance.playerData.EnemyScore += SurvivalBonus;
         }
         else
         {
@@ -133,6 +132,5 @@ public class CalcScore : MonoBehaviour
             UIController.instance.playerDataClone.Score += 200;
         }
         UIController.instance.playerDataClone.isFinish = true;
-        Debug.Log($"{UIController.instance.playerData.Score}:{UIController.instance.playerDataClone.Score}");
     }
 }

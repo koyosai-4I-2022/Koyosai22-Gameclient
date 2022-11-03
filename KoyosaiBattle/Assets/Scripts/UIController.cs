@@ -225,7 +225,7 @@ public class UIController : MonoBehaviour
         if(playerDataClone != null && playerDataClone.HitPoint <= 0)
 		{
             state = PlayState.Resulting;
-		}
+        }
         if (isFinish)
         {
             CalcScore.instance.Timer();
@@ -241,6 +241,7 @@ public class UIController : MonoBehaviour
 
         // 初期化処理はここに書く
         isStart = true;
+        isFinish = false;
         CalcScore.instance.Timer();
         EnergyGauge.instance.InitializeEnergyGauge();
         HPGauge.instance.InitializeHPGauge();
@@ -326,7 +327,6 @@ public class UIController : MonoBehaviour
                 playerData.SetUser(result.name, result.id);
                 playerData.Name = result.name;
                 playerData.PlayerId = result.id;
-                Debug.Log($"{playerData.PlayerId}:{playerData.Name}");
 
                 InputSelectingInputName[0].interactable = false;
                 selectIsReceive = true;
@@ -456,11 +456,22 @@ public class UIController : MonoBehaviour
     async void UpdateResultingUI()
 	{
 		{
-            ResultingName[0].text = playerData.Name;
-            ResultingName[1].text = playerDataClone.Name;
+            if(isFinish)
+            {
+                ResultingName[0].text = playerData.Name;
+                ResultingName[1].text = playerDataClone.Name;
 
-            ResultingScore[0].text = playerData.Score.ToString();
-            ResultingScore[1].text = playerDataClone.Score.ToString();
+                ResultingScore[0].text = playerData.Score.ToString();
+                ResultingScore[1].text = playerData.EnemyScore.ToString();
+            }
+            else
+            {
+                ResultingName[0].text = playerData.Name;
+                ResultingName[1].text = playerDataClone.Name;
+
+                ResultingScore[0].text = playerDataClone.Score.ToString();
+                ResultingScore[1].text = playerDataClone.EnemyScore.ToString();
+            }
 
             if(!isSend && playerData.Score != -1)
             {

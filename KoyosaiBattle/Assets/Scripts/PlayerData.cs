@@ -15,6 +15,8 @@ public class PlayerData : StrixBehaviour
 
     [StrixSyncField]
     public int Score;
+    [StrixSyncField]
+    public int EnemyScore;
 
     [StrixSyncField]
     public int HitPoint;
@@ -53,6 +55,7 @@ public class PlayerData : StrixBehaviour
         PlayerId = -1;
         Name = string.Empty;
         Score = -1;
+        EnemyScore = -1;
         HitPoint = HPGauge.instance.maxHp;
         isFinish = false;
         isGuard = false;
@@ -60,6 +63,7 @@ public class PlayerData : StrixBehaviour
     public void PlayInit()
 	{
         Score = -1;
+        EnemyScore = -1;
         HitPoint = HPGauge.instance.maxHp;
         isFinish = false;
         isGuard = false;

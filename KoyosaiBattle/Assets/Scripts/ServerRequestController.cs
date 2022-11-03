@@ -21,11 +21,7 @@ public class ServerRequestController : MonoBehaviour
     static int Id = -1;
     static long Score = 100;
 
-#if UNITY_EDITOR
-    static string BASEURL = "http://localhost:8000/";
-#else
-    static string BASEURL = "https://score-server-production.up.railway.app/"; 
-#endif
+    static string BASEURL = "https://score-server-production.up.railway.app/";
 
 
     // Server応答用のメソッド
@@ -70,11 +66,17 @@ public class ServerRequestController : MonoBehaviour
 
         if(json == "{\"detail\":\"User conflict\"}")
 		{
-            return new PostUserJson()
-			{
-                id = -1,
-                name = ""
-			};
+            var result2 = await client.GetAsync($"{GetBASEURL()}users/?name={name}");
+            var json2 = await result2.Content.ReadAsStringAsync();
+            if(json2 == "{\"detail\":\"user not found\"}")
+            {
+                return new PostUserJson()
+                {
+                    id = -1,
+                    name = ""
+                };
+            }
+            return JsonUtility.FromJson<PostUserJson>(json2);
         }
 
         var postJson = JsonUtility.FromJson<PostUserJson>(json);

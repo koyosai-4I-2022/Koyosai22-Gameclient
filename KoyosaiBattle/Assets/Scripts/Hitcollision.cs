@@ -16,8 +16,6 @@ public class Hitcollision : MonoBehaviour
     int damage = 6;
     int hitCount = 0;
 
-    void Start() => slashAudio = GetComponent<AudioSource>();
-
     private void OnTriggerEnter(Collider collision)
     {
         if (collision.gameObject.CompareTag("swordcolor002"))

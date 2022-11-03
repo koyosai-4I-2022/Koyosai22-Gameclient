@@ -2,11 +2,15 @@ using SoftGear.Strix.Unity.Runtime;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemyHPRotate : MonoBehaviour
 {
     [SerializeField]
     StrixReplicator replicator;
+
+	[SerializeField]
+	Slider slider;
 
 	private void Start()
 	{
@@ -22,7 +26,11 @@ public class EnemyHPRotate : MonoBehaviour
 
 	// Update is called once per frame
 	void LateUpdate()
-    {
-        transform.rotation = PlayerMotion.instance.transform.rotation;
+	{
+		if(!replicator.isLocal && UIController.instance.state == UIController.PlayState.Playing)
+		{
+			slider.value = UIController.instance.playerDataClone.HitPoint;
+			transform.rotation = PlayerMotion.instance.transform.rotation;
+		}
     }
 }

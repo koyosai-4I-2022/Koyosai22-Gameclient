@@ -268,8 +268,8 @@ public class ConnectionController : MonoBehaviour
         panel.SetActive(false);
         //foreach(var mem in StrixNetwork.instance.roomMembers)
         //    Debug.Log($"{mem.Value.GetName()}:{mem.Value.GetUid()}");
-        UIController.instance.state = UIController.PlayState.Playing;
-		//UIController.instance.state = UIController.PlayState.InputSelecting;
+        //UIController.instance.state = UIController.PlayState.Playing;
+		UIController.instance.state = UIController.PlayState.InputSelecting;
     }
 	// テキストに表示するためのメソッド
 	void Log(string msg)

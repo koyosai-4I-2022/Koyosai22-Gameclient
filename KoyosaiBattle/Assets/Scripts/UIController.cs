@@ -290,7 +290,7 @@ public class UIController : MonoBehaviour
             // Readyを黄色にする
             InputSelectingReady[0].color = new Color(1f, 0.9f, 0);
 
-            InputSelectingInputName[0].text = String.Empty;
+            //InputSelectingInputName[0].text = String.Empty;
 
             // POST
             var result = await ServerRequestController.PostUser(playerName1);
@@ -309,6 +309,7 @@ public class UIController : MonoBehaviour
             playerData.SetUser(result.name, result.id);
             Debug.Log($"{playerData.PlayerId}:{playerData.Name}");
 
+            InputSelectingInputName[0].interactable = false;
             selectIsReceive = true;
         }
         // 相手の名前を取得を確認

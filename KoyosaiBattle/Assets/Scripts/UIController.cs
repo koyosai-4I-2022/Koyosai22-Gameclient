@@ -56,6 +56,9 @@ public class UIController : MonoBehaviour
     Image[] InputSelectingImage;
     [SerializeField]
     InputField[] InputSelectingInputName;
+    [SerializeField]
+    Text[] InputSelectExpText;
+    int existingNum = 0;
 
     // ロード画面で使用するテキストと画像
     [SerializeField]
@@ -72,6 +75,7 @@ public class UIController : MonoBehaviour
     Text[] ResultingScore;
     [SerializeField]
     Image[] ResultingImage;
+    bool isSend = false;
 
     // ランキング画面で使用するテキストと画像
     [SerializeField]
@@ -267,6 +271,22 @@ public class UIController : MonoBehaviour
         // InputFieldのテキストを取得
         string playerName1 = InputSelectingInputName[0].text;
 
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            if(existingNum == 0)
+            {
+                existingNum = 1;
+                InputSelectExpText[0].gameObject.SetActive(false);
+                InputSelectExpText[1].gameObject.SetActive(true);
+            }
+            else
+			{
+                existingNum = 0;
+                InputSelectExpText[0].gameObject.SetActive(true);
+                InputSelectExpText[1].gameObject.SetActive(false);
+            }
+        }
+
         // 名前が入力されていたらフラグをtrueに
         if (!selectIsReady[0] && playerName1 != string.Empty)
         {
@@ -279,35 +299,65 @@ public class UIController : MonoBehaviour
         // すべてのフラグがtrueでサーバにPOSTしてない時にPOST処理
         if (selectIsReady[0] && selectIsReady[1] && !selectIsSendName)
         {
-            // POSTを複数回連続で行わないようにtrue
-            selectIsSendName = true;
-
-            //InputSelectingInputName[0].text = String.Empty;
-
-            // POST
-            var result = await ServerRequestController.PostUser(playerName1);
-
-            // すでに登録されている名前だった場合に再度入力をしてもらう
-            if (result.id == -1)
+            if(existingNum == 0)
             {
-                // すでに登録された名前だった場合にもう一度入力する
-                selectIsSendName = false;
-                InputSelectingInputName[0].text = string.Empty;
-                selectIsReady[0] = false;
-                selectIsReady[1] = false;
-                return;
+                // POSTを複数回連続で行わないようにtrue
+                selectIsSendName = true;
+
+                //InputSelectingInputName[0].text = String.Empty;
+
+                // POST
+                var result = await ServerRequestController.PostUser(playerName1);
+
+                // すでに登録されている名前だった場合に再度入力をしてもらう
+                if(result.id == -1)
+                {
+                    // すでに登録された名前だった場合にもう一度入力する
+                    selectIsSendName = false;
+                    InputSelectingInputName[0].text = string.Empty;
+                    selectIsReady[0] = false;
+                    selectIsReady[1] = false;
+                    return;
+                }
+
+                // Readyを黄色にする
+                InputSelectingReady[0].color = new Color(1f, 0.9f, 0);
+
+                playerData.SetUser(result.name, result.id);
+                playerData.Name = result.name;
+                playerData.PlayerId = result.id;
+                Debug.Log($"{playerData.PlayerId}:{playerData.Name}");
+
+                InputSelectingInputName[0].interactable = false;
+                selectIsReceive = true;
             }
+            else
+            {
+                // POSTを複数回連続で行わないようにtrue
+                selectIsSendName = true;
 
-            // Readyを黄色にする
-            InputSelectingReady[0].color = new Color(1f, 0.9f, 0);
+                var result = await ServerRequestController.PostExstingUser(playerName1);
 
-            playerData.SetUser(result.name, result.id);
-            playerData.Name = result.name;
-            playerData.PlayerId = result.id;
-            Debug.Log($"{playerData.PlayerId}:{playerData.Name}");
+                if(result.id == -1)
+                {
+                    // すでに登録された名前だった場合にもう一度入力する
+                    selectIsSendName = false;
+                    InputSelectingInputName[0].text = string.Empty;
+                    selectIsReady[0] = false;
+                    selectIsReady[1] = false;
+                    return;
+                }
+                // Readyを黄色にする
+                InputSelectingReady[0].color = new Color(1f, 0.9f, 0);
 
-            InputSelectingInputName[0].interactable = false;
-            selectIsReceive = true;
+                playerData.SetUser(result.name, result.id);
+                playerData.Name = result.name;
+                playerData.PlayerId = result.id;
+                Debug.Log($"{playerData.PlayerId}:{playerData.Name}");
+
+                InputSelectingInputName[0].interactable = false;
+                selectIsReceive = true;
+            }
         }
         // 相手の名前を取得を確認
         if (selectIsReceive) // 自分のデータをPOST済み
@@ -412,10 +462,11 @@ public class UIController : MonoBehaviour
             ResultingScore[0].text = playerData.Score.ToString();
             ResultingScore[1].text = playerDataClone.Score.ToString();
 
-            if(playerData.Score != -1)
+            if(!isSend && playerData.Score != -1)
             {
                 // スコアをサーバへ送信
                 await ServerRequestController.PostScore(playerData.Score, playerData.PlayerId);
+                isSend = true;
             }
         }
 
@@ -460,10 +511,11 @@ public class UIController : MonoBehaviour
             ResultingImage[1].rectTransform.anchoredPosition = new Vector2(-50 - 50 * nlen, 200f);
         }
 
-        if(playerData.Score != -1)
+        if(!isSend && playerData.Score != -1)
         {
             // スコアをサーバへ送信
-            var result = await ServerRequestController.PostScore(playerData.Score, playerData.PlayerId);
+            await ServerRequestController.PostScore(playerData.Score, playerData.PlayerId);
+            isSend = true;
         }
 
         loadCamera.gameObject.SetActive(true);

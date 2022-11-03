@@ -108,6 +108,7 @@ public class CalcScore : MonoBehaviour
                 ( ( GameTimeMax - elapsedTime ) * TimeRate )
                 + ( AHP * HPRate )
                 + ( ( HPGauge.instance.maxHp - BHP ) * DamegeRate ) );
+
             UIController.instance.playerDataClone.Score = ( int ) ( 
                 ( (GameTimeMax - elapsedTime) * TimeRate )
                 + ( BHP * HPRate )
@@ -132,5 +133,6 @@ public class CalcScore : MonoBehaviour
             UIController.instance.playerDataClone.Score += 200;
         }
         UIController.instance.playerDataClone.isFinish = true;
+        Debug.Log($"{UIController.instance.playerData.Score}:{UIController.instance.playerDataClone.Score}");
     }
 }

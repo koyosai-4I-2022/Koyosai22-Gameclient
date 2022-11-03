@@ -21,7 +21,8 @@ public class ServerRequestController : MonoBehaviour
     static int Id = -1;
     static long Score = 100;
 
-    static string BASEURL = "https://score-server-production.up.railway.app/";
+    static string BASEURL = "http://localhost:8000/";
+    //static string BASEURL = "https://score-server-production.up.railway.app/";
 
 
     // Server応答用のメソッド
@@ -65,24 +66,39 @@ public class ServerRequestController : MonoBehaviour
         var json = await result.Content.ReadAsStringAsync();
 
         if(json == "{\"detail\":\"User conflict\"}")
-		{
-            var result2 = await client.GetAsync($"{GetBASEURL()}users/?name={name}");
-            var json2 = await result2.Content.ReadAsStringAsync();
-            if(json2 == "{\"detail\":\"user not found\"}")
+        {
+            return new PostUserJson()
             {
-                return new PostUserJson()
-                {
-                    id = -1,
-                    name = ""
-                };
-            }
-            return JsonUtility.FromJson<PostUserJson>(json2);
+                id = -1,
+                name = ""
+            };
         }
 
         var postJson = JsonUtility.FromJson<PostUserJson>(json);
 
         return postJson;
     }
+    public static async Task<PostUserJson> PostExstingUser(string name)
+    {
+        string jsonStr = $"{{ \"name\" : \"{name}\" }}";
+
+        var client = new HttpClient();
+        var result2 = await client.GetAsync($"{GetBASEURL()}users/?name={name}");
+        var json2 = await result2.Content.ReadAsStringAsync();
+
+        try
+        {
+            return JsonUtility.FromJson<PostUserJson>(json2);
+        }
+        catch
+		{
+            return new PostUserJson()
+            {
+                name = "",
+                id = -1
+            };
+		}
+	}
     // 引数で指定したIDのユーザの名前を書き換える
     // IDを省略で現在のIDを使う
     public static async Task<string> PutUser(string name, int id = -1)

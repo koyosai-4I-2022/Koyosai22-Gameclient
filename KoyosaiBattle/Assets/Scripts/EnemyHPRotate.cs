@@ -11,26 +11,24 @@ public class EnemyHPRotate : MonoBehaviour
 
 	[SerializeField]
 	Slider slider;
-
-	private void Start()
-	{
-		if(replicator.isLocal)
-		{
-			this.gameObject.SetActive(false);
-		}
-		else
-		{
-			this.gameObject.SetActive(true);
-		}
-	}
-
+	
 	// Update is called once per frame
 	void LateUpdate()
 	{
-		if(!replicator.isLocal && UIController.instance.state == UIController.PlayState.Playing)
+		if(replicator.isLocal)
 		{
-			slider.value = UIController.instance.playerDataClone.HitPoint;
-			transform.rotation = PlayerMotion.instance.transform.rotation;
+			Debug.Log("Local:" + this.transform.parent.name);
+			slider.gameObject.SetActive(false);
+		}
+		else
+		{
+			Debug.Log("not Local:" + this.transform.parent.name);
+			slider.gameObject.SetActive(true);
+			if(UIController.instance.state == UIController.PlayState.Playing)
+			{
+				slider.value = UIController.instance.playerDataClone.HitPoint;
+				transform.rotation = PlayerMotion.instance.transform.rotation;
+			}
 		}
     }
 }

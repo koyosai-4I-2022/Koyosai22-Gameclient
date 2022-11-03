@@ -287,9 +287,6 @@ public class UIController : MonoBehaviour
             // POSTを複数回連続で行わないようにtrue
             selectIsSendName = true;
 
-            // Readyを黄色にする
-            InputSelectingReady[0].color = new Color(1f, 0.9f, 0);
-
             //InputSelectingInputName[0].text = String.Empty;
 
             // POST
@@ -305,6 +302,9 @@ public class UIController : MonoBehaviour
                 selectIsReady[1] = false;
                 return;
             }
+
+            // Readyを黄色にする
+            InputSelectingReady[0].color = new Color(1f, 0.9f, 0);
 
             playerData.SetUser(result.name, result.id);
             Debug.Log($"{playerData.PlayerId}:{playerData.Name}");
@@ -357,6 +357,11 @@ public class UIController : MonoBehaviour
             InputSelectRankingName[i].text = $"{result.Users[i].name}";
             InputSelectRankingScore[i].text = $"{result.Users[i].rate}";
         }
+        foreach(var input in InputSelectingInputName)
+		{
+            input.interactable = true;
+            input.text = "";
+		}
 
         loadCamera.gameObject.SetActive(true);
         playCamera.gameObject.SetActive(false);
@@ -400,7 +405,16 @@ public class UIController : MonoBehaviour
 
     // リザルトの描画更新
     void UpdateResultingUI()
-    {
+	{
+		{
+            ResultingName[0].text = playerData.Name;
+            ResultingName[1].text = playerDataClone.Name;
+
+            ResultingScore[0].text = playerData.Score.ToString();
+            ResultingScore[1].text = playerDataClone.Score.ToString();
+
+        }
+
         // Aボタンを押したときにRankingに遷移
         if (isJoyconButtom && m_joyconR.GetButtonDown(m_buttons[1]))
         {

@@ -36,6 +36,9 @@ public class EnergyGauge : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(UIController.instance.state != UIController.PlayState.Playing)
+            return;
+
         if (!PlayerMotion.instance.guard)
         {
             //Energy‚ª‘‰Á‚·‚é•”•ª

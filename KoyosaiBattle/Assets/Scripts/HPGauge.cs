@@ -10,7 +10,7 @@ public class HPGauge : MonoBehaviour
     Slider slider;
 
     //Slider‚ÌMaxValue‚Æ“¯‚¶‚É‚·‚é
-     public int maxHp = 100;
+     public int maxHp = 150;
 
     //ŠÖ”‚ÌQÆ
     public static HPGauge instance;
@@ -27,6 +27,7 @@ public class HPGauge : MonoBehaviour
     {
         //Slider‚ÌValue‚ğ‰Šú‰»
         InitializeHPGauge();
+        slider.maxValue = maxHp;
         UIController.instance.playerData.HitPoint = maxHp;
     }
 

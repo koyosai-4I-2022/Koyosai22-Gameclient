@@ -5,13 +5,7 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
-  - enabled: 0
-    path: Assets/Scenes/ServerR.unity
-    guid: b5431e7ecd3ec6a479cfb68e7b998ade
   - enabled: 1
-    path: Assets/Scenes/SyncPlayer.unity
-    guid: 2664fc6775f7b354e870b8eec2be6ba9
+    path: Assets/Scenes/INFIGHT.unity
+    guid: 0ee77e8a3837b774daff76992661bf8a
   m_configObjects: {}

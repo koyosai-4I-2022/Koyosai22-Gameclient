@@ -21,7 +21,8 @@ public class ServerRequestController : MonoBehaviour
     static int Id = -1;
     static long Score = 100;
 
-    static string BASEURL = "http://localhost:8000/";
+    //static string BASEURL = "http://localhost:8000/";
+    static string BASEURL = "https://score-server-production.up.railway.app/";
 
 
     // Server応答用のメソッド
@@ -65,18 +66,39 @@ public class ServerRequestController : MonoBehaviour
         var json = await result.Content.ReadAsStringAsync();
 
         if(json == "{\"detail\":\"User conflict\"}")
-		{
+        {
             return new PostUserJson()
-			{
+            {
                 id = -1,
                 name = ""
-			};
+            };
         }
 
         var postJson = JsonUtility.FromJson<PostUserJson>(json);
 
         return postJson;
     }
+    public static async Task<PostUserJson> PostExstingUser(string name)
+    {
+        string jsonStr = $"{{ \"name\" : \"{name}\" }}";
+
+        var client = new HttpClient();
+        var result2 = await client.GetAsync($"{GetBASEURL()}users/?name={name}");
+        var json2 = await result2.Content.ReadAsStringAsync();
+
+        try
+        {
+            return JsonUtility.FromJson<PostUserJson>(json2);
+        }
+        catch
+		{
+            return new PostUserJson()
+            {
+                name = "",
+                id = -1
+            };
+		}
+	}
     // 引数で指定したIDのユーザの名前を書き換える
     // IDを省略で現在のIDを使う
     public static async Task<string> PutUser(string name, int id = -1)
@@ -132,7 +154,16 @@ public class ServerRequestController : MonoBehaviour
         var result = await client.PostAsync($"{GetBASEURL()}users/{id}/scores", content);
         var json = await result.Content.ReadAsStringAsync();
 
-        var j = JsonUtility.FromJson<PostUserJson>(json);
+        PostUserJson j;
+        try
+        {
+            j = JsonUtility.FromJson<PostUserJson>(json);
+        }
+		catch
+		{
+            j = new PostUserJson();
+            j.id = -1;
+		}
         SetID(j.id);
         
         return json;

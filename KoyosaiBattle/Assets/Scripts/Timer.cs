@@ -49,6 +49,11 @@ public class Timer : MonoBehaviour
             count--;
             timer = 0;
         }
+        if(count == 0)
+		{
+            //UIController.instance.state = UIController.PlayState.Resulting;
+            UIController.instance.isFinish = true;
+		}
         //Text‚Åcount‚ð•\Ž¦‚·‚é
         text.text = string.Format("{0:00}",count) ; 
     }

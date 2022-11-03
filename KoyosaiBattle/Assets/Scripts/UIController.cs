@@ -56,6 +56,9 @@ public class UIController : MonoBehaviour
     Image[] InputSelectingImage;
     [SerializeField]
     InputField[] InputSelectingInputName;
+    [SerializeField]
+    Text[] InputSelectExpText;
+    int existingNum = 0;
 
     // ロード画面で使用するテキストと画像
     [SerializeField]
@@ -72,6 +75,7 @@ public class UIController : MonoBehaviour
     Text[] ResultingScore;
     [SerializeField]
     Image[] ResultingImage;
+    bool isSend = false;
 
     // ランキング画面で使用するテキストと画像
     [SerializeField]
@@ -86,6 +90,11 @@ public class UIController : MonoBehaviour
     Text[] RankingAroundScore;
     [SerializeField]
     Image[] RankingImage;
+
+    [SerializeField]
+    Camera loadCamera;
+    [SerializeField]
+    Camera playCamera;
 
     // 各処理の初期化を一度しか
     bool[] stateInit;
@@ -102,7 +111,7 @@ public class UIController : MonoBehaviour
 
     [SerializeField]
     public PlayerData playerData;
-    [NonSerialized]
+    [SerializeField]
     public PlayerData playerDataClone;
 
     //JoyconLibの変数
@@ -213,8 +222,13 @@ public class UIController : MonoBehaviour
     // ゲーム中の描画更新
     void UpdatePlayingUI()
     {
+        if(playerDataClone != null && playerDataClone.HitPoint <= 0)
+		{
+            state = PlayState.Resulting;
+        }
         if (isFinish)
         {
+            CalcScore.instance.Timer();
             CalcScore.instance.Score();
             state = PlayState.Resulting;
         }
@@ -227,13 +241,29 @@ public class UIController : MonoBehaviour
 
         // 初期化処理はここに書く
         isStart = true;
+        isFinish = false;
+        CalcScore.instance.Timer();
         EnergyGauge.instance.InitializeEnergyGauge();
         HPGauge.instance.InitializeHPGauge();
         Timer.instance.InitializeTimer();
         AnimationEvent.instance.InitializeAnimationEvent();
 
+        if(StrixNetwork.instance.isRoomOwner)
+		{
+            JoyConAttack.instance.gameObject.transform.position += Vector3.back * 30f;
+		}
+        else
+        {
+            JoyConAttack.instance.gameObject.transform.Rotate(0, 180f, 0);
+            JoyConAttack.instance.gameObject.transform.position += Vector3.forward * 30f;
+		}
+        playerData.PlayInit();
+
         // プレイパネルを表示それ以外を非表示
         SetPanelActives();
+
+        loadCamera.gameObject.SetActive(false);
+        playCamera.gameObject.SetActive(true);
     }
 
     // 待機画面の描画更新
@@ -242,11 +272,22 @@ public class UIController : MonoBehaviour
         // InputFieldのテキストを取得
         string playerName1 = InputSelectingInputName[0].text;
 
-        // debugで使用あとで消す
-        //if(Input.GetKeyDown(KeyCode.K))
-        //{
-        //    selectIsReady[1] = true;
-        //}
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            if(existingNum == 0)
+            {
+                existingNum = 1;
+                InputSelectExpText[0].gameObject.SetActive(false);
+                InputSelectExpText[1].gameObject.SetActive(true);
+            }
+            else
+			{
+                existingNum = 0;
+                InputSelectExpText[0].gameObject.SetActive(true);
+                InputSelectExpText[1].gameObject.SetActive(false);
+            }
+        }
+
         // 名前が入力されていたらフラグをtrueに
         if (!selectIsReady[0] && playerName1 != string.Empty)
         {
@@ -259,32 +300,64 @@ public class UIController : MonoBehaviour
         // すべてのフラグがtrueでサーバにPOSTしてない時にPOST処理
         if (selectIsReady[0] && selectIsReady[1] && !selectIsSendName)
         {
-            // POSTを複数回連続で行わないようにtrue
-            selectIsSendName = true;
-
-            // Readyを黄色にする
-            InputSelectingReady[0].color = new Color(1f, 0.9f, 0);
-
-            InputSelectingInputName[0].text = String.Empty;
-
-            // POST
-            var result = await ServerRequestController.PostUser(playerName1);
-
-            // すでに登録されている名前だった場合に再度入力をしてもらう
-            if (result.id == -1)
+            if(existingNum == 0)
             {
-                // すでに登録された名前だった場合にもう一度入力する
-                selectIsSendName = false;
-                InputSelectingInputName[0].text = string.Empty;
-                selectIsReady[0] = false;
-                selectIsReady[1] = false;
-                return;
+                // POSTを複数回連続で行わないようにtrue
+                selectIsSendName = true;
+
+                //InputSelectingInputName[0].text = String.Empty;
+
+                // POST
+                var result = await ServerRequestController.PostUser(playerName1);
+
+                // すでに登録されている名前だった場合に再度入力をしてもらう
+                if(result.id == -1)
+                {
+                    // すでに登録された名前だった場合にもう一度入力する
+                    selectIsSendName = false;
+                    InputSelectingInputName[0].text = string.Empty;
+                    selectIsReady[0] = false;
+                    selectIsReady[1] = false;
+                    return;
+                }
+
+                // Readyを黄色にする
+                InputSelectingReady[0].color = new Color(1f, 0.9f, 0);
+
+                playerData.SetUser(result.name, result.id);
+                playerData.Name = result.name;
+                playerData.PlayerId = result.id;
+
+                InputSelectingInputName[0].interactable = false;
+                selectIsReceive = true;
             }
+            else
+            {
+                // POSTを複数回連続で行わないようにtrue
+                selectIsSendName = true;
 
-            playerData.SetUser(result.name, result.id);
-            Debug.Log($"{playerData.PlayerId}:{playerData.Name}");
+                var result = await ServerRequestController.PostExstingUser(playerName1);
 
-            selectIsReceive = true;
+                if(result.id == -1)
+                {
+                    // すでに登録された名前だった場合にもう一度入力する
+                    selectIsSendName = false;
+                    InputSelectingInputName[0].text = string.Empty;
+                    selectIsReady[0] = false;
+                    selectIsReady[1] = false;
+                    return;
+                }
+                // Readyを黄色にする
+                InputSelectingReady[0].color = new Color(1f, 0.9f, 0);
+
+                playerData.SetUser(result.name, result.id);
+                playerData.Name = result.name;
+                playerData.PlayerId = result.id;
+                Debug.Log($"{playerData.PlayerId}:{playerData.Name}");
+
+                InputSelectingInputName[0].interactable = false;
+                selectIsReceive = true;
+            }
         }
         // 相手の名前を取得を確認
         if (selectIsReceive) // 自分のデータをPOST済み
@@ -297,9 +370,9 @@ public class UIController : MonoBehaviour
                     { // 同期されたNameとIDが登録されている
 
                         // ゲーム画面への遷移
-                        // 本来はInputSelecting->Roading->Playingの順に遷移
-                        state = PlayState.Resulting;
-                        //state = PlayState.Roading;
+                        // 本来はInputSelecting->Loading->Playingの順に遷移
+                        //state = PlayState.Resulting;
+                        state = PlayState.Loading;
                     }
                 }
             }
@@ -313,6 +386,8 @@ public class UIController : MonoBehaviour
         selectIsReady = new bool[2];
         selectIsSendName = false;
         selectIsReceive = false;
+
+        playerData.Init();
 
         ConflictId = -1;
         ConflictName = string.Empty;
@@ -331,6 +406,14 @@ public class UIController : MonoBehaviour
             InputSelectRankingName[i].text = $"{result.Users[i].name}";
             InputSelectRankingScore[i].text = $"{result.Users[i].rate}";
         }
+        foreach(var input in InputSelectingInputName)
+		{
+            input.interactable = true;
+            input.text = "";
+		}
+
+        loadCamera.gameObject.SetActive(true);
+        playCamera.gameObject.SetActive(false);
     }
 
     // ロード画面の描画更新
@@ -370,8 +453,68 @@ public class UIController : MonoBehaviour
     }
 
     // リザルトの描画更新
-    void UpdateResultingUI()
-    {
+    async void UpdateResultingUI()
+	{
+		{
+            if(isFinish)
+            {
+                ResultingName[0].text = playerData.Name;
+                ResultingName[1].text = playerDataClone.Name;
+
+                ResultingScore[0].text = playerData.Score.ToString();
+                ResultingScore[1].text = playerData.EnemyScore.ToString();
+
+                if(playerData.Score > playerData.EnemyScore)
+                {
+                    ResultingImage[0].gameObject.SetActive(true);
+                    ResultingImage[1].gameObject.SetActive(false);
+
+                    int nlen = playerData.Name.Length;
+                    ResultingImage[0].rectTransform.anchoredPosition = new Vector2(-50 - 50 * nlen, 200f);
+                }
+                else
+                {
+                    ResultingImage[0].gameObject.SetActive(false);
+                    ResultingImage[1].gameObject.SetActive(true);
+
+                    int nlen = playerData.Name.Length;
+                    ResultingImage[1].rectTransform.anchoredPosition = new Vector2(-50 - 50 * nlen, 200f);
+                }
+            }
+            else
+            {
+                ResultingName[0].text = playerData.Name;
+                ResultingName[1].text = playerDataClone.Name;
+
+                ResultingScore[0].text = playerDataClone.Score.ToString();
+                ResultingScore[1].text = playerDataClone.EnemyScore.ToString();
+
+                if(playerDataClone.Score > playerDataClone.EnemyScore)
+                {
+                    ResultingImage[0].gameObject.SetActive(false);
+                    ResultingImage[1].gameObject.SetActive(true);
+
+                    int nlen = playerData.Name.Length;
+                    ResultingImage[1].rectTransform.anchoredPosition = new Vector2(-50 - 50 * nlen, 200f);
+                }
+                else
+                {
+                    ResultingImage[0].gameObject.SetActive(true);
+                    ResultingImage[1].gameObject.SetActive(false);
+
+                    int nlen = playerData.Name.Length;
+                    ResultingImage[0].rectTransform.anchoredPosition = new Vector2(-50 - 50 * nlen, 200f);
+                }
+            }
+
+            if(!isSend && playerData.Score != -1)
+            {
+                // スコアをサーバへ送信
+                await ServerRequestController.PostScore(playerData.Score, playerData.PlayerId);
+                isSend = true;
+            }
+        }
+
         // Aボタンを押したときにRankingに遷移
         if (isJoyconButtom && m_joyconR.GetButtonDown(m_buttons[1]))
         {
@@ -396,8 +539,32 @@ public class UIController : MonoBehaviour
         ResultingName[1].text = playerDataClone.Name;
         ResultingScore[1].text = playerDataClone.Score.ToString();
 
-        // スコアをサーバへ送信
-        var result = await ServerRequestController.PostScore(playerData.Score, playerData.PlayerId);
+        if(playerData.Score > playerDataClone.Score)
+        {
+            ResultingImage[0].gameObject.SetActive(true);
+            ResultingImage[1].gameObject.SetActive(false);
+
+            int nlen = playerData.Name.Length;
+            ResultingImage[0].rectTransform.anchoredPosition = new Vector2(-50 - 50 * nlen, 200f);
+        }
+        else if(playerData.Score < playerDataClone.Score)
+        {
+            ResultingImage[0].gameObject.SetActive(false);
+            ResultingImage[1].gameObject.SetActive(true);
+
+            int nlen = playerDataClone.Name.Length;
+            ResultingImage[1].rectTransform.anchoredPosition = new Vector2(-50 - 50 * nlen, 200f);
+        }
+
+        if(!isSend && playerData.Score != -1)
+        {
+            // スコアをサーバへ送信
+            await ServerRequestController.PostScore(playerData.Score, playerData.PlayerId);
+            isSend = true;
+        }
+
+        loadCamera.gameObject.SetActive(true);
+        playCamera.gameObject.SetActive(false);
     }
     // ランキング画面の描画更新
     void UpdateRankingUI()
@@ -460,7 +627,7 @@ public class UIController : MonoBehaviour
             RankingScore[i].text = result.Users[i].rate.ToString();
         }
         // ユーザ周辺のランキングを表示
-        var result2 = await ServerRequestController.GetUserRanking(playerData.PlayerId);
+        var result2 = await ServerRequestController.GetUserRanking(132);// playerData.PlayerId);
 
         // 自分より上の順位の人の数
         int higherCount = result2.higher_around_rank_users.Length;
@@ -496,6 +663,8 @@ public class UIController : MonoBehaviour
     {
         stateInit[5] = true;
 
+        loadCamera.gameObject.SetActive(true);
+        playCamera.gameObject.SetActive(false);
         // 接続画面以外を非表示
         SetPanelActives();
     }

@@ -9,7 +9,10 @@ public class PlayerMotion : MonoBehaviour
     // 同期用
     [SerializeField]
     StrixReplicator replicator;
-    
+
+    [SerializeField]
+    float moveSpeed = 10f;
+
     //JoyconLibの変数
     private static readonly Joycon.Button[] m_buttons =
        Enum.GetValues(typeof(Joycon.Button)) as Joycon.Button[];
@@ -70,6 +73,8 @@ public class PlayerMotion : MonoBehaviour
             return;
         }
 
+        UIController.instance.playerData.isGuard = guard;
+
         //Animatorを再生
         if (!Animator.enabled)
             Animator.enabled = true;
@@ -95,17 +100,10 @@ public class PlayerMotion : MonoBehaviour
             }
         }
 
-        //ガード状態(ZLボタンを押している場合)
-        if (guard)
-        {
-            //シールドの表示
-            ShieldDisplay.instance.Create();
-        }
-
         //ZLボタンを離したとき
         if (m_joyconL.GetButtonUp(m_buttons[12]))
         {
-            ShieldDisplay.instance.Destroy();
+            //ShieldDisplay.instance.Destroy();
             guard = false;
         }
 
@@ -215,16 +213,15 @@ public class PlayerMotion : MonoBehaviour
             if (Lstick[0] != 0 || Lstick[1] != 0)
             {
                 MotionStrict();//動ける距離を制限
+                //Playerがスティックを倒した方向に進む
+                Vector3 vector = new Vector3(Mathf.Sin(degree), 0, Mathf.Cos(degree));
                 if (run)
                 {
                     RunTime += Time.deltaTime;
                     //Playerがスティックを倒した方向に進む
-                    Vector3 Runvector = new Vector3(Mathf.Sin(degree), 0, Mathf.Cos(degree));
-                    transform.Translate(Runvector * Time.deltaTime * 20);
+                    transform.Translate(vector * Time.deltaTime * 6f * moveSpeed);
                 }
-                //Playerがスティックを倒した方向に進む
-                Vector3 vector = new Vector3(Mathf.Sin(degree), 0, Mathf.Cos(degree));
-                transform.Translate(vector * Time.deltaTime * 5);
+                transform.Translate(vector * Time.deltaTime * moveSpeed);
             }
         }
         if(UIController.instance.playerData.HitPoint <= 0)
@@ -246,12 +243,12 @@ public class PlayerMotion : MonoBehaviour
 
         int repos = 2; //外に出たときにどれだけ戻すか
 
-        if (absposx > 15 )
+        if (absposx > 105 )
         {
             transform.position += Vector3.left * repos * Mathf.Sign(posx);
         }
 
-        if(absposz > 33)
+        if(absposz > 231)
         {
             transform.position += Vector3.back * repos * Mathf.Sign(posz);
         }

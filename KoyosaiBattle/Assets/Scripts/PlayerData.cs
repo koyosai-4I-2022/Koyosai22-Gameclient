@@ -7,20 +7,26 @@ using UnityEngine.UI;
 
 public class PlayerData : StrixBehaviour
 {
-    [StrixSyncField, NonSerialized]
+    [StrixSyncField]
     public int PlayerId;
 
-    [StrixSyncField, NonSerialized]
+    [StrixSyncField]
     public string Name;
 
-    [StrixSyncField, NonSerialized]
+    [StrixSyncField]
     public int Score;
+    [StrixSyncField]
+    public int EnemyScore;
 
-    [StrixSyncField, NonSerialized]
+    [StrixSyncField]
     public int HitPoint;
 
     [SerializeField]
-    int defaultHP = 100;
+    int defaultHP = 150;
+    [StrixSyncField]
+    public bool isFinish = false;
+    [StrixSyncField]
+    public bool isGuard = false;
 
     private void Awake()
     {
@@ -44,13 +50,24 @@ public class PlayerData : StrixBehaviour
     {
 
     }
-    void Init()
-	{
+    public void Init()
+    {
         PlayerId = -1;
         Name = string.Empty;
-        Score = 0;
-        HitPoint = defaultHP;
-	}
+        Score = -1;
+        EnemyScore = -1;
+        HitPoint = HPGauge.instance.maxHp;
+        isFinish = false;
+        isGuard = false;
+    }
+    public void PlayInit()
+	{
+        Score = -1;
+        EnemyScore = -1;
+        HitPoint = HPGauge.instance.maxHp;
+        isFinish = false;
+        isGuard = false;
+    }
 
     public void SetUser(string name, int id)
 	{

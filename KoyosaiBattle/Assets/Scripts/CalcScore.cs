@@ -5,8 +5,6 @@ using System;
 
 public class CalcScore : MonoBehaviour
 {
-    [SerializeField]
-    HPGauge hpgauge;
     // [SerializeField]
     // UIController UIController;
     GameFinish gamefinish;
@@ -31,18 +29,27 @@ public class CalcScore : MonoBehaviour
     private float startTime;
     private float elapsedTime;
 
-    public static CalcScore instance;
-    
-    
+    float GameTimeMax = 180f;
 
-    // Start is called before the first frame update
-    void Start()
+    public static CalcScore instance;
+
+	private void Awake()
+	{
+		instance = this;
+	}
+
+	// Start is called before the first frame update
+	void Start()
     {
         //AHP = UIController.instance.playerData.HitPoint;
         //BHP = UIController.instance.playerDataClone.HitPoint;
         //UIController.instance.playerData.Score = 0;
         //UIController.instance.playerDataClone.Score = 0;
         beingMeasured = false;
+        TimeRate = 1.2f;
+        HPRate = 1.4f;
+        DamegeRate = 1.5f;
+        SurvivalBonus = 150;
     }
 
     // Update is called once per frame
@@ -51,7 +58,7 @@ public class CalcScore : MonoBehaviour
 
     }
 
-    private void Timer()
+    public void Timer()
     {
         // 時間計測
         if (UIController.instance.isStart == true)
@@ -72,33 +79,58 @@ public class CalcScore : MonoBehaviour
         BHP = UIController.instance.playerDataClone.HitPoint;
         // スコア＝生存時間＋残りHP＋与えたダメージ
         // 生存ボーナス：100pt, 撃破ボーナス:100pt
-        if (AHP > BHP)
+        if (AHP > BHP)  // Aが勝者
         {
-            UIController.instance.playerData.Score = (int)((gamefinish.TimeLimit * TimeRate) + (AHP*HPRate) + ((hpgauge.maxHp-BHP)*DamegeRate));
-            UIController.instance.playerDataClone.Score = (int)(((gamefinish.TimeLimit-elapsedTime)*TimeRate) + (BHP*HPRate) + ((hpgauge.maxHp-AHP)*DamegeRate));
+            UIController.instance.playerData.Score = ( int ) (      //playerAのスコア(勝者)
+                ( (GameTimeMax - elapsedTime) * TimeRate )          //速く倒すとスコアアップ
+                + ( AHP * HPRate )                                  //体力が多く残っているとスコアアップ
+                + ( ( HPGauge.instance.maxHp - BHP ) * DamegeRate ) );       //敵に多くダメージを与えるとスコアアップ
+            UIController.instance.playerDataClone.Score = ( int ) ( //playerAのスコア(敗者)
+                ( ( GameTimeMax - elapsedTime ) * TimeRate )        //速く倒すとスコアアップ
+                + ( BHP * HPRate )                                  //体力が多く残っているとスコアアップ
+                + ( ( HPGauge.instance.maxHp - AHP ) * DamegeRate ) );       //敵に多くダメージを与えるとスコアアップ
             if (BHP == 0)
             {
-                //生存ボーナス+撃破ボーナス
-                UIController.instance.playerData.Score += SurvivalBonus;
+                //PlayerA撃破ボーナス
                 UIController.instance.playerData.Score += KillBonus;
             }
+            else
+			{
+                //PlayerB生存ボーナス
+                UIController.instance.playerDataClone.Score += SurvivalBonus;
+            }
+            //PlayerA生存ボーナス
+            UIController.instance.playerData.Score += SurvivalBonus;
         }
         else if (AHP < BHP)
         {
-            UIController.instance.playerData.Score = (int)(((gamefinish.TimeLimit-elapsedTime)*TimeRate) + (AHP*HPRate) + ((hpgauge.maxHp-BHP)*DamegeRate));
-            UIController.instance.playerDataClone.Score = (int)((gamefinish.TimeLimit*TimeRate) + (BHP*HPRate) + ((hpgauge.maxHp-AHP)*DamegeRate));
-            if (AHP == 0)
+            UIController.instance.playerData.Score = ( int ) (
+                ( ( GameTimeMax - elapsedTime ) * TimeRate )
+                + ( AHP * HPRate )
+                + ( ( HPGauge.instance.maxHp - BHP ) * DamegeRate ) );
+            UIController.instance.playerDataClone.Score = ( int ) ( 
+                ( (GameTimeMax - elapsedTime) * TimeRate )
+                + ( BHP * HPRate )
+                + ( ( HPGauge.instance.maxHp - AHP ) * DamegeRate ) );
+            if(AHP == 0)
             {
-                //生存ボーナス+撃破ボーナス
-                UIController.instance.playerData.Score += SurvivalBonus;
-                UIController.instance.playerData.Score += KillBonus;
+                //PlayerB撃破ボーナス
+                UIController.instance.playerDataClone.Score += KillBonus;
             }
+            else
+            {
+                //PlayerA生存ボーナス
+                UIController.instance.playerData.Score += SurvivalBonus;
+            }
+            //PlayerB生存ボーナス
+            UIController.instance.playerDataClone.Score += SurvivalBonus;
         }
         else
         {
-            if (!(AHP==0))
-            UIController.instance.playerData.Score += SurvivalBonus; //生存ボーナス
-            UIController.instance.playerDataClone.Score += SurvivalBonus; //生存ボーナス
+            //引き分けは２００固定
+            UIController.instance.playerData.Score += 200;
+            UIController.instance.playerDataClone.Score += 200;
         }
+        UIController.instance.playerDataClone.isFinish = true;
     }
 }

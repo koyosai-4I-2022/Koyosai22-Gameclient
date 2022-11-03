@@ -21,7 +21,11 @@ public class ServerRequestController : MonoBehaviour
     static int Id = -1;
     static long Score = 100;
 
+#if UNITY_EDITOR
     static string BASEURL = "http://localhost:8000/";
+#else
+    static string BASEURL = "https://score-server-production.up.railway.app/"; 
+#endif
 
 
     // Server応答用のメソッド
@@ -132,7 +136,16 @@ public class ServerRequestController : MonoBehaviour
         var result = await client.PostAsync($"{GetBASEURL()}users/{id}/scores", content);
         var json = await result.Content.ReadAsStringAsync();
 
-        var j = JsonUtility.FromJson<PostUserJson>(json);
+        PostUserJson j;
+        try
+        {
+            j = JsonUtility.FromJson<PostUserJson>(json);
+        }
+		catch
+		{
+            j = new PostUserJson();
+            j.id = -1;
+		}
         SetID(j.id);
         
         return json;

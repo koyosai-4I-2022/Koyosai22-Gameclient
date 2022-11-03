@@ -84,7 +84,7 @@ public class AnimationEvent : MonoBehaviour
         animator.SetBool("Jog Forward Diagonal", false);
         animator.SetBool("Jog Forward Diagonal (1)", false);
         animator.SetBool("Jog Backward Diagonal", false);
-        animator.SetBool("Jog Backward Diagonal (1)", false);
+        animator.SetBool("Jog Backward Diagonal (1)", false);;
         Debug.Log("AllFalseEvent");
     }
 

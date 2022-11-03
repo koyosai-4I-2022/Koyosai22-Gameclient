@@ -87,6 +87,11 @@ public class UIController : MonoBehaviour
     [SerializeField]
     Image[] RankingImage;
 
+    [SerializeField]
+    Camera loadCamera;
+    [SerializeField]
+    Camera playCamera;
+
     // 各処理の初期化を一度しか
     bool[] stateInit;
     bool finishFrag = false;
@@ -102,7 +107,7 @@ public class UIController : MonoBehaviour
 
     [SerializeField]
     public PlayerData playerData;
-    [NonSerialized]
+    [SerializeField]
     public PlayerData playerDataClone;
 
     //JoyconLibの変数
@@ -213,8 +218,13 @@ public class UIController : MonoBehaviour
     // ゲーム中の描画更新
     void UpdatePlayingUI()
     {
+        if(playerDataClone != null && playerDataClone.HitPoint <= 0)
+		{
+            state = PlayState.Resulting;
+		}
         if (isFinish)
         {
+            CalcScore.instance.Timer();
             CalcScore.instance.Score();
             state = PlayState.Resulting;
         }
@@ -227,13 +237,28 @@ public class UIController : MonoBehaviour
 
         // 初期化処理はここに書く
         isStart = true;
+        CalcScore.instance.Timer();
         EnergyGauge.instance.InitializeEnergyGauge();
         HPGauge.instance.InitializeHPGauge();
         Timer.instance.InitializeTimer();
         AnimationEvent.instance.InitializeAnimationEvent();
 
+        if(StrixNetwork.instance.isRoomOwner)
+		{
+            JoyConAttack.instance.gameObject.transform.position += Vector3.back * 30f;
+		}
+        else
+        {
+            JoyConAttack.instance.gameObject.transform.Rotate(0, 180f, 0);
+            JoyConAttack.instance.gameObject.transform.position += Vector3.forward * 30f;
+		}
+        playerData.Init();
+
         // プレイパネルを表示それ以外を非表示
         SetPanelActives();
+
+        loadCamera.gameObject.SetActive(false);
+        playCamera.gameObject.SetActive(true);
     }
 
     // 待機画面の描画更新
@@ -297,9 +322,9 @@ public class UIController : MonoBehaviour
                     { // 同期されたNameとIDが登録されている
 
                         // ゲーム画面への遷移
-                        // 本来はInputSelecting->Roading->Playingの順に遷移
-                        state = PlayState.Resulting;
-                        //state = PlayState.Roading;
+                        // 本来はInputSelecting->Loading->Playingの順に遷移
+                        //state = PlayState.Resulting;
+                        state = PlayState.Loading;
                     }
                 }
             }
@@ -331,6 +356,9 @@ public class UIController : MonoBehaviour
             InputSelectRankingName[i].text = $"{result.Users[i].name}";
             InputSelectRankingScore[i].text = $"{result.Users[i].rate}";
         }
+
+        loadCamera.gameObject.SetActive(true);
+        playCamera.gameObject.SetActive(false);
     }
 
     // ロード画面の描画更新
@@ -396,8 +424,28 @@ public class UIController : MonoBehaviour
         ResultingName[1].text = playerDataClone.Name;
         ResultingScore[1].text = playerDataClone.Score.ToString();
 
+        if(playerData.Score > playerDataClone.Score)
+        {
+            ResultingImage[0].gameObject.SetActive(true);
+            ResultingImage[1].gameObject.SetActive(false);
+
+            int nlen = playerData.Name.Length;
+            ResultingImage[0].rectTransform.anchoredPosition = new Vector2(-50 - 50 * nlen, 200f);
+        }
+        else if(playerData.Score < playerDataClone.Score)
+        {
+            ResultingImage[0].gameObject.SetActive(false);
+            ResultingImage[1].gameObject.SetActive(true);
+
+            int nlen = playerDataClone.Name.Length;
+            ResultingImage[1].rectTransform.anchoredPosition = new Vector2(-50 - 50 * nlen, 200f);
+        }
+
         // スコアをサーバへ送信
         var result = await ServerRequestController.PostScore(playerData.Score, playerData.PlayerId);
+
+        loadCamera.gameObject.SetActive(true);
+        playCamera.gameObject.SetActive(false);
     }
     // ランキング画面の描画更新
     void UpdateRankingUI()
@@ -460,7 +508,7 @@ public class UIController : MonoBehaviour
             RankingScore[i].text = result.Users[i].rate.ToString();
         }
         // ユーザ周辺のランキングを表示
-        var result2 = await ServerRequestController.GetUserRanking(playerData.PlayerId);
+        var result2 = await ServerRequestController.GetUserRanking(132);// playerData.PlayerId);
 
         // 自分より上の順位の人の数
         int higherCount = result2.higher_around_rank_users.Length;
@@ -496,6 +544,8 @@ public class UIController : MonoBehaviour
     {
         stateInit[5] = true;
 
+        loadCamera.gameObject.SetActive(true);
+        playCamera.gameObject.SetActive(false);
         // 接続画面以外を非表示
         SetPanelActives();
     }

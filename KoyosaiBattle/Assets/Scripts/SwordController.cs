@@ -1,0 +1,36 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using SoftGear.Strix.Unity.Runtime;
+
+public class SwordController : MonoBehaviour
+{
+    [SerializeField]
+    StrixReplicator replicator;
+
+    bool isInit = false;
+
+    void Start()
+    {
+        if(!replicator.isLocal)// && JoyConAttack.instance.clone != null)
+        {
+            var player = GameObject.Find("Volinier-motion2-joycon(Clone)");
+            this.transform.parent = player.transform;
+            this.transform.localScale = Vector3.one;
+            isInit = true;
+		}
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if(!isInit && !replicator.isLocal && JoyConAttack.instance.clone != null)
+        {
+            Debug.Log("Set Parent");
+            this.transform.parent = JoyConAttack.instance.clone.gameObject.transform;
+            this.transform.localScale = Vector3.one;
+            isInit = true;
+        }
+    }
+}

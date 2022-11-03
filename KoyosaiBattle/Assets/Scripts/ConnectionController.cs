@@ -59,6 +59,8 @@ public class ConnectionController : MonoBehaviour
 
     // マスターサーバに接続出来ているかを入れる
     bool isConnectMaster = false;
+
+    int MasterResponse = 0;
     
 
     // あたり判定に使用するタグ用
@@ -68,15 +70,19 @@ public class ConnectionController : MonoBehaviour
     {
         // 最初はjoinは表示しない
         buttom2.gameObject.SetActive(false);
+        MasterResponse = 0;
+
 
     }
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.K))
+        if(MasterResponse == 1)
         {
-            playerData.gameObject.name = "PC" + PCID.text;
-
+            buttom1.text = "Create";
+            buttom2.gameObject.SetActive(true);
+            isConnectMaster = true;
+            MasterResponse = 0;
         }
     }
     // Connectionボタンのクリックイベント
@@ -100,9 +106,6 @@ public class ConnectionController : MonoBehaviour
             if(pcID != null)
             {
                 Connect(pcID);
-                buttom1.text = "Create";
-                buttom2.gameObject.SetActive(true);
-                isConnectMaster = true;
             }
         }
 	}
@@ -133,10 +136,12 @@ public class ConnectionController : MonoBehaviour
             connectEventHandler: _ =>
             {
                 Log("Sucess Connect Master");
+                MasterResponse = 1;
             },
             errorEventHandler: _ =>
             {
                 Log("Faild Connect Master");
+                MasterResponse = -1;
             });
 
     }
@@ -263,10 +268,8 @@ public class ConnectionController : MonoBehaviour
         panel.SetActive(false);
         //foreach(var mem in StrixNetwork.instance.roomMembers)
         //    Debug.Log($"{mem.Value.GetName()}:{mem.Value.GetUid()}");
-        UIController.instance.state = UIController.PlayState.Playing;
-        //UIController.instance.state = UIController.PlayState.Loading;
-        //uiController.state = UIController.PlayState.InputSelecting;
-        StrixNetwork.instance.selfRoomMember.SetPrimaryKey(-1);
+        //UIController.instance.state = UIController.PlayState.Ranking;
+        UIController.instance.state = UIController.PlayState.InputSelecting;
     }
 	// テキストに表示するためのメソッド
 	void Log(string msg)

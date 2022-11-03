@@ -4357,7 +4357,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1143024269
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6536,7 +6536,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1595460966}
   - component: {fileID: 1595460965}
-  - component: {fileID: 1595460964}
   - component: {fileID: 1595460967}
   m_Layer: 0
   m_Name: LoadCamera
@@ -6545,14 +6544,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &1595460964
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1595460963}
-  m_Enabled: 1
 --- !u!20 &1595460965
 Camera:
   m_ObjectHideFlags: 0
@@ -7943,7 +7934,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1864891797
 RectTransform:
   m_ObjectHideFlags: 0

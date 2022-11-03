@@ -508,7 +508,7 @@ public class UIController : MonoBehaviour
             RankingScore[i].text = result.Users[i].rate.ToString();
         }
         // ユーザ周辺のランキングを表示
-        var result2 = await ServerRequestController.GetUserRanking(playerData.PlayerId);
+        var result2 = await ServerRequestController.GetUserRanking(132);// playerData.PlayerId);
 
         // 自分より上の順位の人の数
         int higherCount = result2.higher_around_rank_users.Length;
@@ -544,6 +544,8 @@ public class UIController : MonoBehaviour
     {
         stateInit[5] = true;
 
+        loadCamera.gameObject.SetActive(true);
+        playCamera.gameObject.SetActive(false);
         // 接続画面以外を非表示
         SetPanelActives();
     }

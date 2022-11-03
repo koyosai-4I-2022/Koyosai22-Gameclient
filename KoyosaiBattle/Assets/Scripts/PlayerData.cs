@@ -7,16 +7,16 @@ using UnityEngine.UI;
 
 public class PlayerData : StrixBehaviour
 {
-    [StrixSyncField, NonSerialized]
+    [StrixSyncField]
     public int PlayerId;
 
-    [StrixSyncField, NonSerialized]
+    [StrixSyncField]
     public string Name;
 
-    [StrixSyncField, NonSerialized]
+    [StrixSyncField]
     public int Score;
 
-    [StrixSyncField, NonSerialized]
+    [StrixSyncField]
     public int HitPoint;
 
     [SerializeField]
@@ -49,14 +49,21 @@ public class PlayerData : StrixBehaviour
 
     }
     public void Init()
-	{
+    {
         PlayerId = -1;
         Name = string.Empty;
-        Score = 0;
+        Score = -1;
         HitPoint = HPGauge.instance.maxHp;
         isFinish = false;
         isGuard = false;
-	}
+    }
+    public void PlayInit()
+	{
+        Score = -1;
+        HitPoint = HPGauge.instance.maxHp;
+        isFinish = false;
+        isGuard = false;
+    }
 
     public void SetUser(string name, int id)
 	{

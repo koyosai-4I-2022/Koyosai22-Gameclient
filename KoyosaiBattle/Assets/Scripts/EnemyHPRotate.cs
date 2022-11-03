@@ -17,12 +17,10 @@ public class EnemyHPRotate : MonoBehaviour
 	{
 		if(replicator.isLocal)
 		{
-			Debug.Log("Local:" + this.transform.parent.name);
 			slider.gameObject.SetActive(false);
 		}
 		else
 		{
-			Debug.Log("not Local:" + this.transform.parent.name);
 			slider.gameObject.SetActive(true);
 			if(UIController.instance.state == UIController.PlayState.Playing)
 			{

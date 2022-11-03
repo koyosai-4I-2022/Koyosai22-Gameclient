@@ -252,7 +252,7 @@ public class UIController : MonoBehaviour
             JoyConAttack.instance.gameObject.transform.Rotate(0, 180f, 0);
             JoyConAttack.instance.gameObject.transform.position += Vector3.forward * 30f;
 		}
-        playerData.Init();
+        playerData.PlayInit();
 
         // プレイパネルを表示それ以外を非表示
         SetPanelActives();
@@ -267,11 +267,6 @@ public class UIController : MonoBehaviour
         // InputFieldのテキストを取得
         string playerName1 = InputSelectingInputName[0].text;
 
-        // debugで使用あとで消す
-        //if(Input.GetKeyDown(KeyCode.K))
-        //{
-        //    selectIsReady[1] = true;
-        //}
         // 名前が入力されていたらフラグをtrueに
         if (!selectIsReady[0] && playerName1 != string.Empty)
         {
@@ -307,6 +302,8 @@ public class UIController : MonoBehaviour
             InputSelectingReady[0].color = new Color(1f, 0.9f, 0);
 
             playerData.SetUser(result.name, result.id);
+            playerData.Name = result.name;
+            playerData.PlayerId = result.id;
             Debug.Log($"{playerData.PlayerId}:{playerData.Name}");
 
             InputSelectingInputName[0].interactable = false;
@@ -339,6 +336,8 @@ public class UIController : MonoBehaviour
         selectIsReady = new bool[2];
         selectIsSendName = false;
         selectIsReceive = false;
+
+        playerData.Init();
 
         ConflictId = -1;
         ConflictName = string.Empty;
@@ -404,7 +403,7 @@ public class UIController : MonoBehaviour
     }
 
     // リザルトの描画更新
-    void UpdateResultingUI()
+    async void UpdateResultingUI()
 	{
 		{
             ResultingName[0].text = playerData.Name;
@@ -413,6 +412,11 @@ public class UIController : MonoBehaviour
             ResultingScore[0].text = playerData.Score.ToString();
             ResultingScore[1].text = playerDataClone.Score.ToString();
 
+            if(playerData.Score != -1)
+            {
+                // スコアをサーバへ送信
+                await ServerRequestController.PostScore(playerData.Score, playerData.PlayerId);
+            }
         }
 
         // Aボタンを押したときにRankingに遷移
@@ -456,8 +460,11 @@ public class UIController : MonoBehaviour
             ResultingImage[1].rectTransform.anchoredPosition = new Vector2(-50 - 50 * nlen, 200f);
         }
 
-        // スコアをサーバへ送信
-        var result = await ServerRequestController.PostScore(playerData.Score, playerData.PlayerId);
+        if(playerData.Score != -1)
+        {
+            // スコアをサーバへ送信
+            var result = await ServerRequestController.PostScore(playerData.Score, playerData.PlayerId);
+        }
 
         loadCamera.gameObject.SetActive(true);
         playCamera.gameObject.SetActive(false);

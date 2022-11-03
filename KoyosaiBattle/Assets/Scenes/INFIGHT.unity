@@ -5354,6 +5354,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f2d96797b52b7b42b39ef8f24c5e6fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PlayerId: 0
+  Name: 
+  Score: 0
+  HitPoint: 0
   defaultHP: 100
   isFinish: 0
   isGuard: 0
@@ -5373,7 +5377,7 @@ MonoBehaviour:
   - {fileID: 1295927093}
   objectType: 262145
   sendRate: 5
-  syncDestroy: 0
+  syncDestroy: 1
   networkInstanceId: -1
   InstantiableBy: 1
   ConnectionClosedBehaviour: 1

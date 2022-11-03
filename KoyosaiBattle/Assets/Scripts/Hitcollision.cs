@@ -16,6 +16,8 @@ public class Hitcollision : MonoBehaviour
     int damage = 6;
     int hitCount = 0;
 
+    float time = 0;
+
     private void OnTriggerEnter(Collider collision)
     {
         if (collision.gameObject.CompareTag("swordcolor002"))
@@ -23,6 +25,11 @@ public class Hitcollision : MonoBehaviour
             var pparent = collision.transform.parent.parent.gameObject;
             if(pparent != this.gameObject)
             {
+                var dif = Time.time - time;
+                if(dif > 2f)
+				{
+                    hitCount = 0;
+				}
                 if(UIController.instance.playerDataClone.isGuard)
                 {
                     if(!replicator.isLocal)
@@ -30,9 +37,6 @@ public class Hitcollision : MonoBehaviour
                     //if (Attack.instance.replicator.isLocal)
                     //return;
                     UIController.instance.playerData.HitPoint -= (damage - hitCount) / 2;
-                    hitCount++;
-                    if(hitCount > damage)
-                        hitCount = damage;
                 }
                 else
                 {
@@ -51,10 +55,11 @@ public class Hitcollision : MonoBehaviour
                     //if (Attack.instance.replicator.isLocal)
                     //return;
                     UIController.instance.playerData.HitPoint -= (damage - hitCount);
-                    hitCount++;
-                    if(hitCount > damage)
-                        hitCount = damage;
                 }
+                hitCount++;
+                if(hitCount > damage)
+                    hitCount = damage;
+                time = Time.time;
             }
         } 
     }

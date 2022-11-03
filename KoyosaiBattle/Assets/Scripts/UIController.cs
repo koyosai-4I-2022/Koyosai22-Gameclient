@@ -463,6 +463,23 @@ public class UIController : MonoBehaviour
 
                 ResultingScore[0].text = playerData.Score.ToString();
                 ResultingScore[1].text = playerData.EnemyScore.ToString();
+
+                if(playerData.Score > playerData.EnemyScore)
+                {
+                    ResultingImage[0].gameObject.SetActive(true);
+                    ResultingImage[1].gameObject.SetActive(false);
+
+                    int nlen = playerData.Name.Length;
+                    ResultingImage[0].rectTransform.anchoredPosition = new Vector2(-50 - 50 * nlen, 200f);
+                }
+                else
+                {
+                    ResultingImage[0].gameObject.SetActive(false);
+                    ResultingImage[1].gameObject.SetActive(true);
+
+                    int nlen = playerData.Name.Length;
+                    ResultingImage[1].rectTransform.anchoredPosition = new Vector2(-50 - 50 * nlen, 200f);
+                }
             }
             else
             {
@@ -471,6 +488,23 @@ public class UIController : MonoBehaviour
 
                 ResultingScore[0].text = playerDataClone.Score.ToString();
                 ResultingScore[1].text = playerDataClone.EnemyScore.ToString();
+
+                if(playerDataClone.Score > playerDataClone.EnemyScore)
+                {
+                    ResultingImage[0].gameObject.SetActive(false);
+                    ResultingImage[1].gameObject.SetActive(true);
+
+                    int nlen = playerData.Name.Length;
+                    ResultingImage[1].rectTransform.anchoredPosition = new Vector2(-50 - 50 * nlen, 200f);
+                }
+                else
+                {
+                    ResultingImage[0].gameObject.SetActive(true);
+                    ResultingImage[1].gameObject.SetActive(false);
+
+                    int nlen = playerData.Name.Length;
+                    ResultingImage[0].rectTransform.anchoredPosition = new Vector2(-50 - 50 * nlen, 200f);
+                }
             }
 
             if(!isSend && playerData.Score != -1)

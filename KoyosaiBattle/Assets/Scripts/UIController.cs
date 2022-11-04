@@ -638,7 +638,7 @@ public class UIController : MonoBehaviour
             RankingScore[i].text = result.Users[i].rate.ToString();
         }
         // ユーザ周辺のランキングを表示
-        var result2 = await ServerRequestController.GetUserRanking(132);// playerData.PlayerId);
+        var result2 = await ServerRequestController.GetUserRanking(playerData.PlayerId);
 
         // 自分より上の順位の人の数
         int higherCount = result2.higher_around_rank_users.Length;

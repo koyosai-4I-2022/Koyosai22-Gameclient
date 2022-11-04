@@ -477,11 +477,11 @@ public class UIController : MonoBehaviour
                 ResultingName[0].text = playerData.Name;
                 ResultingName[1].text = playerDataClone.Name;
 
-                ResultingScore[0].text = playerData.Score.ToString();
-                ResultingScore[1].text = playerData.EnemyScore.ToString();
-
                 if(playerData.Score > playerData.EnemyScore)
                 {
+                    ResultingScore[0].text = playerData.EnemyScore.ToString();
+                    ResultingScore[1].text = playerData.Score.ToString();
+
                     ResultingImage[0].gameObject.SetActive(false);
                     ResultingImage[1].gameObject.SetActive(true);
 
@@ -490,6 +490,9 @@ public class UIController : MonoBehaviour
                 }
                 else
                 {
+                    ResultingScore[0].text = playerData.Score.ToString();
+                    ResultingScore[1].text = playerData.EnemyScore.ToString();
+
                     ResultingImage[0].gameObject.SetActive(true);
                     ResultingImage[1].gameObject.SetActive(false);
 
@@ -502,11 +505,11 @@ public class UIController : MonoBehaviour
                 ResultingName[0].text = playerData.Name;
                 ResultingName[1].text = playerDataClone.Name;
 
-                ResultingScore[0].text = playerDataClone.EnemyScore.ToString();
-                ResultingScore[1].text = playerDataClone.Score.ToString();
-
                 if(playerDataClone.Score < playerDataClone.EnemyScore)
                 {
+                    ResultingScore[0].text = playerDataClone.EnemyScore.ToString();
+                    ResultingScore[1].text = playerDataClone.Score.ToString();
+
                     ResultingImage[0].gameObject.SetActive(false);
                     ResultingImage[1].gameObject.SetActive(true);
 
@@ -515,6 +518,9 @@ public class UIController : MonoBehaviour
                 }
                 else
                 {
+                    ResultingScore[0].text = playerDataClone.Score.ToString();
+                    ResultingScore[1].text = playerDataClone.EnemyScore.ToString();
+
                     ResultingImage[0].gameObject.SetActive(true);
                     ResultingImage[1].gameObject.SetActive(false);
 

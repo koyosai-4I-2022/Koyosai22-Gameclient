@@ -224,13 +224,15 @@ public class UIController : MonoBehaviour
     {
         if(playerDataClone != null && playerDataClone.HitPoint <= 0)
 		{
-            state = PlayState.Resulting;
+            state = PlayState.Loading;
+            finishFrag = true;
         }
         if (isFinish)
         {
             CalcScore.instance.Timer();
             CalcScore.instance.Score();
-            state = PlayState.Resulting;
+            state = PlayState.Loading;
+            finishFrag = true;
         }
     }
     // ゲーム画面の初期設定
@@ -242,6 +244,7 @@ public class UIController : MonoBehaviour
         // 初期化処理はここに書く
         isStart = true;
         isFinish = false;
+        finishFrag = false;
         CalcScore.instance.Timer();
         EnergyGauge.instance.InitializeEnergyGauge();
         HPGauge.instance.InitializeHPGauge();
@@ -386,6 +389,7 @@ public class UIController : MonoBehaviour
         selectIsReady = new bool[2];
         selectIsSendName = false;
         selectIsReceive = false;
+        isSend = false;
 
         playerData.Init();
 
@@ -401,16 +405,13 @@ public class UIController : MonoBehaviour
         // ランキングを取得
         var result = await ServerRequestController.GetRanking();
 
+        InputSelectingInputName[0].interactable = true;
+
         for (int i = 0; i < 3; i++)
         {
             InputSelectRankingName[i].text = $"{result.Users[i].name}";
             InputSelectRankingScore[i].text = $"{result.Users[i].rate}";
         }
-        foreach(var input in InputSelectingInputName)
-		{
-            input.interactable = true;
-            input.text = "";
-		}
 
         loadCamera.gameObject.SetActive(true);
         playCamera.gameObject.SetActive(false);
@@ -448,16 +449,26 @@ public class UIController : MonoBehaviour
         if (isPlayLoad)
             state = PlayState.Playing;
         else
-            state = PlayState.InputSelecting;
+        {
+            if(finishFrag)
+			{
+                state = PlayState.Resulting;
+			}
+            else
+            {
+                state = PlayState.InputSelecting;
+            }
+        }
 
     }
 
     // リザルトの描画更新
-    async void UpdateResultingUI()
+    void UpdateResultingUI()
 	{
 		{
             if(isFinish)
             {
+                //
                 ResultingName[0].text = playerData.Name;
                 ResultingName[1].text = playerDataClone.Name;
 
@@ -486,10 +497,10 @@ public class UIController : MonoBehaviour
                 ResultingName[0].text = playerData.Name;
                 ResultingName[1].text = playerDataClone.Name;
 
-                ResultingScore[0].text = playerDataClone.Score.ToString();
-                ResultingScore[1].text = playerDataClone.EnemyScore.ToString();
+                ResultingScore[0].text = playerDataClone.EnemyScore.ToString();
+                ResultingScore[1].text = playerDataClone.Score.ToString();
 
-                if(playerDataClone.Score > playerDataClone.EnemyScore)
+                if(playerDataClone.Score < playerDataClone.EnemyScore)
                 {
                     ResultingImage[0].gameObject.SetActive(false);
                     ResultingImage[1].gameObject.SetActive(true);
@@ -505,13 +516,6 @@ public class UIController : MonoBehaviour
                     int nlen = playerData.Name.Length;
                     ResultingImage[0].rectTransform.anchoredPosition = new Vector2(-50 - 50 * nlen, 200f);
                 }
-            }
-
-            if(!isSend && playerData.Score != -1)
-            {
-                // スコアをサーバへ送信
-                await ServerRequestController.PostScore(playerData.Score, playerData.PlayerId);
-                isSend = true;
             }
         }
 
@@ -556,15 +560,11 @@ public class UIController : MonoBehaviour
             ResultingImage[1].rectTransform.anchoredPosition = new Vector2(-50 - 50 * nlen, 200f);
         }
 
-        if(!isSend && playerData.Score != -1)
-        {
-            // スコアをサーバへ送信
-            await ServerRequestController.PostScore(playerData.Score, playerData.PlayerId);
-            isSend = true;
-        }
-
         loadCamera.gameObject.SetActive(true);
         playCamera.gameObject.SetActive(false);
+
+        // スコアをサーバへ送信
+        await ServerRequestController.PostScore(playerData.Score, playerData.PlayerId);
     }
     // ランキング画面の描画更新
     void UpdateRankingUI()

@@ -28,7 +28,12 @@ public class ShieldDisplay : MonoBehaviour
             var player = GameObject.Find("Volinier-motion2-joycon(Clone)");
             shield.transform.parent = player.transform;
             shield.transform.localScale = Vector3.one;
+            PlayerMotion.instance.shieldEnemy = this.shield;
         }
+        else
+		{
+            PlayerMotion.instance.shieldSelf = this.shield;
+		}
 
         shield.SetActive(false);
     }
@@ -36,14 +41,6 @@ public class ShieldDisplay : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(replicator.isLocal)
-		{
-            shield.SetActive(UIController.instance.playerData.isGuard);
-		}
-        else
-		{
-            shield.SetActive(UIController.instance.playerDataClone.isGuard);
-        }
 
     }
 }

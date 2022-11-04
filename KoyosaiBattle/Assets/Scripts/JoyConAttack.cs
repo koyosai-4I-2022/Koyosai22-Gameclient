@@ -95,6 +95,8 @@ public class JoyConAttack : MonoBehaviour
 		if(!replicator.isLocal)
 			return;
 
+		
+
 		//Playingó‘Ô‚Å‚È‚¢AÀs‚µ‚È‚¢
 		if(UIController.instance.state != UIController.PlayState.Playing)
 		{

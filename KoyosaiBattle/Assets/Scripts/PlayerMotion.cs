@@ -33,6 +33,9 @@ public class PlayerMotion : MonoBehaviour
     public bool guard;
     public bool run;
 
+    public GameObject shieldSelf;
+    public GameObject shieldEnemy;
+
     //関数の参照
     public static PlayerMotion instance;
     public void Awake()
@@ -84,8 +87,10 @@ public class PlayerMotion : MonoBehaviour
         float[] Lstick = m_joyconL.GetStick();
         float[] Rstick = m_joyconR.GetStick();
 
-
-
+        if(shieldSelf != null)
+            shieldSelf.SetActive(UIController.instance.playerData.isGuard);
+        if(shieldEnemy != null)
+            shieldEnemy.SetActive(UIController.instance.playerDataClone.isGuard);
 
 
         //エネルギーが3以上あるとき

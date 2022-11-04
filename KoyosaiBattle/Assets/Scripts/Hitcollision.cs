@@ -13,7 +13,7 @@ public class Hitcollision : MonoBehaviour
     [SerializeField]
     private AudioSource slashAudio;
 
-    int damage = 6;
+    int damage = 8;
     int hitCount = 0;
 
     float time = 0;

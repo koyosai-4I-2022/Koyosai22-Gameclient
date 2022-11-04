@@ -65,7 +65,7 @@ public class UIController : MonoBehaviour
     [SerializeField]
     Image[] LoadingImage;
     [SerializeField]
-    float TextChangeSpeed = 1.0f;
+    float TextChangeSpeed = 2.5f;
 
     // リザルト画面で使用するテキストと画像
     [SerializeField]
@@ -134,6 +134,13 @@ public class UIController : MonoBehaviour
     public bool isStart = false;
     // これをゲーム終了時にTrueにする
     public bool isFinish = false;
+
+    string[] topicsStr = new string[3]
+    {
+        "Topics\n連続攻撃でダメージが下がる\n攻撃には緩急が大切だ！！",
+        "Topics\nガード時は受けるダメージが減るが動けないので注意しろ",
+        "Topics\n周囲に気を付けて楽しくプレイ！！"
+    };
 
     private void Awake()
     {
@@ -425,12 +432,13 @@ public class UIController : MonoBehaviour
     {
         // TextChangeSpeedの秒数後にテキストを変更
         LoadingText[0].text = "Now Loading";
+        LoadingText[1].text = topicsStr[0];
         yield return new WaitForSeconds(TextChangeSpeed);
         LoadingText[0].text = "Now Loading.";
+        LoadingText[1].text = topicsStr[1];
         yield return new WaitForSeconds(TextChangeSpeed);
         LoadingText[0].text = "Now Loading..";
-        yield return new WaitForSeconds(TextChangeSpeed);
-        LoadingText[0].text = "Now Loading...";
+        LoadingText[1].text = topicsStr[2];
         yield return new WaitForSeconds(TextChangeSpeed);
         FinishLoading(stateInit[1]);
     }
@@ -471,63 +479,7 @@ public class UIController : MonoBehaviour
     void UpdateResultingUI()
 	{
 		{
-            if(isFinish)
-            {
-                //
-                ResultingName[0].text = playerData.Name;
-                ResultingName[1].text = playerDataClone.Name;
-
-                if(playerData.Score > playerData.EnemyScore)
-                {
-                    ResultingScore[0].text = playerData.EnemyScore.ToString();
-                    ResultingScore[1].text = playerData.Score.ToString();
-
-                    ResultingImage[0].gameObject.SetActive(false);
-                    ResultingImage[1].gameObject.SetActive(true);
-
-                    int nlen = playerData.Name.Length;
-                    ResultingImage[0].rectTransform.anchoredPosition = new Vector2(-50 - 50 * nlen, 200f);
-                }
-                else
-                {
-                    ResultingScore[0].text = playerData.Score.ToString();
-                    ResultingScore[1].text = playerData.EnemyScore.ToString();
-
-                    ResultingImage[0].gameObject.SetActive(true);
-                    ResultingImage[1].gameObject.SetActive(false);
-
-                    int nlen = playerData.Name.Length;
-                    ResultingImage[1].rectTransform.anchoredPosition = new Vector2(-50 - 50 * nlen, 200f);
-                }
-            }
-            else
-            {
-                ResultingName[0].text = playerData.Name;
-                ResultingName[1].text = playerDataClone.Name;
-
-                if(playerDataClone.Score < playerDataClone.EnemyScore)
-                {
-                    ResultingScore[0].text = playerDataClone.EnemyScore.ToString();
-                    ResultingScore[1].text = playerDataClone.Score.ToString();
-
-                    ResultingImage[0].gameObject.SetActive(false);
-                    ResultingImage[1].gameObject.SetActive(true);
-
-                    int nlen = playerData.Name.Length;
-                    ResultingImage[1].rectTransform.anchoredPosition = new Vector2(-50 - 50 * nlen, 200f);
-                }
-                else
-                {
-                    ResultingScore[0].text = playerDataClone.Score.ToString();
-                    ResultingScore[1].text = playerDataClone.EnemyScore.ToString();
-
-                    ResultingImage[0].gameObject.SetActive(true);
-                    ResultingImage[1].gameObject.SetActive(false);
-
-                    int nlen = playerData.Name.Length;
-                    ResultingImage[0].rectTransform.anchoredPosition = new Vector2(-50 - 50 * nlen, 200f);
-                }
-            }
+            
         }
 
         // Aボタンを押したときにRankingに遷移
@@ -547,14 +499,18 @@ public class UIController : MonoBehaviour
         // リザルトパネルを表示それ以外を非表示
         SetPanelActives();
 
-        // 自分と相手のスコアと名前を表示
+        if(playerDataClone.Score != -1)
+            playerData.EnemyScore = playerDataClone.Score;
+        if(playerDataClone.EnemyScore != -1)
+            playerData.Score = playerDataClone.EnemyScore;
+
         ResultingName[0].text = playerData.Name;
-        ResultingScore[0].text = playerData.Score.ToString();
-
         ResultingName[1].text = playerDataClone.Name;
-        ResultingScore[1].text = playerDataClone.Score.ToString();
 
-        if(playerData.Score > playerDataClone.Score)
+        ResultingScore[0].text = playerData.Score.ToString();
+        ResultingScore[1].text = playerData.EnemyScore.ToString();
+
+        if(playerData.Score > playerData.EnemyScore)
         {
             ResultingImage[0].gameObject.SetActive(true);
             ResultingImage[1].gameObject.SetActive(false);
@@ -562,15 +518,14 @@ public class UIController : MonoBehaviour
             int nlen = playerData.Name.Length;
             ResultingImage[0].rectTransform.anchoredPosition = new Vector2(-50 - 50 * nlen, 200f);
         }
-        else if(playerData.Score < playerDataClone.Score)
+        else
         {
             ResultingImage[0].gameObject.SetActive(false);
             ResultingImage[1].gameObject.SetActive(true);
 
-            int nlen = playerDataClone.Name.Length;
+            int nlen = playerData.Name.Length;
             ResultingImage[1].rectTransform.anchoredPosition = new Vector2(-50 - 50 * nlen, 200f);
         }
-
         loadCamera.gameObject.SetActive(true);
         playCamera.gameObject.SetActive(false);
 

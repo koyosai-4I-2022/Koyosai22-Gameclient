@@ -10,7 +10,7 @@ public class HPGauge : MonoBehaviour
     Slider slider;
 
     //Slider‚ÌMaxValue‚Æ“¯‚¶‚É‚·‚é
-     public int maxHp = 150;
+     public int maxHp = 400;
 
     //ŠÖ”‚ÌQÆ
     public static HPGauge instance;

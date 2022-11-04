@@ -3381,6 +3381,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57fe6a0d9dbe62b43be476f19c8e03dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  state: 0
   connectionPanel: {fileID: 1143024268}
   playingPanel: {fileID: 1343423502}
   inputSelectingPanel: {fileID: 2134760924}
@@ -9874,7 +9875,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 270, y: -180}
+  m_AnchoredPosition: {x: 220, y: -180}
   m_SizeDelta: {x: 2500, y: 500}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &543615707381761455
@@ -21677,6 +21678,8 @@ MonoBehaviour:
   Animator: {fileID: 5593989183989997173}
   guard: 0
   run: 0
+  shieldSelf: {fileID: 0}
+  shieldEnemy: {fileID: 0}
 --- !u!114 &5593989183989997390
 MonoBehaviour:
   m_ObjectHideFlags: 0

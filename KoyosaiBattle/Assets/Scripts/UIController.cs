@@ -241,6 +241,7 @@ public class UIController : MonoBehaviour
     {
         // 初期設定したのでtrue
         stateInit[0] = true;
+        stateInit[1] = false;
         stateInit[2] = false;
 
         // 初期化処理はここに書く
@@ -448,14 +449,16 @@ public class UIController : MonoBehaviour
     // ロード画面の終了処理
     void FinishLoading(bool isPlayLoad)
     {
-        if (isPlayLoad)
+        if(isPlayLoad)
+        {
             state = PlayState.Playing;
+        }
         else
         {
             if(finishFrag)
-			{
+            {
                 state = PlayState.Resulting;
-			}
+            }
             else
             {
                 state = PlayState.InputSelecting;
@@ -479,16 +482,16 @@ public class UIController : MonoBehaviour
 
                 if(playerData.Score > playerData.EnemyScore)
                 {
-                    ResultingImage[0].gameObject.SetActive(true);
-                    ResultingImage[1].gameObject.SetActive(false);
+                    ResultingImage[0].gameObject.SetActive(false);
+                    ResultingImage[1].gameObject.SetActive(true);
 
                     int nlen = playerData.Name.Length;
                     ResultingImage[0].rectTransform.anchoredPosition = new Vector2(-50 - 50 * nlen, 200f);
                 }
                 else
                 {
-                    ResultingImage[0].gameObject.SetActive(false);
-                    ResultingImage[1].gameObject.SetActive(true);
+                    ResultingImage[0].gameObject.SetActive(true);
+                    ResultingImage[1].gameObject.SetActive(false);
 
                     int nlen = playerData.Name.Length;
                     ResultingImage[1].rectTransform.anchoredPosition = new Vector2(-50 - 50 * nlen, 200f);

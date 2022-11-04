@@ -15,7 +15,6 @@ public class UIController : MonoBehaviour
     // 4 リザルト
     // 5 ランキング
     // 6 接続
-    [NonSerialized]
     public PlayState state;
 
     public static UIController instance;
@@ -224,11 +223,13 @@ public class UIController : MonoBehaviour
     {
         if(playerDataClone != null && playerDataClone.HitPoint <= 0)
 		{
+            Debug.Log("Finish win");
             state = PlayState.Loading;
             finishFrag = true;
         }
         if (isFinish)
         {
+            Debug.Log("Finish lose");
             CalcScore.instance.Timer();
             CalcScore.instance.Score();
             state = PlayState.Loading;
@@ -240,6 +241,7 @@ public class UIController : MonoBehaviour
     {
         // 初期設定したのでtrue
         stateInit[0] = true;
+        stateInit[2] = false;
 
         // 初期化処理はここに書く
         isStart = true;

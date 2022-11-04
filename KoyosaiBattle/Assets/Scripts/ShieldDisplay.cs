@@ -23,11 +23,11 @@ public class ShieldDisplay : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if(!replicator.isLocal)
+        if(this.name.Contains("Clone"))
         {
-            var player = GameObject.Find("Volinier-motion2-joycon(Clone)");
-            shield.transform.parent = player.transform;
-            shield.transform.localScale = Vector3.one;
+            //var player = GameObject.Find("Volinier-motion2-joycon(Clone)");
+            //shield.transform.parent = player.transform;
+            //shield.transform.localScale = Vector3.one;
             PlayerMotion.instance.shieldEnemy = this.shield;
         }
         else
@@ -35,7 +35,7 @@ public class ShieldDisplay : MonoBehaviour
             PlayerMotion.instance.shieldSelf = this.shield;
 		}
 
-        shield.SetActive(false);
+        //shield.SetActive(false);
     }
 
     // Update is called once per frame

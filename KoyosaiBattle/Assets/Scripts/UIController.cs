@@ -477,7 +477,7 @@ public class UIController : MonoBehaviour
     // ロード画面の描画更新
     IEnumerator UpdateLoadingUI()
     {
-        if(!isFinish)
+        if(!finishFrag)
         {
             // TextChangeSpeedの秒数後にテキストを変更
             LoadingText[0].text = "Now Loading";

@@ -237,6 +237,7 @@ public class UIController : MonoBehaviour
         if (isFinish)
         {
             Debug.Log("Finish lose");
+            isStart = false;
             CalcScore.instance.Timer();
             CalcScore.instance.Score();
             state = PlayState.Loading;
@@ -456,6 +457,9 @@ public class UIController : MonoBehaviour
         // リザルトパネルを表示それ以外を非表示
         SetPanelActives();
 
+        loadCamera.gameObject.SetActive(true);
+        playCamera.gameObject.SetActive(false);
+
         // コルーチン(非同期処理)を実行
         StartCoroutine(nameof(UpdateLoadingUI));
     }
@@ -506,9 +510,6 @@ public class UIController : MonoBehaviour
 
         if(isFinish)
 		{
-            playerData.Score = playerDataClone.EnemyScore;
-            playerData.EnemyScore = playerDataClone.Score;
-
             ResultingName[0].text = playerData.Name;
             ResultingName[1].text = playerDataClone.Name;
 
@@ -534,7 +535,10 @@ public class UIController : MonoBehaviour
         }
         else
         {
-            ResultingName[0].text = playerData.Name;
+            playerData.Score = playerDataClone.EnemyScore;
+            playerData.EnemyScore = playerDataClone.Score;
+
+			ResultingName[0].text = playerData.Name;
             ResultingName[1].text = playerDataClone.Name;
 
             ResultingScore[0].text = playerData.Score.ToString();

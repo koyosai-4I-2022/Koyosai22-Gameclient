@@ -4311,7 +4311,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1119304366}
   - component: {fileID: 1119304367}
-  - component: {fileID: 1119304368}
   m_Layer: 5
   m_Name: EnergySlider
   m_TagString: Untagged
@@ -4391,21 +4390,6 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &1119304368
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1119304365}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c58167a6662d264408b5fc6f3419ec4b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  energy: {fileID: 1119304367}
-  sliderImage: {fileID: 1300722380}
-  maxEnergy: 10
 --- !u!4 &1133155075 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4785179486904736, guid: e1304517d24a34d348e58d276929bd24, type: 3}
@@ -5700,7 +5684,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slider: {fileID: 1764833889}
-  maxHp: 100
+  maxHp: 400
 --- !u!114 &1336672534
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5715,7 +5699,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   energy: {fileID: 1119304367}
   sliderImage: {fileID: 1300722380}
-  maxEnergy: 10
+  maxEnergy: 12
 --- !u!114 &1336672535
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5729,7 +5713,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   text: {fileID: 219301375}
-  count: 0
+  count: 180
 --- !u!1 &1343423502
 GameObject:
   m_ObjectHideFlags: 0
@@ -7881,7 +7865,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1764833890}
   - component: {fileID: 1764833889}
-  - component: {fileID: 1764833891}
   m_Layer: 5
   m_Name: HPSlider
   m_TagString: Untagged
@@ -7961,20 +7944,6 @@ RectTransform:
   m_AnchoredPosition: {x: -260, y: -50}
   m_SizeDelta: {x: 160, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1764833891
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1764833888}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7395c494e394be44f8e65ecfc59cec69, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  slider: {fileID: 1764833889}
-  maxHp: 100
 --- !u!1 &1767876602
 GameObject:
   m_ObjectHideFlags: 0

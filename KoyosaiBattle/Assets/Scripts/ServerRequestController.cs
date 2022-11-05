@@ -85,6 +85,15 @@ public class ServerRequestController : MonoBehaviour
         var json2 = await result2.Content.ReadAsStringAsync();
 
         Debug.Log(json2);
+        if(json2.Contains("{\"detail\":\"user not found\"}"))
+        {
+            return new PostUserJson()
+            {
+                name = "",
+                id = -1
+            };
+        }
+
         try
         {
             var user = JsonUtility.FromJson<PostUserJson>(json2);

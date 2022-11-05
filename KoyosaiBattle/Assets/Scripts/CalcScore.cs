@@ -114,6 +114,7 @@ public class CalcScore : MonoBehaviour
             UIController.instance.playerData.Score += 200;
             UIController.instance.playerData.EnemyScore += 200;
         }
+        Debug.Log($"{UIController.instance.playerData.Score}:{UIController.instance.playerData.Score}");
         UIController.instance.playerDataClone.isFinish = true;
     }
 }

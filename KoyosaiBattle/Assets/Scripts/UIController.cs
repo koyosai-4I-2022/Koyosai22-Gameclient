@@ -271,6 +271,9 @@ public class UIController : MonoBehaviour
     // ゲーム画面の初期設定
     IEnumerator InitPlayerUI()
     {
+        isStart = true;
+        isFinish = false;
+        finishFrag = false;
         // プレイパネルを表示それ以外を非表示
         SetPanelActives();
 
@@ -287,9 +290,6 @@ public class UIController : MonoBehaviour
         stateInit[2] = false;
 
         // 初期化処理はここに書く
-        isStart = true;
-        isFinish = false;
-        finishFrag = false;
         CalcScore.instance.Timer();
         EnergyGauge.instance.InitializeEnergyGauge();
         HPGauge.instance.InitializeHPGauge();

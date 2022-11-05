@@ -238,13 +238,10 @@ public class PlayerMotion : MonoBehaviour
 
     private void MotionStrict()
     {
-        float i = 10;//縦の補正値
-
         float posx = transform.position.x;//x座標
-        float posz = transform.position.z - i;//補正したz座標
+        float posz = transform.position.z;//z座標
 
         float absposx = Mathf.Abs(posx);//xの絶対値
-        float absposz = Mathf.Abs(posz);//zの補正した絶対値
 
         int repos = 2; //外に出たときにどれだけ戻すか
 
@@ -253,7 +250,11 @@ public class PlayerMotion : MonoBehaviour
             transform.position += Vector3.left * repos * Mathf.Sign(posx);
         }
 
-        if(absposz > 231)
+        if(posz > 321)
+        {
+            transform.position += Vector3.back * repos * Mathf.Sign(posz);
+        }
+        else if(posz < -161)
         {
             transform.position += Vector3.back * repos * Mathf.Sign(posz);
         }

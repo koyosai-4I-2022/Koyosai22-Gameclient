@@ -640,7 +640,7 @@ public class UIController : MonoBehaviour
         int rangeHigh = higherCount;
         if(higherCount > 2)
             rangeHigh = 2;
-        for(int i =0;i < rangeHigh; i++)
+        for(int i = rangeHigh - 1;i >= 0; i--)
 		{
             RankingAroundRank[RankCount].text = result2.higher_around_rank_users[higherCount - i - 1].rank.ToString();
             RankingAroundName[RankCount].text = result2.higher_around_rank_users[higherCount - i - 1].name;

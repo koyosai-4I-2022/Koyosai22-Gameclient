@@ -85,10 +85,12 @@ public class CalcScore : MonoBehaviour
                 ( (GameTimeMax - elapsedTime) * TimeRate )          //速く倒すとスコアアップ
                 + ( AHP * HPRate )                                  //体力が多く残っているとスコアアップ
                 + ( ( HPGauge.instance.maxHp - BHP ) * DamegeRate ) );       //敵に多くダメージを与えるとスコアアップ
+            
             UIController.instance.playerData.EnemyScore = ( int ) ( //playerAのスコア(敗者)
                 ( ( GameTimeMax - elapsedTime ) * TimeRate )        //速く倒すとスコアアップ
                 + ( BHP * HPRate )                                  //体力が多く残っているとスコアアップ
                 + ( ( HPGauge.instance.maxHp - AHP ) * DamegeRate ) );       //敵に多くダメージを与えるとスコアアップ
+            Debug.Log($"{( ( GameTimeMax - elapsedTime ) * TimeRate ) }:{( BHP * HPRate ) }:{( ( HPGauge.instance.maxHp - AHP ) * DamegeRate )}");
             if (BHP == 0)
             {
                 //PlayerA撃破ボーナス

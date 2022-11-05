@@ -13,7 +13,7 @@ public class Hitcollision : MonoBehaviour
     [SerializeField]
     private AudioSource slashAudio;
 
-    int damage = 8;
+    int damage = 16;
     int hitCount = 0;
 
     float time = 0;
@@ -26,7 +26,7 @@ public class Hitcollision : MonoBehaviour
             if(pparent != this.gameObject)
             {
                 var dif = Time.time - time;
-                if(dif > 2f)
+                if(dif > 1.65f)
 				{
                     hitCount = 0;
 				}
@@ -56,7 +56,7 @@ public class Hitcollision : MonoBehaviour
                     //return;
                     UIController.instance.playerData.HitPoint -= (damage - hitCount);
                 }
-                hitCount++;
+                hitCount += 2;
                 if(hitCount > damage)
                     hitCount = damage;
                 time = Time.time;

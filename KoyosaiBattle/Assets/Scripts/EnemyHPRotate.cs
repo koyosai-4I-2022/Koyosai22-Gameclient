@@ -11,7 +11,12 @@ public class EnemyHPRotate : MonoBehaviour
 
 	[SerializeField]
 	Slider slider;
-	
+
+	private void Start()
+	{
+		slider.maxValue = HPGauge.instance.maxHp;
+	}
+
 	// Update is called once per frame
 	void LateUpdate()
 	{

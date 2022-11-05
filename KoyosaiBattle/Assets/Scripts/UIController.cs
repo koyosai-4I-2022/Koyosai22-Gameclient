@@ -460,6 +460,8 @@ public class UIController : MonoBehaviour
         loadCamera.gameObject.SetActive(true);
         playCamera.gameObject.SetActive(false);
 
+        AnimationEvent.instance.InitializeAnimationEvent();
+
         // コルーチン(非同期処理)を実行
         StartCoroutine(nameof(UpdateLoadingUI));
     }

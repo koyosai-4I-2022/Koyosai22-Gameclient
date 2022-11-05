@@ -130,7 +130,7 @@ public class JoyConAttack : MonoBehaviour
 		beforeAccel = m_joyconR.GetAccel();
 		deltaAccel = accUnity;
 
-		if(sqr > 0.25f)
+		if(sqr > 0.35f)
 		{
 			swingPos += accUnity * 0.95f;
 			var vec = BasePosition + swingPos.normalized * 0.75f;

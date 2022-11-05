@@ -440,6 +440,8 @@ public class UIController : MonoBehaviour
     // 待機画面の初期設定
     async void InitInputSelectingUI()
     {
+        finishFrag = false;
+        isFinish = false;
         // 初期設定したのでtrue
         stateInit[1] = true;
         selectIsReady = new bool[2];

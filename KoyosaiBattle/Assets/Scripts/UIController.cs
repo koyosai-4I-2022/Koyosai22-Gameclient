@@ -370,6 +370,7 @@ public class UIController : MonoBehaviour
                     // すでに登録された名前だった場合にもう一度入力する
                     selectIsSendName = false;
                     InputSelectingInputName[0].text = string.Empty;
+                    SwingGauge.value = SwingGauge.minValue;
                     selectIsReady[0] = false;
                     selectIsReady[1] = false;
                     return;
@@ -398,6 +399,7 @@ public class UIController : MonoBehaviour
                     // すでに登録された名前だった場合にもう一度入力する
                     selectIsSendName = false;
                     InputSelectingInputName[0].text = string.Empty;
+                    SwingGauge.value = SwingGauge.minValue;
                     selectIsReady[0] = false;
                     selectIsReady[1] = false;
                     return;

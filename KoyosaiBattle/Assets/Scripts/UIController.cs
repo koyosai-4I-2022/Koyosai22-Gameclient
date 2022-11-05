@@ -654,9 +654,9 @@ public class UIController : MonoBehaviour
         RankCount++;
         for(int i = 0; i < lowerCount; i++)
         {
-            RankingAroundRank[RankCount].text = result2.higher_around_rank_users[i].rank.ToString();
-            RankingAroundName[RankCount].text = result2.higher_around_rank_users[i].name;
-            RankingAroundScore[RankCount].text = result2.higher_around_rank_users[i].rate.ToString();
+            RankingAroundRank[RankCount].text = result2.lower_around_rank_users[i].rank.ToString();
+            RankingAroundName[RankCount].text = result2.lower_around_rank_users[i].name;
+            RankingAroundScore[RankCount].text = result2.lower_around_rank_users[i].rate.ToString();
             RankCount++;
             if(RankCount >= 5)
                 break;

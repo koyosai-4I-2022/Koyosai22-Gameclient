@@ -75,6 +75,8 @@ public class PlayerMotion : MonoBehaviour
         {
             return;
         }
+        if(!UIController.instance.isStart)
+            return;
 
         UIController.instance.playerData.isGuard = guard;
 

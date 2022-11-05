@@ -36,7 +36,7 @@ public class Hitcollision : MonoBehaviour
                         return;
                     //if (Attack.instance.replicator.isLocal)
                     //return;
-                    UIController.instance.playerData.HitPoint -= (damage - hitCount) / 2;
+                    UIController.instance.playerData.HitPoint -= (damage - hitCount) / 4;
                 }
                 else
                 {
@@ -56,7 +56,7 @@ public class Hitcollision : MonoBehaviour
                     //return;
                     UIController.instance.playerData.HitPoint -= (damage - hitCount);
                 }
-                hitCount += 2;
+                hitCount += 3;
                 if(hitCount > damage)
                     hitCount = damage;
                 time = Time.time;

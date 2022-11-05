@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using SoftGear.Strix.Unity.Runtime;
+using System.Text;
 
 public class UIController : MonoBehaviour
 {
@@ -43,6 +44,8 @@ public class UIController : MonoBehaviour
     Text[] PlayingText;
     [SerializeField]
     Image[] PlayingImage;
+    [SerializeField]
+    GameObject StartObject;
 
     // 待機選択画面で使用するテキストと画像
     [SerializeField]
@@ -57,7 +60,10 @@ public class UIController : MonoBehaviour
     InputField[] InputSelectingInputName;
     [SerializeField]
     Text[] InputSelectExpText;
+    [SerializeField]
+    Slider SwingGauge;
     int existingNum = 0;
+    int SwingCount = 0;
 
     // ロード画面で使用するテキストと画像
     [SerializeField]
@@ -65,7 +71,7 @@ public class UIController : MonoBehaviour
     [SerializeField]
     Image[] LoadingImage;
     [SerializeField]
-    float TextChangeSpeed = 2.5f;
+    float TextChangeSpeed = 4.5f;
 
     // リザルト画面で使用するテキストと画像
     [SerializeField]
@@ -135,11 +141,12 @@ public class UIController : MonoBehaviour
     // これをゲーム終了時にTrueにする
     public bool isFinish = false;
 
-    string[] topicsStr = new string[3]
+    string[] topicsStr = new string[4]
     {
         "Topics\n連続攻撃でダメージが下がる\n攻撃には緩急が大切だ！！",
         "Topics\nガード時は受けるダメージが減るが動けないので注意しろ",
-        "Topics\n周囲に気を付けて楽しくプレイ！！"
+        "Topics\n周囲に気を付けて楽しくプレイ！！",
+        "Topics\n遊んでくれてありがとう！！\n投票もおねがいします"
     };
 
     private void Awake()
@@ -158,13 +165,30 @@ public class UIController : MonoBehaviour
     {
         if(m_joycons == null || m_joycons.Count <= 0)
             return;
+#if UNITY_EDITOR
+        if(Input.GetKeyDown(KeyCode.K))
+		{
+            playerDataClone = new PlayerData()
+            {
+                Name = "test",
+                Score = 200,
+                EnemyScore = 200,
+                PlayerId = 10,
+            };
+            playerData.Name = "ひだ(開発者)";
+            playerData.PlayerId = 808;
+            playerData.Score = 200;
+            playerData.EnemyScore = 200;
+            isFinish = true;
+		}
+#endif
         switch(state)
         {
             // ゲーム画面での毎フレーム処理
             case PlayState.Playing:
                 // 最初の一回目のみ実行(メソッド内でtrueに)
                 if (!stateInit[0])
-                    InitPlayerUI();
+                    StartCoroutine(InitPlayerUI());
                 UpdatePlayingUI();
                 break;
             // 中断中の処理
@@ -245,8 +269,18 @@ public class UIController : MonoBehaviour
         }
     }
     // ゲーム画面の初期設定
-    void InitPlayerUI()
+    IEnumerator InitPlayerUI()
     {
+        // プレイパネルを表示それ以外を非表示
+        SetPanelActives();
+
+        loadCamera.gameObject.SetActive(false);
+        playCamera.gameObject.SetActive(true);
+
+        StartObject.SetActive(true);
+        yield return new WaitForSeconds(1f);
+        StartObject.SetActive(false);
+
         // 初期設定したのでtrue
         stateInit[0] = true;
         stateInit[1] = false;
@@ -274,12 +308,8 @@ public class UIController : MonoBehaviour
 		}
         playerData.PlayInit();
 
-        // プレイパネルを表示それ以外を非表示
-        SetPanelActives();
-
-        loadCamera.gameObject.SetActive(false);
-        playCamera.gameObject.SetActive(true);
     }
+    void FalseStartObjectActive() => StartObject.SetActive(false);
 
     // 待機画面の描画更新
     async void UpdateInputSelectingUI()
@@ -302,15 +332,21 @@ public class UIController : MonoBehaviour
                 InputSelectExpText[1].gameObject.SetActive(false);
             }
         }
-
         // 名前が入力されていたらフラグをtrueに
         if (!selectIsReady[0] && playerName1 != string.Empty)
         {
             selectIsReady[0] = true;
         }
-        if (selectIsReady[0] && m_joyconR.GetAccel().sqrMagnitude > 4f)
+        if (selectIsReady[0] && m_joyconR.GetAccel().sqrMagnitude > 50f)
         {
-            selectIsReady[1] = true;
+            SwingCount++;
+            if(SwingCount > 4)
+            {
+                SwingGauge.value += 1;
+                SwingCount = 0;
+            }
+            if(SwingGauge.value >= SwingGauge.maxValue)
+                selectIsReady[1] = true;
         }
         // すべてのフラグがtrueでサーバにPOSTしてない時にPOST処理
         if (selectIsReady[0] && selectIsReady[1] && !selectIsSendName)
@@ -322,8 +358,11 @@ public class UIController : MonoBehaviour
 
                 //InputSelectingInputName[0].text = String.Empty;
 
+                int len = playerName1.Length;
+                int range = len <= 8 ? len : 8;
+                string postName = playerName1.Substring(0, range);
                 // POST
-                var result = await ServerRequestController.PostUser(playerName1);
+                var result = await ServerRequestController.PostUser(postName);
 
                 // すでに登録されている名前だった場合に再度入力をしてもらう
                 if(result.id == -1)
@@ -351,7 +390,6 @@ public class UIController : MonoBehaviour
                 // POSTを複数回連続で行わないようにtrue
                 selectIsSendName = true;
 
-
                 var result = await ServerRequestController.PostExstingUser(playerName1);
 
                 if(result.id == -1)
@@ -367,7 +405,7 @@ public class UIController : MonoBehaviour
                 // Readyを黄色にする
                 InputSelectingReady[0].color = new Color(1f, 0.9f, 0);
 
-                
+
                 playerData.SetUser(result.name, result.id);
                 playerData.Name = result.name;
                 playerData.PlayerId = result.id;
@@ -409,8 +447,11 @@ public class UIController : MonoBehaviour
 
         playerData.Init();
 
+        SwingGauge.value = 0;
         ConflictId = -1;
         ConflictName = string.Empty;
+
+        InputSelectingInputName[0].text = "";
 
         // リザルトパネルを表示それ以外を非表示
         SetPanelActives();
@@ -436,17 +477,32 @@ public class UIController : MonoBehaviour
     // ロード画面の描画更新
     IEnumerator UpdateLoadingUI()
     {
-        // TextChangeSpeedの秒数後にテキストを変更
-        LoadingText[0].text = "Now Loading";
-        LoadingText[1].text = topicsStr[0];
-        yield return new WaitForSeconds(TextChangeSpeed);
-        LoadingText[0].text = "Now Loading.";
-        LoadingText[1].text = topicsStr[1];
-        yield return new WaitForSeconds(TextChangeSpeed);
-        LoadingText[0].text = "Now Loading..";
-        LoadingText[1].text = topicsStr[2];
-        yield return new WaitForSeconds(TextChangeSpeed);
-        FinishLoading(stateInit[1]);
+        if(!isFinish)
+        {
+            // TextChangeSpeedの秒数後にテキストを変更
+            LoadingText[0].text = "Now Loading";
+            LoadingText[1].text = topicsStr[0];
+            yield return new WaitForSeconds(TextChangeSpeed);
+            LoadingText[0].text = "Now Loading.";
+            LoadingText[1].text = topicsStr[1];
+            yield return new WaitForSeconds(TextChangeSpeed);
+            LoadingText[0].text = "Now Loading..";
+            LoadingText[1].text = topicsStr[2];
+            yield return new WaitForSeconds(TextChangeSpeed);
+            FinishLoading(stateInit[1]);
+        }
+        else
+        {
+            // TextChangeSpeedの秒数後にテキストを変更
+            LoadingText[0].text = "Now Loading";
+            LoadingText[1].text = topicsStr[3];
+            yield return new WaitForSeconds(TextChangeSpeed);
+            LoadingText[0].text = "Now Loading.";
+            yield return new WaitForSeconds(TextChangeSpeed);
+            LoadingText[0].text = "Now Loading..";
+            yield return new WaitForSeconds(TextChangeSpeed);
+            FinishLoading(stateInit[1]);
+        }
     }
     // ロード画面の初期設定
     void InitLoadingUI()
@@ -645,18 +701,28 @@ public class UIController : MonoBehaviour
             RankingAroundRank[RankCount].text = result2.higher_around_rank_users[higherCount - i - 1].rank.ToString();
             RankingAroundName[RankCount].text = result2.higher_around_rank_users[higherCount - i - 1].name;
             RankingAroundScore[RankCount].text = result2.higher_around_rank_users[higherCount - i - 1].rate.ToString();
+            RankingAroundRank[RankCount].color = Color.white;
+            RankingAroundName[RankCount].color = Color.white;
+            RankingAroundScore[RankCount].color = Color.white;
             RankCount++;
         }
         // 自分の順位と名前、スコアを真ん中に表示[2]
         RankingAroundRank[RankCount].text = result2.self.rank.ToString();
         RankingAroundName[RankCount].text = result2.self.name;
         RankingAroundScore[RankCount].text = result2.self.rate.ToString();
+        RankingAroundRank[RankCount].color = new Color(1f, 176f / 255f, 0f);
+        RankingAroundName[RankCount].color = new Color(1f, 176f / 255f, 0f);
+        RankingAroundScore[RankCount].color = new Color(1f, 176f / 255f, 0f);
         RankCount++;
+
         for(int i = 0; i < lowerCount; i++)
         {
             RankingAroundRank[RankCount].text = result2.lower_around_rank_users[i].rank.ToString();
             RankingAroundName[RankCount].text = result2.lower_around_rank_users[i].name;
             RankingAroundScore[RankCount].text = result2.lower_around_rank_users[i].rate.ToString();
+            RankingAroundRank[RankCount].color = Color.white;
+            RankingAroundName[RankCount].color = Color.white;
+            RankingAroundScore[RankCount].color = Color.white;
             RankCount++;
             if(RankCount >= 5)
                 break;

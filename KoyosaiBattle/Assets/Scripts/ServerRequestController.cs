@@ -80,15 +80,15 @@ public class ServerRequestController : MonoBehaviour
     }
     public static async Task<PostUserJson> PostExstingUser(string name)
     {
-        string jsonStr = $"{{ \"name\" : \"{name}\" }}";
-
         var client = new HttpClient();
         var result2 = await client.GetAsync($"{GetBASEURL()}users/?name={name}");
         var json2 = await result2.Content.ReadAsStringAsync();
 
+        Debug.Log(json2);
         try
         {
-            return JsonUtility.FromJson<PostUserJson>(json2);
+            var user = JsonUtility.FromJson<PostUserJson>(json2);
+            return user;
         }
         catch
 		{
@@ -140,11 +140,8 @@ public class ServerRequestController : MonoBehaviour
     }
     // 引数で指定したIDのユーザのスコアを登録する
     // ID省略で現在のID使用
-    public static async Task<string> PostScore(int score, int id = -1)
+    public static async Task<string> PostScore(int score, int id)
     {
-        if(id == -1)
-            id = GetID();
-
         string jsonStr = $"{{ \"rate\" : \"{score}\" }}";
 
         var client = new HttpClient();

@@ -263,12 +263,13 @@ public class UIController : MonoBehaviour
 
         if(StrixNetwork.instance.isRoomOwner)
 		{
-            JoyConAttack.instance.gameObject.transform.position += Vector3.back * 30f;
-		}
+            JoyConAttack.instance.gameObject.transform.position = Vector3.back * 20f;
+            JoyConAttack.instance.gameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
+        }
         else
         {
-            JoyConAttack.instance.gameObject.transform.Rotate(0, 180f, 0);
-            JoyConAttack.instance.gameObject.transform.position += Vector3.forward * 30f;
+            JoyConAttack.instance.gameObject.transform.rotation = Quaternion.Euler(0, 180f, 0);
+            JoyConAttack.instance.gameObject.transform.position = Vector3.forward * 20f;
 		}
         playerData.PlayInit();
 
@@ -349,10 +350,12 @@ public class UIController : MonoBehaviour
                 // POSTを複数回連続で行わないようにtrue
                 selectIsSendName = true;
 
+
                 var result = await ServerRequestController.PostExstingUser(playerName1);
 
                 if(result.id == -1)
                 {
+                    Debug.Log("Faild");
                     // すでに登録された名前だった場合にもう一度入力する
                     selectIsSendName = false;
                     InputSelectingInputName[0].text = string.Empty;
@@ -363,9 +366,11 @@ public class UIController : MonoBehaviour
                 // Readyを黄色にする
                 InputSelectingReady[0].color = new Color(1f, 0.9f, 0);
 
+                
                 playerData.SetUser(result.name, result.id);
                 playerData.Name = result.name;
                 playerData.PlayerId = result.id;
+                Debug.Log($"{result.id}:{result.name}");
                 Debug.Log($"{playerData.PlayerId}:{playerData.Name}");
 
                 InputSelectingInputName[0].interactable = false;
@@ -499,35 +504,59 @@ public class UIController : MonoBehaviour
         // リザルトパネルを表示それ以外を非表示
         SetPanelActives();
 
-        if(playerDataClone.Score != -1)
-            playerData.EnemyScore = playerDataClone.Score;
-        if(playerDataClone.EnemyScore != -1)
+        if(isFinish)
+		{
             playerData.Score = playerDataClone.EnemyScore;
+            playerData.EnemyScore = playerDataClone.Score;
 
-        ResultingName[0].text = playerData.Name;
-        ResultingName[1].text = playerDataClone.Name;
+            ResultingName[0].text = playerData.Name;
+            ResultingName[1].text = playerDataClone.Name;
 
-        ResultingScore[0].text = playerData.Score.ToString();
-        ResultingScore[1].text = playerData.EnemyScore.ToString();
+            ResultingScore[0].text = playerData.Score.ToString();
+            ResultingScore[1].text = playerData.EnemyScore.ToString();
 
-        if(playerData.Score > playerData.EnemyScore)
-        {
-            ResultingImage[0].gameObject.SetActive(true);
-            ResultingImage[1].gameObject.SetActive(false);
+            if(playerData.Score > playerData.EnemyScore)
+            {
+                ResultingImage[0].gameObject.SetActive(true);
+                ResultingImage[1].gameObject.SetActive(false);
 
-            int nlen = playerData.Name.Length;
-            ResultingImage[0].rectTransform.anchoredPosition = new Vector2(-50 - 50 * nlen, 200f);
+                int nlen = playerData.Name == "" ? 0 : playerData.Name.Length;
+                ResultingImage[0].rectTransform.anchoredPosition = new Vector2(-50 - 50 * nlen, 200f);
+            }
+            else
+            {
+                ResultingImage[0].gameObject.SetActive(false);
+                ResultingImage[1].gameObject.SetActive(true);
+
+                int nlen = playerData.Name == "" ? 0 : playerData.Name.Length;
+                ResultingImage[1].rectTransform.anchoredPosition = new Vector2(-50 - 50 * nlen, 200f);
+            }
         }
         else
         {
-            ResultingImage[0].gameObject.SetActive(false);
-            ResultingImage[1].gameObject.SetActive(true);
+            ResultingName[0].text = playerData.Name;
+            ResultingName[1].text = playerDataClone.Name;
 
-            int nlen = playerData.Name.Length;
-            ResultingImage[1].rectTransform.anchoredPosition = new Vector2(-50 - 50 * nlen, 200f);
+            ResultingScore[0].text = playerData.Score.ToString();
+            ResultingScore[1].text = playerData.EnemyScore.ToString();
+
+            if(playerData.Score > playerData.EnemyScore)
+            {
+                ResultingImage[0].gameObject.SetActive(true);
+                ResultingImage[1].gameObject.SetActive(false);
+
+                int nlen = playerData.Name == "" ? 0 : playerData.Name.Length;
+                ResultingImage[0].rectTransform.anchoredPosition = new Vector2(-50 - 50 * nlen, 200f);
+            }
+            else
+            {
+                ResultingImage[0].gameObject.SetActive(false);
+                ResultingImage[1].gameObject.SetActive(true);
+
+                int nlen = playerData.Name == "" ? 0 : playerData.Name.Length;
+                ResultingImage[1].rectTransform.anchoredPosition = new Vector2(-50 - 50 * nlen, 200f);
+            }
         }
-        loadCamera.gameObject.SetActive(true);
-        playCamera.gameObject.SetActive(false);
 
         // スコアをサーバへ送信
         await ServerRequestController.PostScore(playerData.Score, playerData.PlayerId);

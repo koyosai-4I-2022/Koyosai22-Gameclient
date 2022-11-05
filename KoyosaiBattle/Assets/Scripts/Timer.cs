@@ -14,7 +14,7 @@ public class Timer : MonoBehaviour
     
     //時間経過のカウント
     [SerializeField]
-    private int count;
+    public int count;
 
     //instanceで参照するため
     public static Timer instance;

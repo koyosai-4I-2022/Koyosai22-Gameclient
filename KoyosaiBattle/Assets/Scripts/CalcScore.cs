@@ -46,9 +46,10 @@ public class CalcScore : MonoBehaviour
         //UIController.instance.playerData.Score = 0;
         //UIController.instance.playerDataClone.Score = 0;
         beingMeasured = false;
-        TimeRate = 1.2f;
-        HPRate = 1.4f;
-        DamegeRate = 1.5f;
+        TimeRate = 1.1f;
+        HPRate = 1.6f;
+        DamegeRate = 1.55f;
+        KillBonus = 100;
         SurvivalBonus = 150;
     }
 
